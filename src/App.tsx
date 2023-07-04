@@ -1,12 +1,8 @@
 import "./App.css"
-import Login from "./features/auth/Login"
+import RouteProvider from "./routes/Routes"
 
 function App() {
-  return (
-    <div className="App">
-      <Login />
-    </div>
-  )
+  return <RouteProvider />
 }
 
 export default App
