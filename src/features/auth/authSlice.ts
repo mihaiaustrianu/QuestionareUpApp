@@ -41,6 +41,11 @@ const authSlice = createSlice({
       .addCase(login.pending, (state, action) => {
         state.status = "loading"
       })
+      .addCase(signOut.fulfilled, (state, action) => {
+        state.userToken = null
+        state.status = "idle"
+        state.userInfo = {}
+      })
   },
 })
 
