@@ -24,7 +24,7 @@ const Login = () => {
 
   const handleLogin = () => {
     const loginDetails = { username, password }
-    dispatch(login(loginDetails)).then(() => navigate("/home"))
+    dispatch(login(loginDetails)).then(() => navigate("/privateExample"))
   }
 
   let content
