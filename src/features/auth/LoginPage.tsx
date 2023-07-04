@@ -2,31 +2,33 @@ import React from "react"
 import { styled } from "@mui/system"
 import { Grid } from "@mui/material"
 import Login from "./Login"
-
-const ScreenContainer = styled(Grid)`
-  height: 95vh;
-`
+import LoginIllustration from "../../svgs/LoginIllustration"
 
 const ImageContainer = styled(Grid)`
-  background-image: url("src/images/loginImage.jpg");
-  background-size: cover;
-  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @media (max-width: 960px) {
+    display: none; /* Hide the image container from md breakpoint onwards */
+  }
 `
 
 const LoginContainer = styled(Grid)`
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 `
 
 const LoginPage = () => {
   return (
-    <ScreenContainer container>
-      <ImageContainer item xs={0} md={6} />
+    <Grid container>
+      <ImageContainer item xs={12} md={6}>
+        <LoginIllustration />
+      </ImageContainer>
       <LoginContainer item xs={12} md={6}>
         <Login />
       </LoginContainer>
-    </ScreenContainer>
+    </Grid>
   )
 }
 
