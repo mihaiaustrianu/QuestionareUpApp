@@ -1,3 +1,5 @@
+import { getToken } from "../utils/HelperFunctions"
+
 interface ClientConfig extends RequestInit {
   body?: any
 }
@@ -14,6 +16,12 @@ export async function client(
   { body, ...customConfig }: ClientConfig = {},
 ): Promise<Result> {
   const headers: Record<string, string> = { "Content-Type": "application/json" }
+
+  const isApiRoute = endpoint.includes("/api")
+  if (isApiRoute) {
+    const token = getToken()
+    headers["Authorization"] = `Bearer ${token}`
+  }
 
   const config: RequestInit = {
     method: body ? "POST" : "GET",
@@ -60,4 +68,19 @@ client.post = function (
   customConfig: ClientConfig = {},
 ): Promise<Result> {
   return client(endpoint, { ...customConfig, body })
+}
+
+client.put = function (
+  endpoint: string,
+  body: any,
+  customConfig: ClientConfig = {},
+): Promise<Result> {
+  return client(endpoint, { ...customConfig, body, method: "PUT" })
+}
+
+client.delete = function (
+  endpoint: string,
+  customConfig: ClientConfig = {},
+): Promise<Result> {
+  return client(endpoint, { ...customConfig, method: "DELETE" })
 }

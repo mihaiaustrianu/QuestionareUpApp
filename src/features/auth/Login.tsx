@@ -3,6 +3,7 @@ import { login } from "./authSlice"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { Spinner } from "../../components/Spinner"
 import { useNavigate } from "react-router-dom"
+import LoginIcon from "@mui/icons-material/Login"
 import {
   TextField,
   Checkbox,
@@ -24,7 +25,7 @@ const Login = () => {
 
   const handleLogin = () => {
     const loginDetails = { username, password }
-    dispatch(login(loginDetails)).then(() => navigate("/privateExample"))
+    dispatch(login(loginDetails)).then(() => navigate("/questionnaireUp"))
   }
 
   let content
@@ -64,7 +65,12 @@ const Login = () => {
           }
           label="Remember Me"
         />
-        <Button variant="contained" onClick={handleLogin} fullWidth>
+        <Button
+          variant="contained"
+          onClick={handleLogin}
+          fullWidth
+          endIcon={<LoginIcon />}
+        >
           Login
         </Button>
       </div>
