@@ -6,10 +6,12 @@ import {
   createQuestionSet,
   deleteQuestionSet,
   fetchQuestionSets,
+  updateQuestionSet,
 } from "./questionsSlice"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import QuestionSetCard from "../../components/question-set/QuestionSetCard"
 import ConfirmationModal from "../../components/question-set/ConfirmationModal"
+import EditQuestionSetModal from "../../components/question-set/EditQSModal"
 
 const UserQuestionSets = () => {
   const dispatch = useAppDispatch()
@@ -30,6 +32,7 @@ const UserQuestionSets = () => {
   const [selectedQuestionSet, setSelectedQuestionSet] =
     useState<QuestionSet | null>(null)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
 
   const handleAddQuestionSet = () => {
     setIsFormOpen(true)
@@ -50,7 +53,9 @@ const UserQuestionSets = () => {
   }
 
   const handleEditQuestionSet = (questionSet: QuestionSet) => {
-    // Handle editing the question set here
+    setSelectedQuestionSet(questionSet)
+    setIsFormOpen(false)
+    setIsEditModalOpen(true)
   }
 
   const handleRemoveQuestionSet = (questionSet: QuestionSet) => {
@@ -69,6 +74,10 @@ const UserQuestionSets = () => {
   const handleCloseModal = () => {
     setIsDeleteModalOpen(false)
     setSelectedQuestionSet(null)
+  }
+
+  const handleSaveEditedQuestionSet = (updatedQuestionSet: QuestionSet) => {
+    dispatch(updateQuestionSet(updatedQuestionSet))
   }
 
   return (
@@ -117,12 +126,25 @@ const UserQuestionSets = () => {
           >
             Create
           </Button>
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={() => setIsFormOpen(false)}
+          >
+            Cancel
+          </Button>
         </Box>
       )}
       <ConfirmationModal
         open={isDeleteModalOpen}
         onClose={handleCloseModal}
         onConfirm={handleConfirmDelete}
+      />
+      <EditQuestionSetModal
+        open={isEditModalOpen}
+        questionSet={selectedQuestionSet}
+        onClose={() => setIsEditModalOpen(false)}
+        onSave={handleSaveEditedQuestionSet}
       />
     </Box>
   )

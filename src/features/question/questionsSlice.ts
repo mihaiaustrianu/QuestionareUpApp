@@ -49,6 +49,17 @@ export const deleteQuestionSet = createAsyncThunk(
   },
 )
 
+export const updateQuestionSet = createAsyncThunk(
+  "question/updateQuestionSet",
+  async (questionSet: QuestionSet) => {
+    await client.put(
+      serverURL + `api/question-sets/${questionSet._id}`,
+      questionSet,
+    )
+    return questionSet
+  },
+)
+
 const questionSlice = createSlice({
   name: "question",
   initialState,
@@ -86,7 +97,19 @@ const questionSlice = createSlice({
         state.status = "succeeded"
       })
       .addCase(deleteQuestionSet.rejected, (state, action) => {
-        console.log(action)
+        state.error = action.error.message
+      })
+      .addCase(updateQuestionSet.fulfilled, (state, action) => {
+        const updatedQuestionSet = action.payload
+        const index = state.questionSets.findIndex(
+          (questionSet) => questionSet._id === updatedQuestionSet._id,
+        )
+        if (index !== -1) {
+          state.questionSets[index] = updatedQuestionSet
+        }
+        state.status = "succeeded"
+      })
+      .addCase(updateQuestionSet.rejected, (state, action) => {
         state.error = action.error.message
       })
   },

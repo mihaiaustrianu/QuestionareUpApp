@@ -39,6 +39,8 @@ export async function client(
   let data: any
   try {
     const response = await window.fetch(endpoint, config)
+    console.log(response)
+
     data = await response.json()
     if (response.ok) {
       // Return a result object similar to Axios
