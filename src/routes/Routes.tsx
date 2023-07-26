@@ -5,7 +5,7 @@ import Navbar from "../components/navbar/Navbar"
 import LoginPage from "../features/auth/LoginPage"
 import LandingPage from "../features/landing/LandingPage"
 import { Box, Grid } from "@mui/material"
-import QuestionsPage from "../features/question/QuestionsPage"
+import QuestionsPage from "../features/question-set/QuestionsPage"
 
 export default function RouteProvider() {
   return (

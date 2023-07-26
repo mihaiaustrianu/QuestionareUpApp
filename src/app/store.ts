@@ -1,10 +1,11 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit"
 import authReducer from "../features/auth/authSlice"
-import questionReducer from "../features/question/questionsSlice"
-
+import questionSetReducer from "../features/question-set/questionSetSlice"
+import questionReducer from "../features/questions/questionsSlice"
 export const store = configureStore({
   reducer: {
     auth: authReducer,
+    questionSet: questionSetReducer,
     question: questionReducer,
   },
 })

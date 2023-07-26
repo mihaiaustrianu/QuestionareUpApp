@@ -22,7 +22,7 @@ const initialState: QuestionState = {
 }
 
 export const createQuestionSet = createAsyncThunk(
-  "question/createQuestionSet",
+  "questionSet/createQuestionSet",
   async (payload: any) => {
     const response = await client.post(
       serverURL + "api/question-sets/create",
@@ -34,7 +34,7 @@ export const createQuestionSet = createAsyncThunk(
 
 // Async thunk to fetch question sets
 export const fetchQuestionSets = createAsyncThunk(
-  "question/fetchQuestionSets",
+  "questionSet/fetchQuestionSets",
   async () => {
     const response = await client.get(serverURL + "api/question-sets")
     return response.data
@@ -42,7 +42,7 @@ export const fetchQuestionSets = createAsyncThunk(
 )
 
 export const deleteQuestionSet = createAsyncThunk(
-  "question/deleteQuestionSet",
+  "questionSet/deleteQuestionSet",
   async (questionSetId: string) => {
     await client.delete(serverURL + `api/question-sets/${questionSetId}`)
     return questionSetId
@@ -50,7 +50,7 @@ export const deleteQuestionSet = createAsyncThunk(
 )
 
 export const updateQuestionSet = createAsyncThunk(
-  "question/updateQuestionSet",
+  "questionSet/updateQuestionSet",
   async (questionSet: QuestionSet) => {
     await client.put(
       serverURL + `api/question-sets/${questionSet._id}`,
@@ -60,8 +60,8 @@ export const updateQuestionSet = createAsyncThunk(
   },
 )
 
-const questionSlice = createSlice({
-  name: "question",
+const questionSetSlice = createSlice({
+  name: "questionSet",
   initialState,
   reducers: {},
   extraReducers(builder) {
@@ -115,4 +115,4 @@ const questionSlice = createSlice({
   },
 })
 
-export default questionSlice.reducer
+export default questionSetSlice.reducer

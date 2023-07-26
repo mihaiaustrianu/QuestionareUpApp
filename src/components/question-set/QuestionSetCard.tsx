@@ -8,7 +8,7 @@ import {
 } from "@mui/material"
 import { Edit, Delete } from "@mui/icons-material"
 
-const QuestionSetCard = ({ questionSet, onEdit, onDelete }) => {
+const QuestionSetCard = ({ questionSet, onEdit, onDelete, onClickSet }) => {
   return (
     <Card sx={{ marginBottom: 2 }}>
       <CardContent>
@@ -21,6 +21,14 @@ const QuestionSetCard = ({ questionSet, onEdit, onDelete }) => {
         </IconButton>
         <IconButton aria-label="Delete" onClick={() => onDelete(questionSet)}>
           <Delete />
+        </IconButton>
+        <IconButton
+          aria-label="View Questions"
+          onClick={() => onClickSet(questionSet)}
+        >
+          {/* You can use any icon that indicates "view" */}
+          {/* For example: <Visibility /> */}
+          View Questions
         </IconButton>
       </CardActions>
     </Card>

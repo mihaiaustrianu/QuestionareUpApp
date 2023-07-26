@@ -1,6 +1,6 @@
 import React from "react"
 import { Modal, Box, Typography, TextField, Button } from "@mui/material"
-import { QuestionSet } from "../../features/question/questionsSlice"
+import { QuestionSet } from "../../features/question-set/questionSetSlice"
 
 interface EditQuestionSetModalProps {
   open: boolean

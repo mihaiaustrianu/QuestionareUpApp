@@ -7,23 +7,25 @@ import {
   deleteQuestionSet,
   fetchQuestionSets,
   updateQuestionSet,
-} from "./questionsSlice"
+} from "../../features/question-set/questionSetSlice"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import QuestionSetCard from "../../components/question-set/QuestionSetCard"
-import ConfirmationModal from "../../components/question-set/ConfirmationModal"
-import EditQuestionSetModal from "../../components/question-set/EditQSModal"
+import QuestionSetCard from "./QuestionSetCard"
+import ConfirmationModal from "./ConfirmationModal"
+import EditQuestionSetModal from "./EditQSModal"
+import QuestionList from "../questions/QuestionList"
+import { fetchQuestions } from "../../features/questions/questionsSlice"
 
 const UserQuestionSets = () => {
   const dispatch = useAppDispatch()
 
-  const questionStatus = useAppSelector((state) => state.question.status)
+  const questionStatus = useAppSelector((state) => state.questionSet.status)
 
   useEffect(() => {
     if (questionStatus === "idle") dispatch(fetchQuestionSets())
   }, [dispatch, questionStatus])
 
   const questionSets: QuestionSet[] = useAppSelector(
-    (state) => state.question.questionSets,
+    (state) => state.questionSet.questionSets,
   )
 
   const [isFormOpen, setIsFormOpen] = useState(false)
@@ -80,6 +82,11 @@ const UserQuestionSets = () => {
     dispatch(updateQuestionSet(updatedQuestionSet))
   }
 
+  const handleQuestionSetClick = (questionSet: QuestionSet) => {
+    setSelectedQuestionSet(questionSet)
+    dispatch(fetchQuestions(questionSet._id))
+  }
+
   return (
     <Box>
       <Typography variant="h5">User Question Sets</Typography>
@@ -90,6 +97,7 @@ const UserQuestionSets = () => {
           questionSet={questionSet}
           onEdit={handleEditQuestionSet}
           onDelete={handleRemoveQuestionSet}
+          onClickSet={() => handleQuestionSetClick(questionSet)} // Add click handler
         />
       ))}
 
@@ -146,6 +154,9 @@ const UserQuestionSets = () => {
         onClose={() => setIsEditModalOpen(false)}
         onSave={handleSaveEditedQuestionSet}
       />
+      {selectedQuestionSet && (
+        <QuestionList questionSetId={selectedQuestionSet._id} />
+      )}
     </Box>
   )
 }
