@@ -13,12 +13,10 @@ import QuestionCard from "./QuestionCard"
 import ConfirmationModal from "./ConfirmationModal"
 import QuestionModal from "./QuestionModal"
 
-interface QuestionListProps {
-  questionSetId: string
-}
-
-const QuestionList: React.FC<QuestionListProps> = ({ questionSetId }) => {
+const QuestionList: React.FC = () => {
   const dispatch = useAppDispatch()
+
+  const questionSetId = useAppSelector((state) => state.question.questionSetId) // Access questionSetId from the store
 
   useEffect(() => {
     dispatch(fetchQuestions(questionSetId))

@@ -12,8 +12,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import QuestionSetCard from "./QuestionSetCard"
 import ConfirmationModal from "./ConfirmationModal"
 import EditQuestionSetModal from "./EditQSModal"
-import QuestionList from "../questions/QuestionList"
-import { fetchQuestions } from "../../features/questions/questionsSlice"
+import { setQuestionSetId } from "../../features/questions/questionsSlice"
 
 const UserQuestionSets = () => {
   const dispatch = useAppDispatch()
@@ -84,7 +83,7 @@ const UserQuestionSets = () => {
 
   const handleQuestionSetClick = (questionSet: QuestionSet) => {
     setSelectedQuestionSet(questionSet)
-    dispatch(fetchQuestions(questionSet._id))
+    dispatch(setQuestionSetId(questionSet._id))
   }
 
   return (
@@ -154,9 +153,6 @@ const UserQuestionSets = () => {
         onClose={() => setIsEditModalOpen(false)}
         onSave={handleSaveEditedQuestionSet}
       />
-      {selectedQuestionSet && (
-        <QuestionList questionSetId={selectedQuestionSet._id} />
-      )}
     </Box>
   )
 }

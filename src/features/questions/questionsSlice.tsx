@@ -1,11 +1,11 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { client } from "../../api/client"
 
 const serverURL = import.meta.env.VITE_SERVER_URL
 
 export interface Question {
   _id?: string
-  questionSetId?: string
+  questionSetId?: string // Add questionSetId to the Question interface
   title: string
   text: string
   answers: Answer[]
@@ -20,12 +20,14 @@ interface QuestionState {
   questions: Question[]
   status: string
   error: string | null
+  questionSetId?: string // Add questionSetId to the state
 }
 
 const initialState: QuestionState = {
   questions: [],
   status: "idle",
   error: null,
+  questionSetId: undefined,
 }
 
 // Async thunk to fetch user's questions
@@ -47,7 +49,7 @@ export const createQuestion = createAsyncThunk(
       serverURL + `api/questions/${question.questionSetId}`,
       question,
     )
-    return response.data
+    return response.data.newQuestion
   },
 )
 
@@ -72,7 +74,11 @@ export const updateQuestion = createAsyncThunk(
 const questionSlice = createSlice({
   name: "questions",
   initialState,
-  reducers: {},
+  reducers: {
+    setQuestionSetId: (state, action: PayloadAction<string>) => {
+      state.questionSetId = action.payload
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchQuestions.pending, (state) => {
@@ -107,7 +113,22 @@ const questionSlice = createSlice({
       .addCase(updateQuestion.rejected, (state, action) => {
         state.error = action.error.message
       })
+      .addCase(createQuestion.pending, (state) => {
+        state.status = "loading"
+        state.error = null
+      })
+      .addCase(createQuestion.fulfilled, (state, action) => {
+        state.status = "succeeded"
+        state.error = null
+        state.questions.push(action.payload) // Add the newly created question to the state
+      })
+      .addCase(createQuestion.rejected, (state, action) => {
+        state.status = "failed"
+        state.error = action.error.message || "Failed to create a question."
+      })
   },
 })
+
+export const { setQuestionSetId } = questionSlice.actions // Export the action creator
 
 export default questionSlice.reducer

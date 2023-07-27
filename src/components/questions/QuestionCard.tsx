@@ -5,8 +5,14 @@ import {
   CardActions,
   Typography,
   IconButton,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Avatar,
+  Box,
 } from "@mui/material"
-import { Edit, Delete } from "@mui/icons-material"
+import { Edit, Delete, Check, Clear } from "@mui/icons-material"
 import { Question } from "../../features/questions/questionsSlice"
 
 interface QuestionCardProps {
@@ -25,6 +31,33 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
       <CardContent>
         <Typography variant="h6">{question.title}</Typography>
         <Typography>{question.text}</Typography>
+        <Typography variant="subtitle1">Answers:</Typography>
+        <List dense>
+          {question.answers.map((answer, index) => (
+            <ListItem key={index}>
+              <ListItemAvatar>
+                <Avatar variant="rounded">{index + 1}</Avatar>
+              </ListItemAvatar>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  border: "1px solid #ccc",
+                  borderRadius: 4,
+                  padding: "4px 8px",
+                  marginRight: 8,
+                }}
+              >
+                <ListItemText primary={answer.answerText} />
+              </Box>
+              {answer.isCorrect ? (
+                <Check color="success" />
+              ) : (
+                <Clear color="error" />
+              )}
+            </ListItem>
+          ))}
+        </List>
       </CardContent>
       <CardActions>
         <IconButton aria-label="Edit" onClick={() => onEdit(question)}>

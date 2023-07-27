@@ -12,7 +12,7 @@ const QuestionSetCard = ({ questionSet, onEdit, onDelete, onClickSet }) => {
   return (
     <Card sx={{ marginBottom: 2 }}>
       <CardContent>
-        <Typography variant="h6">{questionSet.title}</Typography>
+        <Typography variant="h5">{questionSet.title}</Typography>
         <Typography>{questionSet.description}</Typography>
       </CardContent>
       <CardActions>
