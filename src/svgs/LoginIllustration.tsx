@@ -8,7 +8,7 @@ export default function LoginIllustration() {
       width="783.92771"
       height="868.73369"
       viewBox="0 0 783.92771 868.73369"
-      xmlns:xlink="http://www.w3.org/1999/xlink"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
     >
       <title>enter</title>
       <path

@@ -7,7 +7,7 @@ export default function LandingIllustration() {
       width="596.91213"
       height="505.57464"
       viewBox="0 0 596.91213 505.57464"
-      xmlns:xlink="http://www.w3.org/1999/xlink"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
     >
       <g>
         <path

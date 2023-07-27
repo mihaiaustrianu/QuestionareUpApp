@@ -4,6 +4,9 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { signOut } from "../../features/auth/authSlice"
 import { AppBar, Button, Grid, Toolbar, Typography } from "@mui/material"
 
+import LoginIcon from "@mui/icons-material/Login"
+import LogoutIcon from "@mui/icons-material/Logout"
+
 const Navbar = () => {
   const location = useLocation()
   const showNavbar = location.pathname !== "/"
@@ -17,17 +20,37 @@ const Navbar = () => {
 
   if (showNavbar)
     return (
-      <AppBar position="static">
+      <AppBar position="static" sx={{ height: "7vh" }}>
         <Toolbar>
           <Grid container alignItems="center" justifyContent="space-between">
             <Grid item>
-              <Typography variant="h6" component={Link} to="/" color="inherit">
-                QuestionnaireUpApp
-              </Typography>
+              {!isAuthenticated ? (
+                <Typography
+                  variant="h6"
+                  component={Link}
+                  to="/"
+                  color="inherit"
+                >
+                  QuestionnaireUpApp
+                </Typography>
+              ) : (
+                <Typography
+                  variant="h6"
+                  component={Link}
+                  to="/questionnaireUp"
+                  color="inherit"
+                >
+                  QuestionnaireUpApp
+                </Typography>
+              )}
             </Grid>
             <Grid item>
               {isAuthenticated ? (
-                <Button color="inherit" onClick={handleSingOut}>
+                <Button
+                  color="inherit"
+                  onClick={handleSingOut}
+                  endIcon={<LogoutIcon />}
+                >
                   Sign Out
                 </Button>
               ) : (
@@ -36,6 +59,7 @@ const Navbar = () => {
                   variant="contained"
                   component={Link}
                   to="/login"
+                  endIcon={<LoginIcon />}
                 >
                   Login
                 </Button>
