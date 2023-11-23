@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Box, Typography, Button, TextField } from "@mui/material"
+import { Box, Typography, Button } from "@mui/material"
 import { Add } from "@mui/icons-material"
 import {
   QuestionSet,
@@ -11,7 +11,8 @@ import {
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import QuestionSetCard from "./QuestionSetCard"
 import ConfirmationModal from "./ConfirmationModal"
-import EditQuestionSetModal from "./EditQSModal"
+import QuestionSetModal from "./QuestionSetModal"
+
 import { setQuestionSetId } from "../../features/questions/questionsSlice"
 
 const UserQuestionSets = () => {
@@ -27,35 +28,24 @@ const UserQuestionSets = () => {
     (state) => state.questionSet.questionSets,
   )
 
-  const [isFormOpen, setIsFormOpen] = useState(false)
-  const [newQuestionSetTitle, setNewQuestionSetTitle] = useState("")
-  const [newQuestionSetDescription, setNewQuestionSetDescription] = useState("")
+  const [isCreateModalOpen, setisCreateModalOpen] = useState(false)
   const [selectedQuestionSet, setSelectedQuestionSet] =
     useState<QuestionSet | null>(null)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
 
   const handleAddQuestionSet = () => {
-    setIsFormOpen(true)
+    setisCreateModalOpen(true)
   }
 
-  const handleCreateQuestionSet = () => {
-    const questionSet = {
-      title: newQuestionSetTitle,
-      description: newQuestionSetDescription,
-    }
-
+  const handleCreateQuestionSet = (questionSet: QuestionSet) => {
     dispatch(createQuestionSet(questionSet))
-
-    // Reset form fields
-    setNewQuestionSetTitle("")
-    setNewQuestionSetDescription("")
-    setIsFormOpen(false)
+    setisCreateModalOpen(false)
   }
 
   const handleEditQuestionSet = (questionSet: QuestionSet) => {
     setSelectedQuestionSet(questionSet)
-    setIsFormOpen(false)
+    setisCreateModalOpen(false)
     setIsEditModalOpen(true)
   }
 
@@ -100,54 +90,28 @@ const UserQuestionSets = () => {
         />
       ))}
 
-      {!isFormOpen ? (
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<Add />}
-          onClick={handleAddQuestionSet}
-        >
-          Add New Question Set
-        </Button>
-      ) : (
-        <Box marginTop={2}>
-          <Typography variant="h6">Create New Question Set</Typography>
-          <TextField
-            label="Title"
-            value={newQuestionSetTitle}
-            onChange={(e) => setNewQuestionSetTitle(e.target.value)}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Description"
-            value={newQuestionSetDescription}
-            onChange={(e) => setNewQuestionSetDescription(e.target.value)}
-            fullWidth
-            margin="normal"
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleCreateQuestionSet}
-          >
-            Create
-          </Button>
-          <Button
-            variant="outlined"
-            color="secondary"
-            onClick={() => setIsFormOpen(false)}
-          >
-            Cancel
-          </Button>
-        </Box>
-      )}
+      <Button
+        variant="contained"
+        color="primary"
+        startIcon={<Add />}
+        onClick={handleAddQuestionSet}
+      >
+        Add New Question Set
+      </Button>
+
+      <QuestionSetModal
+        open={isCreateModalOpen}
+        questionSet={null} // Passing null for creating new question set
+        onClose={() => setisCreateModalOpen(false)}
+        onSave={handleCreateQuestionSet}
+      />
+
       <ConfirmationModal
         open={isDeleteModalOpen}
         onClose={handleCloseModal}
         onConfirm={handleConfirmDelete}
       />
-      <EditQuestionSetModal
+      <QuestionSetModal
         open={isEditModalOpen}
         questionSet={selectedQuestionSet}
         onClose={() => setIsEditModalOpen(false)}

@@ -24,25 +24,14 @@ const Navbar = () => {
         <Toolbar>
           <Grid container alignItems="center" justifyContent="space-between">
             <Grid item>
-              {!isAuthenticated ? (
-                <Typography
-                  variant="h6"
-                  component={Link}
-                  to="/"
-                  color="inherit"
-                >
-                  QuestionnaireUpApp
-                </Typography>
-              ) : (
-                <Typography
-                  variant="h6"
-                  component={Link}
-                  to="/questionnaireUp"
-                  color="inherit"
-                >
-                  QuestionnaireUpApp
-                </Typography>
-              )}
+              <Typography
+                variant="h6"
+                component={Link}
+                to={isAuthenticated ? "/questionnaireUp" : "/"}
+                color="inherit"
+              >
+                QuestionnaireUpApp
+              </Typography>
             </Grid>
             <Grid item>
               {isAuthenticated ? (
