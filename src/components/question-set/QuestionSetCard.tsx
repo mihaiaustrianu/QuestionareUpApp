@@ -26,8 +26,6 @@ const QuestionSetCard = ({ questionSet, onEdit, onDelete, onClickSet }) => {
           aria-label="View Questions"
           onClick={() => onClickSet(questionSet)}
         >
-          {/* You can use any icon that indicates "view" */}
-          {/* For example: <Visibility /> */}
           View Questions
         </IconButton>
       </CardActions>

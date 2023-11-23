@@ -1,46 +1,50 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { Modal, Box, Typography, TextField, Button } from "@mui/material"
 import { QuestionSet } from "../../features/question-set/questionSetSlice"
 
-interface EditQuestionSetModalProps {
+interface QuestionSetModalProps {
   open: boolean
   questionSet: QuestionSet | null
   onClose: () => void
-  onSave: (updatedQuestionSet: QuestionSet) => void
+  onSave: (questionSet: QuestionSet) => void
 }
 
-const EditQuestionSetModal: React.FC<EditQuestionSetModalProps> = ({
+const QuestionSetModal: React.FC<QuestionSetModalProps> = ({
   open,
   questionSet,
   onClose,
   onSave,
 }) => {
-  const [title, setTitle] = React.useState("")
-  const [description, setDescription] = React.useState("")
+  const [title, setTitle] = useState("")
+  const [description, setDescription] = useState("")
 
-  React.useEffect(() => {
-    if (questionSet) {
+  useEffect(() => {
+    if (questionSet !== null) {
       setTitle(questionSet.title)
       setDescription(questionSet.description)
+    } else {
+      // If creating a new question set, reset the fields
+      setTitle("")
+      setDescription("")
     }
   }, [questionSet])
 
   const handleSave = () => {
-    if (questionSet) {
-      onSave({
-        ...questionSet,
-        title,
-        description,
-      })
-      onClose()
+    const updatedQuestionSet: QuestionSet = {
+      _id: questionSet ? questionSet._id : undefined,
+      title,
+      description,
     }
+
+    onSave(updatedQuestionSet)
+    onClose()
   }
 
   return (
     <Modal open={open} onClose={onClose}>
       <Box
         sx={{
-          position: "absolute",
+          position: "fixed",
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
@@ -48,10 +52,11 @@ const EditQuestionSetModal: React.FC<EditQuestionSetModalProps> = ({
           boxShadow: 24,
           p: 4,
           borderRadius: 4,
-          minWidth: 300,
         }}
       >
-        <Typography variant="h6">Edit Question Set</Typography>
+        <Typography variant="h6">
+          {questionSet ? "Edit Question Set" : "Create New Question Set"}
+        </Typography>
         <TextField
           label="Title"
           value={title}
@@ -77,4 +82,4 @@ const EditQuestionSetModal: React.FC<EditQuestionSetModalProps> = ({
   )
 }
 
-export default EditQuestionSetModal
+export default QuestionSetModal
