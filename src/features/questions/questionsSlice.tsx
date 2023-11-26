@@ -21,6 +21,7 @@ interface QuestionState {
   status: string
   error: string | null
   questionSetId?: string // Add questionSetId to the state
+  questionSetTitle: string
 }
 
 const initialState: QuestionState = {
@@ -28,6 +29,7 @@ const initialState: QuestionState = {
   status: "idle",
   error: null,
   questionSetId: undefined,
+  questionSetTitle: "",
 }
 
 // Async thunk to fetch user's questions
@@ -77,6 +79,9 @@ const questionSlice = createSlice({
   reducers: {
     setQuestionSetId: (state, action: PayloadAction<string>) => {
       state.questionSetId = action.payload
+    },
+    setQuestionSetTitle: (state, action: PayloadAction<string>) => {
+      state.questionSetTitle = action.payload
     },
   },
   extraReducers(builder) {
@@ -129,6 +134,6 @@ const questionSlice = createSlice({
   },
 })
 
-export const { setQuestionSetId } = questionSlice.actions // Export the action creator
+export const { setQuestionSetId, setQuestionSetTitle } = questionSlice.actions // Export the action creator
 
 export default questionSlice.reducer

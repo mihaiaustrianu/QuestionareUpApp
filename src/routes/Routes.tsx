@@ -1,11 +1,12 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import PrivateRoute from "./PrivateRoute"
-import Home from "./Home"
 import Navbar from "../components/navbar/Navbar"
 import LoginPage from "../features/auth/LoginPage"
 import LandingPage from "../features/landing/LandingPage"
-import { Box, Grid } from "@mui/material"
+import { Grid } from "@mui/material"
 import QuestionsPage from "../features/question-set/QuestionsPage"
+import QuizPage from "../features/quizes/QuizPage"
+import QuestionList from "../components/questions/QuestionList"
 
 export default function RouteProvider() {
   return (
@@ -26,6 +27,22 @@ export default function RouteProvider() {
                 </PrivateRoute>
               }
             ></Route>
+            <Route
+              path="/quizPage"
+              element={
+                <PrivateRoute>
+                  <QuizPage />
+                </PrivateRoute>
+              }
+            ></Route>
+            <Route
+              path="/editQuestionSet/:questionSetId"
+              element={
+                <PrivateRoute>
+                  <QuestionList></QuestionList>
+                </PrivateRoute>
+              }
+            />
           </Routes>
         </Grid>
       </Grid>
