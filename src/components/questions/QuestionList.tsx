@@ -17,6 +17,9 @@ const QuestionList: React.FC = () => {
   const dispatch = useAppDispatch()
 
   const questionSetId = useAppSelector((state) => state.question.questionSetId) // Access questionSetId from the store
+  const questionSetTitle = useAppSelector(
+    (state) => state.question.questionSetTitle,
+  ) // Access questionSetId from the store
 
   useEffect(() => {
     dispatch(fetchQuestions(questionSetId))
@@ -72,7 +75,7 @@ const QuestionList: React.FC = () => {
 
   return (
     <Box>
-      <Typography variant="h5">Questions</Typography>
+      <Typography variant="h3">Questions in {questionSetTitle}</Typography>
 
       {questions.map((question) => (
         <QuestionCard

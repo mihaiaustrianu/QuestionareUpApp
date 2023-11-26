@@ -13,12 +13,18 @@ import QuestionSetCard from "./QuestionSetCard"
 import ConfirmationModal from "./ConfirmationModal"
 import QuestionSetModal from "./QuestionSetModal"
 
-import { setQuestionSetId } from "../../features/questions/questionsSlice"
+import {
+  setQuestionSetId,
+  setQuestionSetTitle,
+} from "../../features/questions/questionsSlice"
+import { useNavigate } from "react-router-dom"
 
 const UserQuestionSets = () => {
   const dispatch = useAppDispatch()
 
   const questionStatus = useAppSelector((state) => state.questionSet.status)
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (questionStatus === "idle") dispatch(fetchQuestionSets())
@@ -73,7 +79,9 @@ const UserQuestionSets = () => {
 
   const handleQuestionSetClick = (questionSet: QuestionSet) => {
     setSelectedQuestionSet(questionSet)
+    navigate(`/editQuestionSet/${questionSet._id}`)
     dispatch(setQuestionSetId(questionSet._id))
+    dispatch(setQuestionSetTitle(questionSet.title))
   }
 
   return (

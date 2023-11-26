@@ -32,6 +32,17 @@ const Navbar = () => {
               >
                 QuestionnaireUpApp
               </Typography>
+              {isAuthenticated && (
+                <Typography
+                  ml={5}
+                  variant="h6"
+                  component={Link}
+                  to={"quizPage"}
+                  color="inherit"
+                >
+                  Quiz Page
+                </Typography>
+              )}
             </Grid>
             <Grid item>
               {isAuthenticated ? (
