@@ -3,23 +3,23 @@ import { Box, Typography, Button } from "@mui/material"
 import { Add } from "@mui/icons-material"
 import {
   Question,
-  createQuestion,
   deleteQuestion,
   fetchQuestions,
-  updateQuestion,
 } from "../../features/questions/questionsSlice"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import QuestionCard from "./QuestionCard"
 import ConfirmationModal from "./ConfirmationModal"
-import QuestionModal from "./QuestionModal"
+import { useNavigate } from "react-router-dom"
 
 const QuestionList: React.FC = () => {
   const dispatch = useAppDispatch()
 
-  const questionSetId = useAppSelector((state) => state.question.questionSetId) // Access questionSetId from the store
+  const questionSetId = useAppSelector((state) => state.question.questionSetId)
   const questionSetTitle = useAppSelector(
     (state) => state.question.questionSetTitle,
-  ) // Access questionSetId from the store
+  )
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     dispatch(fetchQuestions(questionSetId))
@@ -29,26 +29,10 @@ const QuestionList: React.FC = () => {
     (state) => state.question.questions,
   )
 
-  const [isNewQuestionModalOpen, setNewQuestionModalOpen] = useState(false)
   const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(
     null,
   )
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-
-  const handleAddQuestion = () => {
-    setNewQuestionModalOpen(true)
-  }
-
-  const handleCreateQuestion = (question: Question) => {
-    dispatch(createQuestion(question))
-    setNewQuestionModalOpen(false)
-  }
-
-  const handleEditQuestion = (question: Question) => {
-    setSelectedQuestion(question)
-    setIsEditModalOpen(true)
-  }
 
   const handleRemoveQuestion = (question: Question) => {
     setSelectedQuestion(question)
@@ -68,9 +52,10 @@ const QuestionList: React.FC = () => {
     setSelectedQuestion(null)
   }
 
-  const handleSaveEditedQuestion = (updatedQuestion: Question) => {
-    dispatch(updateQuestion(updatedQuestion))
-    setIsEditModalOpen(false)
+  const handleAddQuestion = () => {}
+
+  const handleEditQuestion = (question: Question) => {
+    navigate(`/edit-question/${question._id}`)
   }
 
   return (
@@ -80,12 +65,13 @@ const QuestionList: React.FC = () => {
       </Typography>
 
       {questions.map((question) => (
-        <QuestionCard
-          key={question._id}
-          question={question}
-          onEdit={handleEditQuestion}
-          onDelete={handleRemoveQuestion}
-        />
+        <div key={question._id}>
+          <QuestionCard
+            question={question}
+            onDelete={handleRemoveQuestion}
+            onEdit={handleEditQuestion}
+          />
+        </div>
       ))}
       <Button
         variant="contained"
@@ -101,30 +87,6 @@ const QuestionList: React.FC = () => {
         onClose={handleCloseModal}
         onConfirm={handleConfirmDelete}
       />
-      {selectedQuestion && (
-        <QuestionModal
-          open={isEditModalOpen}
-          question={selectedQuestion}
-          isNew={false} // For editing existing question
-          onClose={() => setIsEditModalOpen(false)}
-          onSave={handleSaveEditedQuestion}
-        />
-      )}
-
-      {isNewQuestionModalOpen && (
-        <QuestionModal
-          open={isNewQuestionModalOpen}
-          question={{
-            questionSetId: questionSetId,
-            title: "",
-            text: "",
-            answers: [],
-          }}
-          isNew={true} // For creating new question
-          onClose={() => setNewQuestionModalOpen(false)}
-          onSave={handleCreateQuestion}
-        />
-      )}
     </Box>
   )
 }

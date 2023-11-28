@@ -4,9 +4,11 @@ import Navbar from "../components/navbar/Navbar"
 import LoginPage from "../features/auth/LoginPage"
 import LandingPage from "../features/landing/LandingPage"
 import { Grid } from "@mui/material"
-import QuestionsPage from "../features/question-set/QuestionsPage"
+import QuestionsPage from "../features/question-set/QuestionSetsPage"
 import QuizPage from "../features/quizes/QuizPage"
-import QuestionList from "../components/questions/QuestionList"
+import EditQuestionCard from "../components/questions/EditQuestionCard"
+import QuestionListPage from "../features/questions/QuestionListPage"
+import EditQuestionPage from "../features/questions/EditQuestionPage"
 
 export default function RouteProvider() {
   return (
@@ -45,10 +47,18 @@ export default function RouteProvider() {
               }
             ></Route>
             <Route
-              path="/editQuestionSet/:questionSetId"
+              path="/edit-questionSet/:questionSetId"
               element={
                 <PrivateRoute>
-                  <QuestionList></QuestionList>
+                  <QuestionListPage></QuestionListPage>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/edit-question/:questionId"
+              element={
+                <PrivateRoute>
+                  <EditQuestionPage></EditQuestionPage>
                 </PrivateRoute>
               }
             />

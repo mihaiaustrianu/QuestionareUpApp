@@ -79,7 +79,7 @@ const UserQuestionSets = () => {
 
   const handleQuestionSetClick = (questionSet: QuestionSet) => {
     setSelectedQuestionSet(questionSet)
-    navigate(`/editQuestionSet/${questionSet._id}`)
+    navigate(`/edit-questionSet/${questionSet._id}`)
     dispatch(setQuestionSetId(questionSet._id))
     dispatch(setQuestionSetTitle(questionSet.title))
   }
