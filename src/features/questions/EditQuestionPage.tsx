@@ -11,10 +11,11 @@ const EditQuestionPage: React.FC = () => {
   )
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+  const questionSetId = useAppSelector((state) => state.question.questionSetId)
 
   const handleSave = (updatedQuestion) => {
     dispatch(updateQuestion(updatedQuestion))
-    navigate("/questionnaireUp")
+    navigate(`/edit-questionSet/${questionSetId}`)
   }
 
   if (!question) {

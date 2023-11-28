@@ -52,7 +52,9 @@ const QuestionList: React.FC = () => {
     setSelectedQuestion(null)
   }
 
-  const handleAddQuestion = () => {}
+  const handleAddQuestion = () => {
+    navigate("/create-question")
+  }
 
   const handleEditQuestion = (question: Question) => {
     navigate(`/edit-question/${question._id}`)

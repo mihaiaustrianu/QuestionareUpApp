@@ -6,9 +6,9 @@ import LandingPage from "../features/landing/LandingPage"
 import { Grid } from "@mui/material"
 import QuestionsPage from "../features/question-set/QuestionSetsPage"
 import QuizPage from "../features/quizes/QuizPage"
-import EditQuestionCard from "../components/questions/EditQuestionCard"
 import QuestionListPage from "../features/questions/QuestionListPage"
 import EditQuestionPage from "../features/questions/EditQuestionPage"
+import CreateQuestionPage from "../features/questions/CreateQuestionPage"
 
 export default function RouteProvider() {
   return (
@@ -59,6 +59,14 @@ export default function RouteProvider() {
               element={
                 <PrivateRoute>
                   <EditQuestionPage></EditQuestionPage>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/create-question"
+              element={
+                <PrivateRoute>
+                  <CreateQuestionPage></CreateQuestionPage>
                 </PrivateRoute>
               }
             />

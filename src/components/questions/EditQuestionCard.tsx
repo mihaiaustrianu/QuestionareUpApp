@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
   FormControl,
   TextField,
@@ -10,7 +10,7 @@ import AnswerField from "./AnswerField"
 import { Question } from "../../features/questions/questionsSlice"
 
 interface EditQuestionCardProps {
-  question: Question
+  question?: Question // Make the question prop optional
   onSave: (updatedQuestion: Question) => void
 }
 
@@ -18,9 +18,20 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
   question,
   onSave,
 }) => {
-  const [editedQuestion, setEditedQuestion] = useState(question)
+  const [editedQuestion, setEditedQuestion] = useState<Question>({
+    title: "",
+    text: "",
+    answers: [],
+  })
   const [newAnswerText, setNewAnswerText] = useState("")
   const [newAnswerIsCorrect, setNewAnswerIsCorrect] = useState(false)
+
+  useEffect(() => {
+    // If a question is provided, initialize the state with its values
+    if (question) {
+      setEditedQuestion(question)
+    }
+  }, [question])
 
   const handleChange = (field: string, value: string) => {
     setEditedQuestion((prevQuestion) => ({
