@@ -15,7 +15,16 @@ export default function RouteProvider() {
         <Grid item height="7vh">
           <Navbar />
         </Grid>
-        <Grid item height="93vh" overflow="scroll">
+        <Grid
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            padding: "0 20px",
+            flexDirection: "column",
+          }}
+          item
+          height="93vh"
+        >
           <Routes>
             <Route path="/" element={<LandingPage />}></Route>
             <Route path="/login" element={<LoginPage />}></Route>

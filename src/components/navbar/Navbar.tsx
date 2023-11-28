@@ -30,7 +30,7 @@ const Navbar = () => {
                 to={isAuthenticated ? "/questionnaireUp" : "/"}
                 color="inherit"
               >
-                QuestionnaireUpApp
+                Quiz Admin
               </Typography>
               {isAuthenticated && (
                 <Typography

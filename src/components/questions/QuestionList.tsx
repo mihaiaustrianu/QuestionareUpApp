@@ -74,8 +74,10 @@ const QuestionList: React.FC = () => {
   }
 
   return (
-    <Box>
-      <Typography variant="h3">Questions in {questionSetTitle}</Typography>
+    <Box sx={{ width: "80%" }}>
+      <Typography marginLeft={"20px"} variant="h4">
+        Questions in {questionSetTitle}
+      </Typography>
 
       {questions.map((question) => (
         <QuestionCard

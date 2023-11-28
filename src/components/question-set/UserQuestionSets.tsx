@@ -85,8 +85,10 @@ const UserQuestionSets = () => {
   }
 
   return (
-    <Box>
-      <Typography variant="h5">User Question Sets</Typography>
+    <Box width={"80%"}>
+      <Typography marginLeft={"20px"} variant="h4">
+        User Question Sets
+      </Typography>
 
       {questionSets.map((questionSet) => (
         <QuestionSetCard
