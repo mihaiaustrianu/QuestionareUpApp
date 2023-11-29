@@ -2,15 +2,18 @@ import React, { useEffect, useState } from "react"
 import {
   FormControl,
   TextField,
-  FormControlLabel,
   Checkbox,
   Button,
+  ToggleButtonGroup,
+  ToggleButton,
+  FormGroup,
+  FormControlLabel,
+  TextareaAutosize,
 } from "@mui/material"
-import AnswerField from "./AnswerField"
 import { Question } from "../../features/questions/questionsSlice"
 
 interface EditQuestionCardProps {
-  question?: Question // Make the question prop optional
+  question?: Question
   onSave: (updatedQuestion: Question) => void
 }
 
@@ -23,11 +26,8 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
     text: "",
     answers: [],
   })
-  const [newAnswerText, setNewAnswerText] = useState("")
-  const [newAnswerIsCorrect, setNewAnswerIsCorrect] = useState(false)
 
   useEffect(() => {
-    // If a question is provided, initialize the state with its values
     if (question) {
       setEditedQuestion(question)
     }
@@ -40,51 +40,49 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
     }))
   }
 
-  const handleAnswerChange = (
-    index: number,
-    field: string,
-    value: string | boolean,
-  ) => {
-    const answers = [...editedQuestion.answers]
-    answers[index] = {
-      ...answers[index],
-      [field]: value,
-    }
-    setEditedQuestion((prevQuestion) => ({
-      ...prevQuestion,
-      answers: answers,
-    }))
-  }
-
-  const handleDeleteAnswer = (index: number) => {
-    const answers = [...editedQuestion.answers]
-    answers.splice(index, 1)
-    setEditedQuestion((prevQuestion) => ({
-      ...prevQuestion,
-      answers: answers,
-    }))
-  }
-
-  const handleAddAnswer = () => {
-    if (newAnswerText) {
-      const newAnswer = {
-        answerText: newAnswerText,
-        isCorrect: newAnswerIsCorrect,
-      }
-
-      setEditedQuestion((prevQuestion) => ({
-        ...prevQuestion,
-        answers: [...prevQuestion.answers, newAnswer],
-      }))
-
-      // Reset new answer fields
-      setNewAnswerText("")
-      setNewAnswerIsCorrect(false)
-    }
-  }
-
   const handleSave = () => {
     onSave(editedQuestion)
+  }
+
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
+
+  const handleAnswerChange = (
+    event: React.MouseEvent<HTMLElement>,
+    newAnswer: number | null,
+  ) => {
+    setSelectedAnswer(newAnswer)
+  }
+
+  const handleAnswerTextChange = (value: string) => {
+    if (selectedAnswer !== null) {
+      setEditedQuestion((prevQuestion) => {
+        const updatedAnswers = [...prevQuestion.answers]
+        updatedAnswers[selectedAnswer] = {
+          ...updatedAnswers[selectedAnswer],
+          answerText: value,
+        }
+        return {
+          ...prevQuestion,
+          answers: updatedAnswers,
+        }
+      })
+    }
+  }
+
+  const handleIsCorrectChange = () => {
+    if (selectedAnswer !== null) {
+      setEditedQuestion((prevQuestion) => {
+        const updatedAnswers = [...prevQuestion.answers]
+        updatedAnswers[selectedAnswer] = {
+          ...updatedAnswers[selectedAnswer],
+          isCorrect: !updatedAnswers[selectedAnswer].isCorrect,
+        }
+        return {
+          ...prevQuestion,
+          answers: updatedAnswers,
+        }
+      })
+    }
   }
 
   return (
@@ -97,6 +95,7 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
           fullWidth
         />
       </FormControl>
+
       <FormControl fullWidth margin="normal" required>
         <TextField
           label="Question text"
@@ -106,36 +105,42 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
           multiline
         />
       </FormControl>
-      <FormControl fullWidth margin="normal">
-        <TextField
-          label="New Answer Text"
-          value={newAnswerText}
-          onChange={(e) => setNewAnswerText(e.target.value)}
-          fullWidth
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={newAnswerIsCorrect}
-              onChange={(e) => setNewAnswerIsCorrect(e.target.checked)}
-            />
-          }
-          label="Is Correct?"
-        />
-        <Button variant="outlined" color="primary" onClick={handleAddAnswer}>
-          Add Answer
-        </Button>
-      </FormControl>
 
-      {/* Answer list */}
-      {editedQuestion.answers.map((answer, index) => (
-        <AnswerField
-          key={index}
-          answer={answer}
-          onChange={(field, value) => handleAnswerChange(index, field, value)}
-          onDelete={() => handleDeleteAnswer(index)}
-        />
-      ))}
+      <p>Answers</p>
+      <ToggleButtonGroup
+        value={selectedAnswer}
+        exclusive
+        onChange={handleAnswerChange}
+      >
+        {editedQuestion.answers.map((answer, index) => (
+          <ToggleButton key={index} value={index}>
+            <p>Q. {index}</p>
+          </ToggleButton>
+        ))}
+      </ToggleButtonGroup>
+
+      {selectedAnswer !== null && (
+        <FormGroup>
+          <TextareaAutosize
+            minRows={3}
+            maxRows={5}
+            placeholder="Answer Text"
+            value={editedQuestion.answers[selectedAnswer]?.answerText || ""}
+            onChange={(e) => handleAnswerTextChange(e.target.value)}
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={
+                  editedQuestion.answers[selectedAnswer]?.isCorrect || false
+                }
+                onChange={handleIsCorrectChange}
+              />
+            }
+            label="Is Correct?"
+          />
+        </FormGroup>
+      )}
 
       <Button variant="contained" color="primary" onClick={handleSave}>
         Save
