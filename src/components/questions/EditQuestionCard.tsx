@@ -11,9 +11,12 @@ import {
   Radio,
   TextareaAutosize,
   IconButton,
+  Paper,
 } from "@mui/material"
 import AddIcon from "@mui/icons-material/Add"
+import ClearIcon from "@mui/icons-material/Clear"
 import { Question } from "../../features/questions/questionsSlice"
+import { textareaStyles } from "../../styles/textareaStyle"
 
 interface EditQuestionCardProps {
   question?: Question
@@ -95,6 +98,19 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
     }))
   }
 
+  const handleDeleteAnswer = (indexToDelete: number) => {
+    setEditedQuestion((prevQuestion) => {
+      const updatedAnswers = [...prevQuestion.answers]
+      updatedAnswers.splice(indexToDelete, 1)
+      return {
+        ...prevQuestion,
+        answers: updatedAnswers,
+      }
+    })
+    // Clear the selected answer after deletion
+    setSelectedAnswer(null)
+  }
+
   return (
     <div>
       <FormControl fullWidth margin="normal" required>
@@ -136,33 +152,46 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
       </div>
 
       {selectedAnswer !== null && (
-        <FormGroup>
-          <TextareaAutosize
-            minRows={3}
-            maxRows={5}
-            placeholder="Answer Text"
-            value={editedQuestion.answers[selectedAnswer]?.answerText || ""}
-            onChange={(e) => handleAnswerTextChange(e.target.value)}
-          />
-          <FormControl component="fieldset">
-            <RadioGroup
-              row
-              value={
-                editedQuestion.answers[selectedAnswer]?.isCorrect
-                  ? "true"
-                  : "false"
-              }
-              onChange={(e) => handleIsCorrectChange(e.target.value)}
-            >
-              <FormControlLabel value="true" control={<Radio />} label="True" />
-              <FormControlLabel
-                value="false"
-                control={<Radio />}
-                label="False"
-              />
-            </RadioGroup>
-          </FormControl>
-        </FormGroup>
+        <Paper elevation={5} sx={{ position: "relative", padding: "20px" }}>
+          <IconButton
+            onClick={() => handleDeleteAnswer(selectedAnswer)}
+            style={{ position: "absolute", top: "8px", right: "8px" }}
+          >
+            <ClearIcon />
+          </IconButton>
+          <FormGroup>
+            <TextareaAutosize
+              style={textareaStyles}
+              minRows={3}
+              maxRows={5}
+              placeholder="Enter Answer Text"
+              value={editedQuestion.answers[selectedAnswer]?.answerText || ""}
+              onChange={(e) => handleAnswerTextChange(e.target.value)}
+            />
+            <FormControl component="fieldset">
+              <RadioGroup
+                row
+                value={
+                  editedQuestion.answers[selectedAnswer]?.isCorrect
+                    ? "true"
+                    : "false"
+                }
+                onChange={(e) => handleIsCorrectChange(e.target.value)}
+              >
+                <FormControlLabel
+                  value="true"
+                  control={<Radio />}
+                  label="True"
+                />
+                <FormControlLabel
+                  value="false"
+                  control={<Radio />}
+                  label="False"
+                />
+              </RadioGroup>
+            </FormControl>
+          </FormGroup>
+        </Paper>
       )}
 
       <Button variant="contained" color="primary" onClick={handleSave}>
