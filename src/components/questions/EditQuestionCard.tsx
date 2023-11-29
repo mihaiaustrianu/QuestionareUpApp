@@ -5,18 +5,13 @@ import {
   Button,
   ToggleButtonGroup,
   ToggleButton,
-  FormGroup,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-  TextareaAutosize,
   IconButton,
-  Paper,
+  Typography,
 } from "@mui/material"
 import AddIcon from "@mui/icons-material/Add"
-import ClearIcon from "@mui/icons-material/Clear"
 import { Question } from "../../features/questions/questionsSlice"
-import { textareaStyles } from "../../styles/textareaStyle"
+import ConfirmationModal from "./ConfirmationModal"
+import AnswerCard from "./AnswerCard"
 
 interface EditQuestionCardProps {
   question?: Question
@@ -39,6 +34,9 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
     }
   }, [question])
 
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
+  const [isConfirmationModalOpen, setConfirmationModalOpen] = useState(false)
+
   const handleChange = (field: string, value: string) => {
     setEditedQuestion((prevQuestion) => ({
       ...prevQuestion,
@@ -49,8 +47,6 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
   const handleSave = () => {
     onSave(editedQuestion)
   }
-
-  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
 
   const handleAnswerChange = (
     event: React.MouseEvent<HTMLElement>,
@@ -98,17 +94,27 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
     }))
   }
 
-  const handleDeleteAnswer = (indexToDelete: number) => {
-    setEditedQuestion((prevQuestion) => {
-      const updatedAnswers = [...prevQuestion.answers]
-      updatedAnswers.splice(indexToDelete, 1)
-      return {
-        ...prevQuestion,
-        answers: updatedAnswers,
-      }
-    })
-    // Clear the selected answer after deletion
-    setSelectedAnswer(null)
+  const handleDeleteAnswer = () => {
+    setConfirmationModalOpen(true)
+  }
+
+  const handleConfirmDelete = () => {
+    if (selectedAnswer !== null) {
+      setEditedQuestion((prevQuestion) => {
+        const updatedAnswers = [...prevQuestion.answers]
+        updatedAnswers.splice(selectedAnswer, 1)
+        return {
+          ...prevQuestion,
+          answers: updatedAnswers,
+        }
+      })
+      setSelectedAnswer(null)
+    }
+    setConfirmationModalOpen(false)
+  }
+
+  const handleCancelDelete = () => {
+    setConfirmationModalOpen(false)
   }
 
   return (
@@ -132,7 +138,7 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
         />
       </FormControl>
 
-      <p>Answers</p>
+      <Typography variant="h6">Answers:</Typography>
       <div style={{ display: "flex", alignItems: "center" }}>
         <ToggleButtonGroup
           value={selectedAnswer}
@@ -141,7 +147,7 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
         >
           {editedQuestion.answers.map((answer, index) => (
             <ToggleButton key={index} value={index}>
-              <p>Q. {index}</p>
+              <p>Q.{index}</p>
             </ToggleButton>
           ))}
         </ToggleButtonGroup>
@@ -152,49 +158,25 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
       </div>
 
       {selectedAnswer !== null && (
-        <Paper elevation={5} sx={{ position: "relative", padding: "20px" }}>
-          <IconButton
-            onClick={() => handleDeleteAnswer(selectedAnswer)}
-            style={{ position: "absolute", top: "8px", right: "8px" }}
-          >
-            <ClearIcon />
-          </IconButton>
-          <FormGroup>
-            <TextareaAutosize
-              style={textareaStyles}
-              minRows={3}
-              maxRows={5}
-              placeholder="Enter Answer Text"
-              value={editedQuestion.answers[selectedAnswer]?.answerText || ""}
-              onChange={(e) => handleAnswerTextChange(e.target.value)}
-            />
-            <FormControl component="fieldset">
-              <RadioGroup
-                row
-                value={
-                  editedQuestion.answers[selectedAnswer]?.isCorrect
-                    ? "true"
-                    : "false"
-                }
-                onChange={(e) => handleIsCorrectChange(e.target.value)}
-              >
-                <FormControlLabel
-                  value="true"
-                  control={<Radio />}
-                  label="True"
-                />
-                <FormControlLabel
-                  value="false"
-                  control={<Radio />}
-                  label="False"
-                />
-              </RadioGroup>
-            </FormControl>
-          </FormGroup>
-        </Paper>
+        <AnswerCard
+          answer={editedQuestion.answers[selectedAnswer]}
+          onDelete={handleDeleteAnswer}
+          onAnswerTextChange={handleAnswerTextChange}
+          onIsCorrectChange={handleIsCorrectChange}
+        />
       )}
+      <ConfirmationModal
+        open={isConfirmationModalOpen}
+        onClose={handleCancelDelete}
+        onConfirm={handleConfirmDelete}
+      />
 
-      <Button variant="contained" color="primary" onClick={handleSave}>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleSave}
+        sx={{ marginTop: "10px" }}
+      >
         Save
       </Button>
     </div>
