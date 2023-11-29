@@ -2,14 +2,17 @@ import React, { useEffect, useState } from "react"
 import {
   FormControl,
   TextField,
-  Checkbox,
   Button,
   ToggleButtonGroup,
   ToggleButton,
   FormGroup,
+  RadioGroup,
   FormControlLabel,
+  Radio,
   TextareaAutosize,
+  IconButton,
 } from "@mui/material"
+import AddIcon from "@mui/icons-material/Add"
 import { Question } from "../../features/questions/questionsSlice"
 
 interface EditQuestionCardProps {
@@ -69,13 +72,13 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
     }
   }
 
-  const handleIsCorrectChange = () => {
+  const handleIsCorrectChange = (value: string) => {
     if (selectedAnswer !== null) {
       setEditedQuestion((prevQuestion) => {
         const updatedAnswers = [...prevQuestion.answers]
         updatedAnswers[selectedAnswer] = {
           ...updatedAnswers[selectedAnswer],
-          isCorrect: !updatedAnswers[selectedAnswer].isCorrect,
+          isCorrect: value === "true",
         }
         return {
           ...prevQuestion,
@@ -83,6 +86,13 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
         }
       })
     }
+  }
+
+  const handleAddAnswer = () => {
+    setEditedQuestion((prevQuestion) => ({
+      ...prevQuestion,
+      answers: [...prevQuestion.answers, { answerText: "", isCorrect: false }],
+    }))
   }
 
   return (
@@ -107,17 +117,23 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
       </FormControl>
 
       <p>Answers</p>
-      <ToggleButtonGroup
-        value={selectedAnswer}
-        exclusive
-        onChange={handleAnswerChange}
-      >
-        {editedQuestion.answers.map((answer, index) => (
-          <ToggleButton key={index} value={index}>
-            <p>Q. {index}</p>
-          </ToggleButton>
-        ))}
-      </ToggleButtonGroup>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <ToggleButtonGroup
+          value={selectedAnswer}
+          exclusive
+          onChange={handleAnswerChange}
+        >
+          {editedQuestion.answers.map((answer, index) => (
+            <ToggleButton key={index} value={index}>
+              <p>Q. {index}</p>
+            </ToggleButton>
+          ))}
+        </ToggleButtonGroup>
+
+        <IconButton onClick={handleAddAnswer} color="primary">
+          <AddIcon />
+        </IconButton>
+      </div>
 
       {selectedAnswer !== null && (
         <FormGroup>
@@ -128,17 +144,24 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
             value={editedQuestion.answers[selectedAnswer]?.answerText || ""}
             onChange={(e) => handleAnswerTextChange(e.target.value)}
           />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={
-                  editedQuestion.answers[selectedAnswer]?.isCorrect || false
-                }
-                onChange={handleIsCorrectChange}
+          <FormControl component="fieldset">
+            <RadioGroup
+              row
+              value={
+                editedQuestion.answers[selectedAnswer]?.isCorrect
+                  ? "true"
+                  : "false"
+              }
+              onChange={(e) => handleIsCorrectChange(e.target.value)}
+            >
+              <FormControlLabel value="true" control={<Radio />} label="True" />
+              <FormControlLabel
+                value="false"
+                control={<Radio />}
+                label="False"
               />
-            }
-            label="Is Correct?"
-          />
+            </RadioGroup>
+          </FormControl>
         </FormGroup>
       )}
 
