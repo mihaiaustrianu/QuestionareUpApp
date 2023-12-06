@@ -26,7 +26,6 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
   onSave,
 }) => {
   const [editedQuestion, setEditedQuestion] = useState<Question>({
-    title: "",
     text: "",
     answers: [],
   })
@@ -54,7 +53,7 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
 
   const handleSave = () => {
     // Validate if any of the required fields are empty
-    if (!editedQuestion.title || !editedQuestion.text) {
+    if (!editedQuestion.text) {
       setAlertMessage("Please fill out all required fields.")
       setAlertSeverity("error")
       setAlertOpen(true)
@@ -152,16 +151,6 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
 
   return (
     <Box>
-      <FormControl fullWidth margin="normal" required>
-        <TextField
-          label="Title"
-          required
-          value={editedQuestion.title}
-          onChange={(e) => handleChange("title", e.target.value)}
-          fullWidth
-        />
-      </FormControl>
-
       <FormControl fullWidth margin="normal" required>
         <TextField
           required

@@ -29,7 +29,6 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   return (
     <Card sx={{ marginBottom: 2 }}>
       <CardContent>
-        <Typography variant="h6">{question.title}</Typography>
         <Typography>{question.text}</Typography>
         <Typography variant="subtitle1">Answers:</Typography>
         <List dense>

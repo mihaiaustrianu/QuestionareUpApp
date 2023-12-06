@@ -6,7 +6,6 @@ const serverURL = import.meta.env.VITE_SERVER_URL
 export interface Question {
   _id?: string
   questionSetId?: string // Add questionSetId to the Question interface
-  title: string
   text: string
   answers: Answer[]
 }
