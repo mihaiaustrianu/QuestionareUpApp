@@ -61,7 +61,7 @@ const QuestionList: React.FC = () => {
   }
 
   return (
-    <Box sx={{ width: "80%" }}>
+    <Box>
       <Typography marginLeft={"20px"} variant="h4">
         Questions in {questionSetTitle}
       </Typography>

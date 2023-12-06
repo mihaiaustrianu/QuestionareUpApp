@@ -7,6 +7,9 @@ import {
   ToggleButton,
   IconButton,
   Typography,
+  Box,
+  Alert,
+  AlertTitle,
 } from "@mui/material"
 import AddIcon from "@mui/icons-material/Add"
 import { Question } from "../../features/questions/questionsSlice"
@@ -37,6 +40,11 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
   const [isConfirmationModalOpen, setConfirmationModalOpen] = useState(false)
 
+  // Alert states
+  const [alertMessage, setAlertMessage] = useState("")
+  const [alertSeverity, setAlertSeverity] = useState<string | any>("")
+  const [alertOpen, setAlertOpen] = useState(false)
+
   const handleChange = (field: string, value: string) => {
     setEditedQuestion((prevQuestion) => ({
       ...prevQuestion,
@@ -45,7 +53,31 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
   }
 
   const handleSave = () => {
+    // Validate if any of the required fields are empty
+    if (!editedQuestion.title || !editedQuestion.text) {
+      setAlertMessage("Please fill out all required fields.")
+      setAlertSeverity("error")
+      setAlertOpen(true)
+      return
+    }
+
+    // Optionally, you can also check if any of the answers are empty
+    const hasEmptyAnswers = editedQuestion.answers.some(
+      (answer) => !answer.answerText.trim(),
+    )
+    if (hasEmptyAnswers) {
+      setAlertMessage("Please fill out all answer fields.")
+      setAlertSeverity("error")
+      setAlertOpen(true)
+      return
+    }
+
+    // Proceed with saving if all fields are filled
     onSave(editedQuestion)
+  }
+
+  const handleAlertClose = () => {
+    setAlertOpen(false)
   }
 
   const handleAnswerChange = (
@@ -92,6 +124,7 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
       ...prevQuestion,
       answers: [...prevQuestion.answers, { answerText: "", isCorrect: false }],
     }))
+    setSelectedAnswer(editedQuestion.answers.length)
   }
 
   const handleDeleteAnswer = () => {
@@ -118,10 +151,11 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
   }
 
   return (
-    <div>
+    <Box>
       <FormControl fullWidth margin="normal" required>
         <TextField
           label="Title"
+          required
           value={editedQuestion.title}
           onChange={(e) => handleChange("title", e.target.value)}
           fullWidth
@@ -130,6 +164,7 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
 
       <FormControl fullWidth margin="normal" required>
         <TextField
+          required
           label="Question text"
           value={editedQuestion.text}
           onChange={(e) => handleChange("text", e.target.value)}
@@ -147,7 +182,7 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
         >
           {editedQuestion.answers.map((answer, index) => (
             <ToggleButton key={index} value={index}>
-              <p>Q.{index}</p>
+              <p>A.{index}</p>
             </ToggleButton>
           ))}
         </ToggleButtonGroup>
@@ -171,6 +206,15 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
         onConfirm={handleConfirmDelete}
       />
 
+      {alertOpen && (
+        <Alert severity={alertSeverity} onClose={handleAlertClose}>
+          <AlertTitle>
+            {alertSeverity === "error" ? "Error" : "Success"}
+          </AlertTitle>
+          {alertMessage}
+        </Alert>
+      )}
+
       <Button
         variant="contained"
         color="primary"
@@ -179,7 +223,7 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
       >
         Save
       </Button>
-    </div>
+    </Box>
   )
 }
 

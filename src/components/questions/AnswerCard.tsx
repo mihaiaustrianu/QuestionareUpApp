@@ -29,8 +29,9 @@ const AnswerCard: React.FC<AnswerCardProps> = ({
   return (
     <Paper elevation={5} sx={{ position: "relative", padding: "20px" }}>
       <IconButton
+        color="error"
         onClick={onDelete}
-        style={{ position: "absolute", bottom: "20px", right: "8px" }}
+        style={{ position: "absolute", top: "8px", right: "8px" }}
       >
         <DeleteIcon />
       </IconButton>

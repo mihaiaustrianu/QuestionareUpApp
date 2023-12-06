@@ -1,32 +1,31 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import PrivateRoute from "./PrivateRoute"
-import Navbar from "../components/navbar/Navbar"
 import LoginPage from "../features/auth/LoginPage"
 import LandingPage from "../features/landing/LandingPage"
-import { Grid } from "@mui/material"
+import { Box, Grid, Toolbar } from "@mui/material"
 import QuestionsPage from "../features/question-set/QuestionSetsPage"
 import QuizPage from "../features/quizes/QuizPage"
 import QuestionListPage from "../features/questions/QuestionListPage"
 import EditQuestionPage from "../features/questions/EditQuestionPage"
 import CreateQuestionPage from "../features/questions/CreateQuestionPage"
+import NewNavbar from "../components/navbar/NewNavabr"
+
+const drawerWidth: number = 240
 
 export default function RouteProvider() {
   return (
     <BrowserRouter>
-      <Grid container height="100vh" display="flex" flexDirection="column">
-        <Grid item height="7vh">
-          <Navbar />
-        </Grid>
-        <Grid
+      <Box sx={{ display: "flex" }}>
+        <NewNavbar drawerWidth={drawerWidth} />
+        <Box
+          component="main"
           sx={{
-            display: "flex",
-            alignItems: "center",
-            padding: "0 20px",
-            flexDirection: "column",
+            flexGrow: 1,
+            p: 3,
+            width: { sm: `calc(100% - ${drawerWidth}px)` },
           }}
-          item
-          height="93vh"
         >
+          <Toolbar></Toolbar>
           <Routes>
             <Route path="/" element={<LandingPage />}></Route>
             <Route path="/login" element={<LoginPage />}></Route>
@@ -71,8 +70,8 @@ export default function RouteProvider() {
               }
             />
           </Routes>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </BrowserRouter>
   )
 }

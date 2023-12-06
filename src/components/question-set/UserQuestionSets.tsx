@@ -85,7 +85,7 @@ const UserQuestionSets = () => {
   }
 
   return (
-    <Box width={"80%"}>
+    <Box>
       <Typography marginLeft={"20px"} variant="h4">
         User Question Sets
       </Typography>
