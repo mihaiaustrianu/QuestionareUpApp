@@ -15,7 +15,7 @@ const drawerWidth: number = 240
 export default function RouteProvider() {
   return (
     <BrowserRouter>
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex", height: "100vh" }}>
         <NewNavbar drawerWidth={drawerWidth} />
         <Box
           component="main"

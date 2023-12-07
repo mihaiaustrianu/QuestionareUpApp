@@ -83,7 +83,7 @@ const QuizMenu = () => {
             </Select>
           </FormControl>
 
-          <FormControl fullWidth style={{ marginTop: 16 }}>
+          {/* <FormControl fullWidth style={{ marginTop: 16 }}>
             <InputLabel>Type of questions (open/closed)</InputLabel>
             <Select
               required
@@ -96,7 +96,7 @@ const QuizMenu = () => {
                 </MenuItem>
               ))}
             </Select>
-          </FormControl>
+          </FormControl> */}
 
           <FormControl fullWidth style={{ marginTop: 16 }}>
             <InputLabel>

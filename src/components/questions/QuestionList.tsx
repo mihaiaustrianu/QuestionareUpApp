@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react"
-import { Box, Typography, Button } from "@mui/material"
-import { Add } from "@mui/icons-material"
+import {
+  Box,
+  Typography,
+  Button,
+  Pagination,
+  Grid,
+  IconButton,
+  Tooltip,
+} from "@mui/material"
+import { Add, ArrowBack } from "@mui/icons-material"
 import {
   Question,
   deleteQuestion,
@@ -10,6 +18,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import QuestionCard from "./QuestionCard"
 import ConfirmationModal from "./ConfirmationModal"
 import { useNavigate } from "react-router-dom"
+import ArrowBackIcon from "@mui/icons-material/ArrowBack"
 
 const QuestionList: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -27,6 +36,15 @@ const QuestionList: React.FC = () => {
 
   const questions: Question[] = useAppSelector(
     (state) => state.question.questions,
+  )
+
+  const itemsPerPage = 5
+  const [currentPage, setCurrentPage] = useState(1)
+  const totalPages = Math.ceil(questions.length / itemsPerPage)
+
+  const paginatedQuestions = questions.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
   )
 
   const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(
@@ -60,13 +78,40 @@ const QuestionList: React.FC = () => {
     navigate(`/edit-question/${question._id}`)
   }
 
+  const handleNavigateBack = () => {
+    navigate(-1)
+  }
+
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number,
+  ) => {
+    setCurrentPage(value)
+  }
+
   return (
     <Box>
       <Typography marginLeft={"20px"} variant="h4">
         Questions in {questionSetTitle}
       </Typography>
+      <Grid container justifyContent={"space-between"}>
+        <Grid item>
+          <Tooltip title="Back">
+            <IconButton color="primary" onClick={handleNavigateBack}>
+              <ArrowBack />
+            </IconButton>
+          </Tooltip>
+        </Grid>
 
-      {questions.map((question) => (
+        <Grid item>
+          <Tooltip title="Add a new question">
+            <IconButton color="primary" onClick={handleAddQuestion}>
+              <Add />
+            </IconButton>
+          </Tooltip>
+        </Grid>
+      </Grid>
+      {paginatedQuestions.map((question) => (
         <div key={question._id}>
           <QuestionCard
             question={question}
@@ -75,14 +120,14 @@ const QuestionList: React.FC = () => {
           />
         </div>
       ))}
-      <Button
-        variant="contained"
+
+      <Pagination
+        count={totalPages}
+        page={currentPage}
+        onChange={handlePageChange}
         color="primary"
-        startIcon={<Add />}
-        onClick={handleAddQuestion}
-      >
-        Add New Question
-      </Button>
+        style={{ marginTop: "10px" }}
+      />
 
       <ConfirmationModal
         open={isDeleteModalOpen}
