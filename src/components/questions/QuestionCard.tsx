@@ -29,9 +29,18 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   return (
     <Card sx={{ marginBottom: 2 }}>
       <CardContent>
-        <Typography variant="h6">{question.title}</Typography>
-        <Typography>{question.text}</Typography>
-        <Typography variant="subtitle1">Answers:</Typography>
+        <Typography
+          sx={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            display: "-webkit-box",
+            WebkitLineClamp: "1",
+            WebkitBoxOrient: "vertical",
+          }}
+        >
+          {question.text}
+        </Typography>
+        {/* <Typography variant="subtitle1">Answers:</Typography>
         <List dense>
           {question.answers.map((answer, index) => (
             <ListItem key={index}>
@@ -57,7 +66,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
               )}
             </ListItem>
           ))}
-        </List>
+        </List> */}
       </CardContent>
       <CardActions>
         <IconButton aria-label="Edit" onClick={() => onEdit(question)}>

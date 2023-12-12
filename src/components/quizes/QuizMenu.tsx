@@ -16,16 +16,21 @@ import {
   QuestionSet,
   fetchQuestionSets,
 } from "../../features/question-set/questionSetSlice"
+import { createQuiz } from "../../features/quizes/quizSlice"
+import { useNavigate } from "react-router-dom"
 
 const QuizMenu = () => {
   const [numberOfQuestions, setNumberOfQuestions] = useState("")
-  const [questionType, setQuestionType] = useState("")
+  // const [questionType, setQuestionType] = useState(""); // Uncomment if needed
   const [timeToSolve, setTimeToSolve] = useState([])
   const [selectedItems, setSelectedItems] = useState([])
   const [isStartButtonVisible, setStartButtonVisible] = useState(false)
 
   const dispatch = useAppDispatch()
 
+  const navigate = useNavigate()
+
+  const userId = useAppSelector((state) => state.auth.userInfo.id)
   const questionStatus = useAppSelector((state) => state.questionSet.status)
 
   useEffect(() => {
@@ -36,7 +41,7 @@ const QuizMenu = () => {
     (state) => state.questionSet.questionSets,
   )
 
-  const questionTypes = ["Open", "Closed"]
+  // const questionTypes = ["Open", "Closed"]; // Uncomment if needed
 
   const handleCheckboxChange = (item) => {
     const updatedItems = [...selectedItems]
@@ -54,14 +59,21 @@ const QuizMenu = () => {
   const handleStartQuiz = (e) => {
     e.preventDefault() // Prevents the default form submission
 
-    // Handle starting the quiz with selected options
-    console.log(
-      "Starting quiz with:",
-      numberOfQuestions,
-      questionType,
-      timeToSolve,
-      selectedItems,
+    dispatch(
+      createQuiz({
+        questionSetIds: selectedItems.map((item) => item._id),
+        numberOfQuestions: Number(numberOfQuestions),
+        userId: userId,
+      }),
     )
+
+    // Reset form values after dispatching the action
+    setNumberOfQuestions("")
+    // setQuestionType(""); // Uncomment if needed
+    setTimeToSolve([])
+    setSelectedItems([])
+    setStartButtonVisible(false)
+    navigate("/quizPage")
   }
 
   return (
@@ -83,6 +95,7 @@ const QuizMenu = () => {
             </Select>
           </FormControl>
 
+          {/* 
           <FormControl fullWidth style={{ marginTop: 16 }}>
             <InputLabel>Type of questions (open/closed)</InputLabel>
             <Select
@@ -97,6 +110,7 @@ const QuizMenu = () => {
               ))}
             </Select>
           </FormControl>
+          */}
 
           <FormControl fullWidth style={{ marginTop: 16 }}>
             <InputLabel>
@@ -114,7 +128,7 @@ const QuizMenu = () => {
           </FormControl>
 
           <FormControl fullWidth style={{ marginTop: 16 }}>
-            <Typography>Chose your question sets</Typography>
+            <Typography>Choose your question sets</Typography>
             <FormGroup>
               {questionSets.map((item) => (
                 <FormControlLabel

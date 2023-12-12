@@ -79,14 +79,16 @@ const UserQuestionSets = () => {
 
   const handleQuestionSetClick = (questionSet: QuestionSet) => {
     setSelectedQuestionSet(questionSet)
-    navigate(`/editQuestionSet/${questionSet._id}`)
+    navigate(`/edit-questionSet/${questionSet._id}`)
     dispatch(setQuestionSetId(questionSet._id))
     dispatch(setQuestionSetTitle(questionSet.title))
   }
 
   return (
     <Box>
-      <Typography variant="h5">User Question Sets</Typography>
+      <Typography marginLeft={"20px"} variant="h4">
+        User Question Sets
+      </Typography>
 
       {questionSets.map((questionSet) => (
         <QuestionSetCard

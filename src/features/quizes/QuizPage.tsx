@@ -1,22 +1,10 @@
-import QuizMenu from "../../components/quizes/QuizMenu"
+import { useAppSelector } from "../../app/hooks"
+
+import Quiz from "../../components/quizes/Quiz"
 
 const QuizPage = () => {
-  return (
-    <div style={styles.pageContainer}>
-      <QuizMenu />
-    </div>
-  )
-}
-
-const styles = {
-  pageContainer: {
-    display: "flex",
-    marginTop: "20px",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "0 20px", // Adjust the value as needed for left and right margins
-  },
+  const questions = useAppSelector((state) => state.quiz.questions)
+  return <Quiz questions={questions} />
 }
 
 export default QuizPage

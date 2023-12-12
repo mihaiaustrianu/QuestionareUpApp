@@ -1,25 +1,34 @@
 import React, { useEffect, useState } from "react"
-import { Box, Typography, Button } from "@mui/material"
-import { Add } from "@mui/icons-material"
+import {
+  Box,
+  Typography,
+  Button,
+  Pagination,
+  Grid,
+  IconButton,
+  Tooltip,
+} from "@mui/material"
+import { Add, ArrowBack } from "@mui/icons-material"
 import {
   Question,
-  createQuestion,
   deleteQuestion,
   fetchQuestions,
-  updateQuestion,
 } from "../../features/questions/questionsSlice"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import QuestionCard from "./QuestionCard"
 import ConfirmationModal from "./ConfirmationModal"
-import QuestionModal from "./QuestionModal"
+import { useNavigate } from "react-router-dom"
+import ArrowBackIcon from "@mui/icons-material/ArrowBack"
 
 const QuestionList: React.FC = () => {
   const dispatch = useAppDispatch()
 
-  const questionSetId = useAppSelector((state) => state.question.questionSetId) // Access questionSetId from the store
+  const questionSetId = useAppSelector((state) => state.question.questionSetId)
   const questionSetTitle = useAppSelector(
     (state) => state.question.questionSetTitle,
-  ) // Access questionSetId from the store
+  )
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     dispatch(fetchQuestions(questionSetId))
@@ -29,26 +38,19 @@ const QuestionList: React.FC = () => {
     (state) => state.question.questions,
   )
 
-  const [isNewQuestionModalOpen, setNewQuestionModalOpen] = useState(false)
+  const itemsPerPage = 5
+  const [currentPage, setCurrentPage] = useState(1)
+  const totalPages = Math.ceil(questions.length / itemsPerPage)
+
+  const paginatedQuestions = questions.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
+  )
+
   const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(
     null,
   )
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-
-  const handleAddQuestion = () => {
-    setNewQuestionModalOpen(true)
-  }
-
-  const handleCreateQuestion = (question: Question) => {
-    dispatch(createQuestion(question))
-    setNewQuestionModalOpen(false)
-  }
-
-  const handleEditQuestion = (question: Question) => {
-    setSelectedQuestion(question)
-    setIsEditModalOpen(true)
-  }
 
   const handleRemoveQuestion = (question: Question) => {
     setSelectedQuestion(question)
@@ -68,61 +70,70 @@ const QuestionList: React.FC = () => {
     setSelectedQuestion(null)
   }
 
-  const handleSaveEditedQuestion = (updatedQuestion: Question) => {
-    dispatch(updateQuestion(updatedQuestion))
-    setIsEditModalOpen(false)
+  const handleAddQuestion = () => {
+    navigate("/create-question")
+  }
+
+  const handleEditQuestion = (question: Question) => {
+    navigate(`/edit-question/${question._id}`)
+  }
+
+  const handleNavigateBack = () => {
+    navigate(-1)
+  }
+
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number,
+  ) => {
+    setCurrentPage(value)
   }
 
   return (
     <Box>
-      <Typography variant="h3">Questions in {questionSetTitle}</Typography>
+      <Typography marginLeft={"20px"} variant="h4">
+        Questions in {questionSetTitle}
+      </Typography>
+      <Grid container justifyContent={"space-between"}>
+        <Grid item>
+          <Tooltip title="Back">
+            <IconButton color="primary" onClick={handleNavigateBack}>
+              <ArrowBack />
+            </IconButton>
+          </Tooltip>
+        </Grid>
 
-      {questions.map((question) => (
-        <QuestionCard
-          key={question._id}
-          question={question}
-          onEdit={handleEditQuestion}
-          onDelete={handleRemoveQuestion}
-        />
+        <Grid item>
+          <Tooltip title="Add a new question">
+            <IconButton color="primary" onClick={handleAddQuestion}>
+              <Add />
+            </IconButton>
+          </Tooltip>
+        </Grid>
+      </Grid>
+      {paginatedQuestions.map((question) => (
+        <div key={question._id}>
+          <QuestionCard
+            question={question}
+            onDelete={handleRemoveQuestion}
+            onEdit={handleEditQuestion}
+          />
+        </div>
       ))}
-      <Button
-        variant="contained"
+
+      <Pagination
+        count={totalPages}
+        page={currentPage}
+        onChange={handlePageChange}
         color="primary"
-        startIcon={<Add />}
-        onClick={handleAddQuestion}
-      >
-        Add New Question
-      </Button>
+        style={{ marginTop: "10px" }}
+      />
 
       <ConfirmationModal
         open={isDeleteModalOpen}
         onClose={handleCloseModal}
         onConfirm={handleConfirmDelete}
       />
-      {selectedQuestion && (
-        <QuestionModal
-          open={isEditModalOpen}
-          question={selectedQuestion}
-          isNew={false} // For editing existing question
-          onClose={() => setIsEditModalOpen(false)}
-          onSave={handleSaveEditedQuestion}
-        />
-      )}
-
-      {isNewQuestionModalOpen && (
-        <QuestionModal
-          open={isNewQuestionModalOpen}
-          question={{
-            questionSetId: questionSetId,
-            title: "",
-            text: "",
-            answers: [],
-          }}
-          isNew={true} // For creating new question
-          onClose={() => setNewQuestionModalOpen(false)}
-          onSave={handleCreateQuestion}
-        />
-      )}
     </Box>
   )
 }
