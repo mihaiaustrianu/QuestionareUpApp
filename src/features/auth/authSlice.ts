@@ -5,7 +5,10 @@ import { removeToken, setToken } from "../../utils/HelperFunctions"
 const serverURL = import.meta.env.VITE_SERVER_URL
 
 const initialState = {
-  userInfo: {}, // for user object
+  userInfo: {
+    username: "",
+    id: "",
+  }, // for user object
   userToken: null, // for storing the JWT
   error: null,
   status: "idle",
@@ -35,7 +38,7 @@ const authSlice = createSlice({
       })
       .addCase(login.rejected, (state, action) => {
         state.status = "failed"
-        state.userInfo = {}
+        state.userInfo = { username: "", id: "" }
         state.userToken = null
       })
       .addCase(login.pending, (state, action) => {
@@ -44,7 +47,7 @@ const authSlice = createSlice({
       .addCase(signOut.fulfilled, (state, action) => {
         state.userToken = null
         state.status = "idle"
-        state.userInfo = {}
+        state.userInfo = { username: "", id: "" }
       })
   },
 })

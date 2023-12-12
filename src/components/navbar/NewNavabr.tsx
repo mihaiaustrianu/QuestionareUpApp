@@ -55,7 +55,7 @@ const NewNavbar: React.FC<NewNavbarProps> = ({ drawerWidth }) => {
             icon: <ArticleIcon />,
             link: "/questionnaireUp",
           },
-          { text: "Quiz", icon: <QuizIcon />, link: "/quizPage" },
+          { text: "Quiz", icon: <QuizIcon />, link: "/quizMenu" },
         ].map((item, index) => (
           <ListItem key={item.text} disablePadding>
             <ListItemButton component={Link} to={item.link}>

@@ -1,7 +1,10 @@
-import QuizMenu from "../../components/quizes/QuizMenu"
+import { useAppSelector } from "../../app/hooks"
+
+import Quiz from "../../components/quizes/Quiz"
 
 const QuizPage = () => {
-  return <QuizMenu />
+  const questions = useAppSelector((state) => state.quiz.questions)
+  return <Quiz questions={questions} />
 }
 
 export default QuizPage

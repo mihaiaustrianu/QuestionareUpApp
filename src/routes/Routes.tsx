@@ -2,13 +2,14 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import PrivateRoute from "./PrivateRoute"
 import LoginPage from "../features/auth/LoginPage"
 import LandingPage from "../features/landing/LandingPage"
-import { Box, Grid, Toolbar } from "@mui/material"
+import { Box, Toolbar } from "@mui/material"
 import QuestionsPage from "../features/question-set/QuestionSetsPage"
-import QuizPage from "../features/quizes/QuizPage"
+import QuizMenuPage from "../features/quizes/QuizMenuPage"
 import QuestionListPage from "../features/questions/QuestionListPage"
 import EditQuestionPage from "../features/questions/EditQuestionPage"
 import CreateQuestionPage from "../features/questions/CreateQuestionPage"
 import NewNavbar from "../components/navbar/NewNavabr"
+import QuizPage from "../features/quizes/QuizPage"
 
 const drawerWidth: number = 240
 
@@ -34,6 +35,14 @@ export default function RouteProvider() {
               element={
                 <PrivateRoute>
                   <QuestionsPage />
+                </PrivateRoute>
+              }
+            ></Route>
+            <Route
+              path="/quizMenu"
+              element={
+                <PrivateRoute>
+                  <QuizMenuPage />
                 </PrivateRoute>
               }
             ></Route>
