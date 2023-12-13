@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import {
   FormControl,
   InputLabel,
@@ -16,13 +16,12 @@ import {
   QuestionSet,
   fetchQuestionSets,
 } from "../../features/question-set/questionSetSlice"
-import { createQuiz } from "../../features/quizes/quizSlice"
+import { createQuiz, updateTimeToSolve } from "../../features/quizes/quizSlice"
 import { useNavigate } from "react-router-dom"
 
 const QuizMenu = () => {
   const [numberOfQuestions, setNumberOfQuestions] = useState("")
-  // const [questionType, setQuestionType] = useState(""); // Uncomment if needed
-  const [timeToSolve, setTimeToSolve] = useState([])
+  const [timeToSolve, setTimeToSolve] = useState(0)
   const [selectedItems, setSelectedItems] = useState([])
   const [isStartButtonVisible, setStartButtonVisible] = useState(false)
 
@@ -40,9 +39,6 @@ const QuizMenu = () => {
   const questionSets: QuestionSet[] = useAppSelector(
     (state) => state.questionSet.questionSets,
   )
-
-  // const questionTypes = ["Open", "Closed"]; // Uncomment if needed
-
   const handleCheckboxChange = (item) => {
     const updatedItems = [...selectedItems]
 
@@ -67,10 +63,11 @@ const QuizMenu = () => {
       }),
     )
 
+    dispatch(updateTimeToSolve(timeToSolve))
+
     // Reset form values after dispatching the action
     setNumberOfQuestions("")
-    // setQuestionType(""); // Uncomment if needed
-    setTimeToSolve([])
+    setTimeToSolve(0)
     setSelectedItems([])
     setStartButtonVisible(false)
     navigate("/quizPage")
@@ -92,26 +89,9 @@ const QuizMenu = () => {
             >
               <MenuItem value={5}>5</MenuItem>
               <MenuItem value={10}>10</MenuItem>
+              <MenuItem value={30}>10</MenuItem>
             </Select>
           </FormControl>
-
-          {/* 
-          <FormControl fullWidth style={{ marginTop: 16 }}>
-            <InputLabel>Type of questions (open/closed)</InputLabel>
-            <Select
-              required
-              value={questionType}
-              onChange={(e) => setQuestionType(e.target.value)}
-            >
-              {questionTypes.map((type) => (
-                <MenuItem key={type} value={type}>
-                  {type}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          */}
-
           <FormControl fullWidth style={{ marginTop: 16 }}>
             <InputLabel>
               In how much time do you want to solve the questions

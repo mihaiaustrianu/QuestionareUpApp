@@ -1,21 +1,27 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { client } from "../../api/client"
 import { Question } from "../questions/questionsSlice"
 
 const serverURL = import.meta.env.VITE_SERVER_URL
 
+export interface UserAnswers {
+  [questionId: string]: string[]
+}
+
 interface QuizState {
   quizId: string | null
   questions: Question[]
+  timeToSolve: number
   status: "idle" | "loading" | "succeeded" | "failed"
   error: string | null
   quizScore: number | null
-  userAnswers: Record<string, string[]>
+  userAnswers: { [questionId: string]: string[] }
 }
 
 const initialState: QuizState = {
   quizId: null,
   questions: [],
+  timeToSolve: 0,
   status: "idle",
   error: null,
   quizScore: null,
@@ -30,7 +36,7 @@ interface CreateQuizPayload {
 
 interface SubmitUserAnswersPayload {
   quizId: string
-  userAnswers: Record<string, string[]>
+  userAnswers: UserAnswers
 }
 
 export const createQuiz = createAsyncThunk(
@@ -55,7 +61,14 @@ export const submitUserAnswers = createAsyncThunk(
 const quizSlice = createSlice({
   name: "activeQuiz",
   initialState,
-  reducers: {},
+  reducers: {
+    setUserAnswers: (state, action: PayloadAction<UserAnswers>) => {
+      state.userAnswers = action.payload
+    },
+    updateTimeToSolve: (state, action: PayloadAction<number>) => {
+      state.timeToSolve = action.payload
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(createQuiz.pending, (state) => {
@@ -86,5 +99,7 @@ const quizSlice = createSlice({
       })
   },
 })
+
+export const { setUserAnswers, updateTimeToSolve } = quizSlice.actions
 
 export default quizSlice.reducer

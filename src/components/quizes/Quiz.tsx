@@ -4,21 +4,26 @@ import {
   Card,
   CardContent,
   Checkbox,
+  Divider,
   FormControl,
   FormControlLabel,
   Typography,
 } from "@mui/material"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import { submitUserAnswers } from "../../features/quizes/quizSlice"
+import {
+  submitUserAnswers,
+  setUserAnswers,
+  UserAnswers,
+} from "../../features/quizes/quizSlice"
+import Timer from "../Timer"
 
 const Quiz = ({ questions }) => {
   const dispatch = useAppDispatch()
   const quizId = useAppSelector((state) => state.quiz.quizId)
+  const timeToSolve = useAppSelector((state) => state.quiz.timeToSolve)
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-  const [selectedAnswers, setSelectedAnswers] = useState<
-    Record<string, string[]>
-  >({})
+  const [selectedAnswers, setSelectedAnswers] = useState<UserAnswers>({})
   const [isQuizSubmitted, setIsQuizSubmitted] = useState(false)
 
   const currentQuestion = questions[currentQuestionIndex]
@@ -58,6 +63,7 @@ const Quiz = ({ questions }) => {
           userAnswers: selectedAnswers,
         }),
       )
+      dispatch(setUserAnswers(selectedAnswers))
       setIsQuizSubmitted(true)
     } else {
       alert("Please answer all questions before submitting.")
@@ -113,6 +119,8 @@ const Quiz = ({ questions }) => {
             Submit Quiz
           </Button>
         </div>
+        <Divider />
+        <Timer initialSeconds={timeToSolve * 60}></Timer>
       </CardContent>
     </Card>
   )

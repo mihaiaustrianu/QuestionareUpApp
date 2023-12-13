@@ -36,8 +36,6 @@ const NewNavbar: React.FC<NewNavbarProps> = ({ drawerWidth }) => {
   const noNavbar = ["/", "/login"]
   const showNavbar = !noNavbar.includes(location.pathname)
 
-  const isAuthenticated = useAppSelector((state) => state.auth.userToken)
-
   const dispatch = useAppDispatch()
 
   const handleSingOut = () => {
