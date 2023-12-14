@@ -17,7 +17,7 @@ import LogoutIcon from "@mui/icons-material/Logout"
 import QuizIcon from "@mui/icons-material/Quiz"
 import Typography from "@mui/material/Typography"
 import { Link, useLocation } from "react-router-dom"
-import { useAppDispatch, useAppSelector } from "../../app/hooks"
+import { useAppDispatch } from "../../app/hooks"
 import { signOut } from "../../features/auth/authSlice"
 
 interface NewNavbarProps {

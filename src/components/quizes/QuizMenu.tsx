@@ -26,9 +26,6 @@ const QuizMenu = () => {
   const [isStartButtonVisible, setStartButtonVisible] = useState(false)
 
   const dispatch = useAppDispatch()
-
-  const navigate = useNavigate()
-
   const userId = useAppSelector((state) => state.auth.userInfo.id)
   const questionStatus = useAppSelector((state) => state.questionSet.status)
 
@@ -70,7 +67,6 @@ const QuizMenu = () => {
     setTimeToSolve(0)
     setSelectedItems([])
     setStartButtonVisible(false)
-    navigate("/quizPage")
   }
 
   return (

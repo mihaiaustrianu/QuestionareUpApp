@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
   Button,
   Card,
@@ -17,10 +17,15 @@ import {
 } from "../../features/quizes/quizSlice"
 import Timer from "../Timer"
 
-const Quiz = ({ questions }) => {
+const Quiz = ({ questions, initialSelectedAnswers }) => {
   const dispatch = useAppDispatch()
   const quizId = useAppSelector((state) => state.quiz.quizId)
   const timeToSolve = useAppSelector((state) => state.quiz.timeToSolve)
+  const endTime = useAppSelector((state) => state.quiz.endTime)
+
+  useEffect(() => {
+    setSelectedAnswers(initialSelectedAnswers || {})
+  }, [initialSelectedAnswers])
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [selectedAnswers, setSelectedAnswers] = useState<UserAnswers>({})
@@ -29,24 +34,42 @@ const Quiz = ({ questions }) => {
   const currentQuestion = questions[currentQuestionIndex]
 
   const handleAnswerChange = (answerId: string) => {
-    setSelectedAnswers((prevSelectedAnswers) => ({
-      ...prevSelectedAnswers,
-      [currentQuestion._id]: [
-        ...(prevSelectedAnswers[currentQuestion._id] || []),
-        answerId,
-      ],
-    }))
+    setSelectedAnswers((prevSelectedAnswers) => {
+      const currentQuestionId = currentQuestion?._id
+      const selectedAnswersForQuestion =
+        prevSelectedAnswers[currentQuestionId] || []
+
+      // Check if the answerId is already selected
+      if (selectedAnswersForQuestion.includes(answerId)) {
+        // If it's selected, remove it
+        const updatedAnswers = selectedAnswersForQuestion.filter(
+          (id) => id !== answerId,
+        )
+        return {
+          ...prevSelectedAnswers,
+          [currentQuestionId]: updatedAnswers,
+        }
+      } else {
+        // If it's not selected, add it
+        return {
+          ...prevSelectedAnswers,
+          [currentQuestionId]: [...selectedAnswersForQuestion, answerId],
+        }
+      }
+    })
   }
 
   const handleNextQuestion = () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1)
     }
+    dispatch(setUserAnswers(selectedAnswers))
   }
 
   const handlePreviousQuestion = () => {
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(currentQuestionIndex - 1)
+      dispatch(setUserAnswers(selectedAnswers))
     }
   }
 
@@ -120,7 +143,7 @@ const Quiz = ({ questions }) => {
           </Button>
         </div>
         <Divider />
-        <Timer initialSeconds={timeToSolve * 60}></Timer>
+        <Timer endTime={endTime} initialSeconds={timeToSolve * 60}></Timer>
       </CardContent>
     </Card>
   )

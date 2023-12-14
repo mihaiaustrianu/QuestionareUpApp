@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react"
 import Typography from "@mui/material/Typography"
 
-const Timer = ({ initialSeconds }) => {
+const Timer = ({ initialSeconds, endTime }) => {
   const [seconds, setSeconds] = useState(initialSeconds)
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setSeconds((prevSeconds) => (prevSeconds > 0 ? prevSeconds - 1 : 0))
+      const remainingTime = Math.max(0, endTime - Date.now()) / 1000
+      setSeconds(Math.floor(remainingTime))
     }, 1000)
 
-    // Clean up the interval on component unmount
-    return () => clearInterval(intervalId)
-  }, [])
+    return () => {
+      clearInterval(intervalId)
+    }
+  }, [endTime])
 
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60)

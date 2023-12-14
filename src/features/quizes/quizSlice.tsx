@@ -12,6 +12,7 @@ interface QuizState {
   quizId: string | null
   questions: Question[]
   timeToSolve: number
+  endTime: number | null // New field for endTime
   status: "idle" | "loading" | "succeeded" | "failed"
   error: string | null
   quizScore: number | null
@@ -22,6 +23,7 @@ const initialState: QuizState = {
   quizId: null,
   questions: [],
   timeToSolve: 0,
+  endTime: null,
   status: "idle",
   error: null,
   quizScore: null,
@@ -80,6 +82,10 @@ const quizSlice = createSlice({
         state.error = null
         state.quizId = action.payload.quizId
         state.questions = action.payload.questions
+
+        const currentTime = Date.now()
+        state.endTime = currentTime + state.timeToSolve * 1000 * 60
+        state.userAnswers = {}
       })
       .addCase(createQuiz.rejected, (state, action) => {
         state.status = "failed"
@@ -91,6 +97,7 @@ const quizSlice = createSlice({
       })
       .addCase(submitUserAnswers.fulfilled, (state) => {
         state.status = "succeeded"
+        state.endTime = null
         state.error = null
       })
       .addCase(submitUserAnswers.rejected, (state, action) => {
