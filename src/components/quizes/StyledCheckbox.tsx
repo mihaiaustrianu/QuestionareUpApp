@@ -2,7 +2,7 @@ import React from "react"
 import { Box, Chip, Typography } from "@mui/material"
 import { useTheme } from "@mui/system"
 
-interface StyledCheckbox {
+interface StyledCheckboxInterface {
   id?: string
   isChecked: boolean
   onChange: (id) => void
@@ -16,7 +16,7 @@ const StyledCheckbox = ({
   onChange,
   index,
   text,
-}: StyledCheckbox) => {
+}: StyledCheckboxInterface) => {
   const theme = useTheme()
 
   const handleOptionClick = () => {
@@ -59,7 +59,7 @@ const StyledCheckbox = ({
           border: "1.5px solid #ccc",
         }}
       />
-      <Typography variant="body1">{text}</Typography>
+      <Typography variant="button">{text}</Typography>
     </Box>
   )
 }

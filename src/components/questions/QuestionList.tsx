@@ -66,7 +66,7 @@ const QuestionList: React.FC = () => {
   }
 
   const handleEditQuestion = (question: Question) => {
-    navigate(`/edit-question/${question._id}`)
+    navigate(`/edit-questionSet/${questionSetId}/${question._id}`)
   }
 
   const handleNavigateBack = () => {

@@ -54,7 +54,7 @@ export default function RouteProvider() {
               }
             />
             <Route
-              path="/edit-question/:questionId"
+              path="/edit-questionSet/:questionSetId/:questionId"
               element={
                 <PrivateRoute>
                   <EditQuestionPage></EditQuestionPage>

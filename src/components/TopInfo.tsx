@@ -34,7 +34,9 @@ export default function TopInfo({ leftItem, title, rightItem }: TopInfoProps) {
         )}
       </Grid>
       <Grid item xs={1} textAlign={"center"}>
-        <Typography variant="body1">{title}</Typography>
+        <Typography variant="h5" color={"primary"}>
+          {title}
+        </Typography>
       </Grid>
       <Grid item xs={1} textAlign={"right"}>
         {rightItem.type === "timer" && <Timer></Timer>}

@@ -6,8 +6,8 @@ import {
   Select,
   Button,
   FormGroup,
-  Paper,
   Typography,
+  Box,
 } from "@mui/material"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import {
@@ -73,10 +73,13 @@ const QuizMenu = () => {
         leftItem={{ type: "none" }}
         rightItem={{ type: "none" }}
       ></TopInfo>
-      <Paper style={styles.paper}>
+      <Box>
         <form onSubmit={handleStartQuiz}>
+          <Typography variant="h6" color={"primary"} mb={2}>
+            How many questions do you want to solve?
+          </Typography>
           <FormControl fullWidth>
-            <InputLabel>How many questions do you want to solve?</InputLabel>
+            <InputLabel>No of questions</InputLabel>
             <Select
               required
               value={numberOfQuestions}
@@ -87,14 +90,15 @@ const QuizMenu = () => {
               <MenuItem value={30}>30</MenuItem>
             </Select>
           </FormControl>
+          <Typography variant="h6" color={"primary"} mt={2}>
+            In how much time do you want to solve the questions?
+          </Typography>
           <FormControl fullWidth style={{ marginTop: 16 }}>
-            <InputLabel>
-              In how much time do you want to solve the questions
-            </InputLabel>
+            <InputLabel>Minutes</InputLabel>
             <Select
               required
               value={timeToSolve}
-              onChange={(e) => setTimeToSolve(e.target.value)}
+              onChange={(e) => setTimeToSolve(+e.target.value)}
             >
               <MenuItem value={10}>10 minutes</MenuItem>
               <MenuItem value={15}>15 minutes</MenuItem>
@@ -127,17 +131,9 @@ const QuizMenu = () => {
             </Button>
           )}
         </form>
-      </Paper>
+      </Box>
     </>
   )
-}
-
-const styles = {
-  paper: {
-    width: "80%",
-    padding: "20px",
-    margin: "0 auto", // Center the paper horizontally
-  },
 }
 
 export default QuizMenu
