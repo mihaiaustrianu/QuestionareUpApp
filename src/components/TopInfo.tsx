@@ -1,4 +1,3 @@
-import React from "react"
 import ArrowBack from "@mui/icons-material/ArrowBack"
 import { Grid, IconButton, Tooltip, Typography } from "@mui/material"
 import Timer from "./Timer"
@@ -13,7 +12,7 @@ interface TopInfoProps {
   rightItem: {
     type: "timer" | "addItem" | "none"
     rightHandler?: () => void
-    tooltip: string
+    tooltip?: string
   }
 }
 

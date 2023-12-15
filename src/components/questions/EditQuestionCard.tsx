@@ -5,13 +5,11 @@ import {
   Button,
   ToggleButtonGroup,
   ToggleButton,
-  IconButton,
   Typography,
   Box,
   Alert,
   AlertTitle,
 } from "@mui/material"
-import AddIcon from "@mui/icons-material/Add"
 import { Question } from "../../features/questions/questionsSlice"
 import ConfirmationModal from "../ConfirmationModal"
 import AnswerCard from "./AnswerCard"

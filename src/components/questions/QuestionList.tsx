@@ -1,14 +1,5 @@
 import React, { useEffect, useState } from "react"
-import {
-  Box,
-  Typography,
-  Button,
-  Pagination,
-  Grid,
-  IconButton,
-  Tooltip,
-} from "@mui/material"
-import { Add, ArrowBack } from "@mui/icons-material"
+import { Box, Pagination } from "@mui/material"
 import {
   Question,
   deleteQuestion,
@@ -18,7 +9,6 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import QuestionCard from "./QuestionCard"
 import ConfirmationModal from "../ConfirmationModal"
 import { useNavigate } from "react-router-dom"
-import ArrowBackIcon from "@mui/icons-material/ArrowBack"
 import TopInfo from "../TopInfo"
 
 const QuestionList: React.FC = () => {

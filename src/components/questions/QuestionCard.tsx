@@ -5,14 +5,8 @@ import {
   CardActions,
   Typography,
   IconButton,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Avatar,
-  Box,
 } from "@mui/material"
-import { Edit, Delete, Check, Clear } from "@mui/icons-material"
+import { Edit, Delete } from "@mui/icons-material"
 import { Question } from "../../features/questions/questionsSlice"
 
 interface QuestionCardProps {
