@@ -16,13 +16,13 @@ import {
 } from "../../features/question-set/questionSetSlice"
 import { createQuiz, updateTimeToSolve } from "../../features/quizes/quizSlice"
 import StyledCheckbox from "./StyledCheckbox"
-import TopInfo from "../TopInfo"
+import TopInfo from "../common/TopInfo"
 
 const QuizMenu = () => {
   const [numberOfQuestions, setNumberOfQuestions] = useState("")
   const [timeToSolve, setTimeToSolve] = useState(0)
   const [selectedItems, setSelectedItems] = useState([])
-  const [isStartButtonVisible, setStartButtonVisible] = useState(false)
+  const [isStartButtonEnabled, setStartButtonEnabled] = useState(false)
 
   const dispatch = useAppDispatch()
   const userId = useAppSelector((state) => state.auth.userInfo.id)
@@ -45,7 +45,7 @@ const QuizMenu = () => {
     }
 
     setSelectedItems(updatedItems)
-    setStartButtonVisible(updatedItems.length > 0)
+    setStartButtonEnabled(updatedItems.length > 0)
   }
 
   const handleStartQuiz = (e) => {
@@ -63,7 +63,7 @@ const QuizMenu = () => {
     setNumberOfQuestions("")
     setTimeToSolve(0)
     setSelectedItems([])
-    setStartButtonVisible(false)
+    setStartButtonEnabled(false)
   }
 
   return (
@@ -120,16 +120,15 @@ const QuizMenu = () => {
             </FormGroup>
           </FormControl>
 
-          {isStartButtonVisible && (
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              style={{ marginTop: 16 }}
-            >
-              Start Quiz
-            </Button>
-          )}
+          <Button
+            disabled={!isStartButtonEnabled}
+            type="submit"
+            variant="contained"
+            color="primary"
+            style={{ marginTop: 16 }}
+          >
+            Start Quiz
+          </Button>
         </form>
       </Box>
     </>

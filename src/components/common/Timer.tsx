@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import Typography from "@mui/material/Typography"
-import { useAppSelector } from "../app/hooks"
+import { useAppSelector } from "../../app/hooks"
 
 const Timer = () => {
   const timeToSolve = useAppSelector((state) => state.quiz.timeToSolve)

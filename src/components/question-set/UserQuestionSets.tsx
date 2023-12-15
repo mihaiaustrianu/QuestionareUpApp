@@ -9,7 +9,7 @@ import {
 } from "../../features/question-set/questionSetSlice"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import QuestionSetCard from "./QuestionSetCard"
-import ConfirmationModal from "../ConfirmationModal"
+import ConfirmationModal from "../common/ConfirmationModal"
 import QuestionSetModal from "./QuestionSetModal"
 
 import {
@@ -17,7 +17,7 @@ import {
   setQuestionSetTitle,
 } from "../../features/questions/questionsSlice"
 import { useNavigate } from "react-router-dom"
-import TopInfo from "../TopInfo"
+import TopInfo from "../common/TopInfo"
 
 const UserQuestionSets = () => {
   const dispatch = useAppDispatch()

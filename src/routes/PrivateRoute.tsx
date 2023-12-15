@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom"
 import { useAppSelector } from "../app/hooks"
-import { Spinner } from "../components/Spinner"
+import { Spinner } from "../components/common/Spinner"
 
 const PrivateRoute = ({ children }) => {
   const { userToken, status } = useAppSelector((state) => state.auth)

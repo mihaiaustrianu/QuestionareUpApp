@@ -34,7 +34,7 @@ const AnswerCard: React.FC<AnswerCardProps> = ({
         marginBottom: "16px",
       }}
     >
-      <Tooltip title={"Delete?"}>
+      <Tooltip title={"Delete?"} placement="left">
         <IconButton
           color="error"
           onClick={onDelete}
@@ -52,7 +52,7 @@ const AnswerCard: React.FC<AnswerCardProps> = ({
           value={answer.answerText}
           onChange={(e) => onAnswerTextChange(e.target.value)}
         ></TextField>
-        <Tooltip title={"Correct ?"}>
+        <Tooltip title={"Correct ?"} placement="left">
           <Checkbox
             color="success"
             checked={answer.isCorrect}

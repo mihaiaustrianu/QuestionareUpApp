@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { login } from "./authSlice"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import { Spinner } from "../../components/Spinner"
+import { Spinner } from "../../components/common/Spinner"
 import { useNavigate } from "react-router-dom"
 import LoginIcon from "@mui/icons-material/Login"
 import {

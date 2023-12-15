@@ -7,9 +7,9 @@ import {
 } from "../../features/questions/questionsSlice"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import QuestionCard from "./QuestionCard"
-import ConfirmationModal from "../ConfirmationModal"
+import ConfirmationModal from "../common/ConfirmationModal"
 import { useNavigate } from "react-router-dom"
-import TopInfo from "../TopInfo"
+import TopInfo from "../common/TopInfo"
 
 const QuestionList: React.FC = () => {
   const dispatch = useAppDispatch()

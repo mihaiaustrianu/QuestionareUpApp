@@ -9,8 +9,8 @@ import {
   AlertTitle,
 } from "@mui/material"
 import AnswerCard from "./AnswerCard"
-import ConfirmationModal from "../ConfirmationModal"
-import TopInfo from "../TopInfo"
+import ConfirmationModal from "../common/ConfirmationModal"
+import TopInfo from "../common/TopInfo"
 import { useNavigate } from "react-router-dom"
 import { Question } from "../../features/questions/questionsSlice"
 
