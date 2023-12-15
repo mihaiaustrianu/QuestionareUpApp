@@ -9,7 +9,6 @@ import QuestionListPage from "../features/questions/QuestionListPage"
 import EditQuestionPage from "../features/questions/EditQuestionPage"
 import CreateQuestionPage from "../features/questions/CreateQuestionPage"
 import NewNavbar from "../components/navbar/NewNavabr"
-import QuizPage from "../features/quizes/QuizPage"
 
 const drawerWidth: number = 240
 
@@ -43,14 +42,6 @@ export default function RouteProvider() {
               element={
                 <PrivateRoute>
                   <QuizMenuPage />
-                </PrivateRoute>
-              }
-            ></Route>
-            <Route
-              path="/quizPage"
-              element={
-                <PrivateRoute>
-                  <QuizPage />
                 </PrivateRoute>
               }
             ></Route>

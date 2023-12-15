@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react"
 import Typography from "@mui/material/Typography"
+import { useAppSelector } from "../app/hooks"
 
-const Timer = ({ initialSeconds, endTime }) => {
+const Timer = () => {
+  const timeToSolve = useAppSelector((state) => state.quiz.timeToSolve)
+  const endTime = useAppSelector((state) => state.quiz.endTime)
+  const initialSeconds = timeToSolve * 60
   const [seconds, setSeconds] = useState(initialSeconds)
 
   useEffect(() => {
@@ -25,7 +29,11 @@ const Timer = ({ initialSeconds, endTime }) => {
     return `${formattedMinutes}:${formattedSeconds}`
   }
 
-  return <Typography variant="h4">Timer: {formatTime(seconds)}</Typography>
+  return (
+    <Typography variant="body1">
+      Time remaining {formatTime(seconds)}
+    </Typography>
+  )
 }
 
 export default Timer

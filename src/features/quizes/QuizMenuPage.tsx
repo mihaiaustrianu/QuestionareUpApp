@@ -1,6 +1,7 @@
 import QuizMenu from "../../components/quizes/QuizMenu"
 import Quiz from "../../components/quizes/Quiz"
 import { useAppSelector } from "../../app/hooks"
+import TopInfo from "../../components/TopInfo"
 
 const QuizMenuPage = () => {
   const questions = useAppSelector((state) => state.quiz.questions)
@@ -9,7 +10,14 @@ const QuizMenuPage = () => {
   const isQuizActive = questions && endTime > Date.now()
 
   return isQuizActive ? (
-    <Quiz questions={questions} initialSelectedAnswers={userAnswers} />
+    <>
+      <TopInfo
+        timer={true}
+        title="Quiz in progress"
+        arrowBack={false}
+      ></TopInfo>
+      <Quiz questions={questions} initialSelectedAnswers={userAnswers} />
+    </>
   ) : (
     <QuizMenu />
   )

@@ -97,7 +97,8 @@ const NewNavbar: React.FC<NewNavbarProps> = ({ drawerWidth }) => {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" noWrap component="div">
-              Responsive drawer
+              <QuizIcon></QuizIcon>
+              QUpp
             </Typography>
           </Toolbar>
         </AppBar>

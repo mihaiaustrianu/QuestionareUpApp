@@ -70,6 +70,14 @@ const quizSlice = createSlice({
     updateTimeToSolve: (state, action: PayloadAction<number>) => {
       state.timeToSolve = action.payload
     },
+    resetQuiz: (state) => {
+      state.quizId = null
+      state.questions = []
+      state.timeToSolve = 0
+      state.endTime = null
+      state.quizScore = null
+      state.userAnswers = {}
+    },
   },
   extraReducers(builder) {
     builder
@@ -107,6 +115,7 @@ const quizSlice = createSlice({
   },
 })
 
-export const { setUserAnswers, updateTimeToSolve } = quizSlice.actions
+export const { setUserAnswers, updateTimeToSolve, resetQuiz } =
+  quizSlice.actions
 
 export default quizSlice.reducer

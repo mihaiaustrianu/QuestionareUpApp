@@ -4,12 +4,10 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  Checkbox,
   Button,
   FormGroup,
-  FormControlLabel,
-  Typography,
   Paper,
+  Typography,
 } from "@mui/material"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import {
@@ -17,7 +15,8 @@ import {
   fetchQuestionSets,
 } from "../../features/question-set/questionSetSlice"
 import { createQuiz, updateTimeToSolve } from "../../features/quizes/quizSlice"
-import { useNavigate } from "react-router-dom"
+import StyledCheckbox from "./StyledCheckbox"
+import TopInfo from "../TopInfo"
 
 const QuizMenu = () => {
   const [numberOfQuestions, setNumberOfQuestions] = useState("")
@@ -51,7 +50,7 @@ const QuizMenu = () => {
 
   const handleStartQuiz = (e) => {
     e.preventDefault() // Prevents the default form submission
-
+    dispatch(updateTimeToSolve(timeToSolve))
     dispatch(
       createQuiz({
         questionSetIds: selectedItems.map((item) => item._id),
@@ -59,8 +58,6 @@ const QuizMenu = () => {
         userId: userId,
       }),
     )
-
-    dispatch(updateTimeToSolve(timeToSolve))
 
     // Reset form values after dispatching the action
     setNumberOfQuestions("")
@@ -71,9 +68,11 @@ const QuizMenu = () => {
 
   return (
     <>
-      <Typography variant="h3" component="h1">
-        Start a new quiz
-      </Typography>
+      <TopInfo
+        arrowBack={false}
+        title="Start a new Quiz"
+        timer={false}
+      ></TopInfo>
       <Paper style={styles.paper}>
         <form onSubmit={handleStartQuiz}>
           <FormControl fullWidth>
@@ -85,7 +84,7 @@ const QuizMenu = () => {
             >
               <MenuItem value={5}>5</MenuItem>
               <MenuItem value={10}>10</MenuItem>
-              <MenuItem value={30}>10</MenuItem>
+              <MenuItem value={30}>30</MenuItem>
             </Select>
           </FormControl>
           <FormControl fullWidth style={{ marginTop: 16 }}>
@@ -106,18 +105,13 @@ const QuizMenu = () => {
           <FormControl fullWidth style={{ marginTop: 16 }}>
             <Typography>Choose your question sets</Typography>
             <FormGroup>
-              {questionSets.map((item) => (
-                <FormControlLabel
-                  key={item._id}
-                  control={
-                    <Checkbox
-                      onChange={() => handleCheckboxChange(item)}
-                      value={item}
-                      checked={selectedItems.includes(item)}
-                    />
-                  }
-                  label={item.title}
-                />
+              {questionSets.map((item, index) => (
+                <StyledCheckbox
+                  text={item.title}
+                  onChange={() => handleCheckboxChange(item)}
+                  index={index}
+                  isChecked={selectedItems.includes(item)}
+                ></StyledCheckbox>
               ))}
             </FormGroup>
           </FormControl>
