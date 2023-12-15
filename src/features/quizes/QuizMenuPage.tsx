@@ -12,9 +12,9 @@ const QuizMenuPage = () => {
   return isQuizActive ? (
     <>
       <TopInfo
-        timer={true}
         title="Quiz in progress"
-        arrowBack={false}
+        leftItem={{ type: "none" }}
+        rightItem={{ type: "timer" }}
       ></TopInfo>
       <Quiz questions={questions} initialSelectedAnswers={userAnswers} />
     </>

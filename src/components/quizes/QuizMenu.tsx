@@ -69,9 +69,9 @@ const QuizMenu = () => {
   return (
     <>
       <TopInfo
-        arrowBack={false}
         title="Start a new Quiz"
-        timer={false}
+        leftItem={{ type: "none" }}
+        rightItem={{ type: "none" }}
       ></TopInfo>
       <Paper style={styles.paper}>
         <form onSubmit={handleStartQuiz}>

@@ -16,9 +16,10 @@ import {
 } from "../../features/questions/questionsSlice"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import QuestionCard from "./QuestionCard"
-import ConfirmationModal from "./ConfirmationModal"
+import ConfirmationModal from "../ConfirmationModal"
 import { useNavigate } from "react-router-dom"
 import ArrowBackIcon from "@mui/icons-material/ArrowBack"
+import TopInfo from "../TopInfo"
 
 const QuestionList: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -91,26 +92,15 @@ const QuestionList: React.FC = () => {
 
   return (
     <Box>
-      <Typography marginLeft={"20px"} variant="h4">
-        Questions in {questionSetTitle}
-      </Typography>
-      <Grid container justifyContent={"space-between"}>
-        <Grid item>
-          <Tooltip title="Back">
-            <IconButton color="primary" onClick={handleNavigateBack}>
-              <ArrowBack />
-            </IconButton>
-          </Tooltip>
-        </Grid>
-
-        <Grid item>
-          <Tooltip title="Add a new question">
-            <IconButton color="primary" onClick={handleAddQuestion}>
-              <Add />
-            </IconButton>
-          </Tooltip>
-        </Grid>
-      </Grid>
+      <TopInfo
+        leftItem={{ type: "arrowBack", leftHandler: handleNavigateBack }}
+        rightItem={{
+          type: "addItem",
+          rightHandler: handleAddQuestion,
+          tooltip: "question",
+        }}
+        title={`Questions in ${questionSetTitle}`}
+      ></TopInfo>
       {paginatedQuestions.map((question) => (
         <div key={question._id}>
           <QuestionCard

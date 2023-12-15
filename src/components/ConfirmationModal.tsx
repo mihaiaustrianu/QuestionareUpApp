@@ -26,11 +26,11 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
         <Typography>Are you sure you want to delete this item?</Typography>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="primary">
-          Cancel
+        <Button variant={"contained"} onClick={onConfirm} color="secondary">
+          <Typography variant="button">Delete</Typography>
         </Button>
-        <Button onClick={onConfirm} color="secondary">
-          Confirm
+        <Button onClick={onClose} color="primary">
+          <Typography variant="button">Cancel</Typography>
         </Button>
       </DialogActions>
     </Dialog>

@@ -13,8 +13,10 @@ import {
 } from "@mui/material"
 import AddIcon from "@mui/icons-material/Add"
 import { Question } from "../../features/questions/questionsSlice"
-import ConfirmationModal from "./ConfirmationModal"
+import ConfirmationModal from "../ConfirmationModal"
 import AnswerCard from "./AnswerCard"
+import TopInfo from "../TopInfo"
+import { useNavigate } from "react-router-dom"
 
 interface EditQuestionCardProps {
   question?: Question
@@ -38,6 +40,7 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
 
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
   const [isConfirmationModalOpen, setConfirmationModalOpen] = useState(false)
+  const navigate = useNavigate()
 
   // Alert states
   const [alertMessage, setAlertMessage] = useState("")
@@ -149,8 +152,21 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
     setConfirmationModalOpen(false)
   }
 
+  const handleNavigateBack = () => {
+    navigate(-1)
+  }
+
   return (
     <Box>
+      <TopInfo
+        leftItem={{ type: "arrowBack", leftHandler: handleNavigateBack }}
+        rightItem={{
+          type: "addItem",
+          rightHandler: handleAddAnswer,
+          tooltip: "answer",
+        }}
+        title={"Edit Question"}
+      ></TopInfo>
       <FormControl fullWidth margin="normal" required>
         <TextField
           required
@@ -175,10 +191,6 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
             </ToggleButton>
           ))}
         </ToggleButtonGroup>
-
-        <IconButton onClick={handleAddAnswer} color="primary">
-          <AddIcon />
-        </IconButton>
       </div>
 
       {selectedAnswer !== null && (

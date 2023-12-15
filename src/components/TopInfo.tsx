@@ -1,15 +1,23 @@
 import React from "react"
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew"
-import { Grid, Typography } from "@mui/material"
+import ArrowBack from "@mui/icons-material/ArrowBack"
+import { Grid, IconButton, Tooltip, Typography } from "@mui/material"
 import Timer from "./Timer"
+import AddIcon from "@mui/icons-material/Add"
 
 interface TopInfoProps {
-  arrowBack: boolean
   title: string
-  timer: boolean
+  leftItem: {
+    type: "arrowBack" | "none"
+    leftHandler?: () => void
+  }
+  rightItem: {
+    type: "timer" | "addItem" | "none"
+    rightHandler?: () => void
+    tooltip: string
+  }
 }
 
-export default function TopInfo({ arrowBack, title, timer }: TopInfoProps) {
+export default function TopInfo({ leftItem, title, rightItem }: TopInfoProps) {
   return (
     <Grid
       container
@@ -18,13 +26,27 @@ export default function TopInfo({ arrowBack, title, timer }: TopInfoProps) {
       marginBottom={"16px"}
     >
       <Grid item xs={1}>
-        {arrowBack && <ArrowBackIosNewIcon></ArrowBackIosNewIcon>}
+        {leftItem.type === "arrowBack" && (
+          <Tooltip title={"Back"}>
+            <IconButton onClick={leftItem.leftHandler} color="primary">
+              <ArrowBack></ArrowBack>
+            </IconButton>
+          </Tooltip>
+        )}
       </Grid>
       <Grid item xs={1} textAlign={"center"}>
         <Typography variant="body1">{title}</Typography>
       </Grid>
-      <Grid item xs={1} textAlign={"center"}>
-        {timer && <Timer></Timer>}
+      <Grid item xs={1} textAlign={"right"}>
+        {rightItem.type === "timer" && <Timer></Timer>}
+        {rightItem.type === "addItem" && (
+          <Tooltip title={`Add new ${rightItem.tooltip}`}>
+            <IconButton onClick={rightItem.rightHandler} color="primary">
+              <AddIcon />
+            </IconButton>
+          </Tooltip>
+        )}
+        {rightItem.type === "none" && <></>}
       </Grid>
     </Grid>
   )
