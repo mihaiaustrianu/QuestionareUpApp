@@ -49,7 +49,7 @@ const QuizMenu = () => {
   }
 
   const handleStartQuiz = (e) => {
-    e.preventDefault() // Prevents the default form submission
+    e.preventDefault()
     dispatch(updateTimeToSolve(timeToSolve))
     dispatch(
       createQuiz({

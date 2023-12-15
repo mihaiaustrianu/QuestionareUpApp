@@ -3,18 +3,16 @@ import {
   FormControl,
   TextField,
   Button,
-  ToggleButtonGroup,
-  ToggleButton,
   Typography,
   Box,
   Alert,
   AlertTitle,
 } from "@mui/material"
-import { Question } from "../../features/questions/questionsSlice"
-import ConfirmationModal from "../ConfirmationModal"
 import AnswerCard from "./AnswerCard"
+import ConfirmationModal from "../ConfirmationModal"
 import TopInfo from "../TopInfo"
 import { useNavigate } from "react-router-dom"
+import { Question } from "../../features/questions/questionsSlice"
 
 interface EditQuestionCardProps {
   question?: Question
@@ -36,7 +34,6 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
     }
   }, [question])
 
-  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
   const [isConfirmationModalOpen, setConfirmationModalOpen] = useState(false)
   const navigate = useNavigate()
 
@@ -53,7 +50,6 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
   }
 
   const handleSave = () => {
-    // Validate if any of the required fields are empty
     if (!editedQuestion.text) {
       setAlertMessage("Please fill out all required fields.")
       setAlertSeverity("error")
@@ -61,7 +57,6 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
       return
     }
 
-    // Optionally, you can also check if any of the answers are empty
     const hasEmptyAnswers = editedQuestion.answers.some(
       (answer) => !answer.answerText.trim(),
     )
@@ -80,43 +75,32 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
     setAlertOpen(false)
   }
 
-  const handleAnswerChange = (
-    event: React.MouseEvent<HTMLElement>,
-    newAnswer: number | null,
-  ) => {
-    setSelectedAnswer(newAnswer)
+  const handleAnswerTextChange = (index: number, value: string) => {
+    setEditedQuestion((prevQuestion) => {
+      const updatedAnswers = [...prevQuestion.answers]
+      updatedAnswers[index] = {
+        ...updatedAnswers[index],
+        answerText: value,
+      }
+      return {
+        ...prevQuestion,
+        answers: updatedAnswers,
+      }
+    })
   }
 
-  const handleAnswerTextChange = (value: string) => {
-    if (selectedAnswer !== null) {
-      setEditedQuestion((prevQuestion) => {
-        const updatedAnswers = [...prevQuestion.answers]
-        updatedAnswers[selectedAnswer] = {
-          ...updatedAnswers[selectedAnswer],
-          answerText: value,
-        }
-        return {
-          ...prevQuestion,
-          answers: updatedAnswers,
-        }
-      })
-    }
-  }
-
-  const handleIsCorrectChange = (value: string) => {
-    if (selectedAnswer !== null) {
-      setEditedQuestion((prevQuestion) => {
-        const updatedAnswers = [...prevQuestion.answers]
-        updatedAnswers[selectedAnswer] = {
-          ...updatedAnswers[selectedAnswer],
-          isCorrect: value === "true",
-        }
-        return {
-          ...prevQuestion,
-          answers: updatedAnswers,
-        }
-      })
-    }
+  const handleIsCorrectChange = (index: number, value: boolean) => {
+    setEditedQuestion((prevQuestion) => {
+      const updatedAnswers = [...prevQuestion.answers]
+      updatedAnswers[index] = {
+        ...updatedAnswers[index],
+        isCorrect: value,
+      }
+      return {
+        ...prevQuestion,
+        answers: updatedAnswers,
+      }
+    })
   }
 
   const handleAddAnswer = () => {
@@ -124,25 +108,21 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
       ...prevQuestion,
       answers: [...prevQuestion.answers, { answerText: "", isCorrect: false }],
     }))
-    setSelectedAnswer(editedQuestion.answers.length)
   }
 
-  const handleDeleteAnswer = () => {
-    setConfirmationModalOpen(true)
+  const handleDeleteAnswer = (index: number) => {
+    setEditedQuestion((prevQuestion) => {
+      const updatedAnswers = [...prevQuestion.answers]
+      updatedAnswers.splice(index, 1)
+      return {
+        ...prevQuestion,
+        answers: updatedAnswers,
+      }
+    })
   }
 
   const handleConfirmDelete = () => {
-    if (selectedAnswer !== null) {
-      setEditedQuestion((prevQuestion) => {
-        const updatedAnswers = [...prevQuestion.answers]
-        updatedAnswers.splice(selectedAnswer, 1)
-        return {
-          ...prevQuestion,
-          answers: updatedAnswers,
-        }
-      })
-      setSelectedAnswer(null)
-    }
+    // Implement confirmation delete logic here
     setConfirmationModalOpen(false)
   }
 
@@ -164,7 +144,7 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
           tooltip: "answer",
         }}
         title={"Edit Question"}
-      ></TopInfo>
+      />
       <FormControl fullWidth margin="normal" required>
         <TextField
           required
@@ -177,28 +157,17 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
       </FormControl>
 
       <Typography variant="h6">Answers:</Typography>
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <ToggleButtonGroup
-          value={selectedAnswer}
-          exclusive
-          onChange={handleAnswerChange}
-        >
-          {editedQuestion.answers.map((answer, index) => (
-            <ToggleButton key={index} value={index}>
-              <p>A.{index}</p>
-            </ToggleButton>
-          ))}
-        </ToggleButtonGroup>
-      </div>
 
-      {selectedAnswer !== null && (
+      {editedQuestion.answers.map((answer, index) => (
         <AnswerCard
-          answer={editedQuestion.answers[selectedAnswer]}
-          onDelete={handleDeleteAnswer}
-          onAnswerTextChange={handleAnswerTextChange}
-          onIsCorrectChange={handleIsCorrectChange}
+          key={index}
+          answer={answer}
+          onDelete={() => handleDeleteAnswer(index)}
+          onAnswerTextChange={(value) => handleAnswerTextChange(index, value)}
+          onIsCorrectChange={(value) => handleIsCorrectChange(index, value)}
         />
-      )}
+      ))}
+
       <ConfirmationModal
         open={isConfirmationModalOpen}
         onClose={handleCancelDelete}

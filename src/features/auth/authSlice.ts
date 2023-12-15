@@ -8,8 +8,8 @@ const initialState = {
   userInfo: {
     username: "",
     id: "",
-  }, // for user object
-  userToken: null, // for storing the JWT
+  },
+  userToken: null,
   error: null,
   status: "idle",
 }

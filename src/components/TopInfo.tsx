@@ -27,7 +27,7 @@ export default function TopInfo({ leftItem, title, rightItem }: TopInfoProps) {
       <Grid item xs={1}>
         {leftItem.type === "arrowBack" && (
           <Tooltip title={"Back"}>
-            <IconButton onClick={leftItem.leftHandler} color="primary">
+            <IconButton onClick={leftItem.leftHandler} color="secondary">
               <ArrowBack></ArrowBack>
             </IconButton>
           </Tooltip>
@@ -42,7 +42,7 @@ export default function TopInfo({ leftItem, title, rightItem }: TopInfoProps) {
         {rightItem.type === "timer" && <Timer></Timer>}
         {rightItem.type === "addItem" && (
           <Tooltip title={`Add new ${rightItem.tooltip}`}>
-            <IconButton onClick={rightItem.rightHandler} color="primary">
+            <IconButton onClick={rightItem.rightHandler} color="secondary">
               <AddIcon />
             </IconButton>
           </Tooltip>
