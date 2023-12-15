@@ -5,24 +5,39 @@ import {
   CardActions,
   Typography,
   IconButton,
+  Chip,
+  Grid,
+  Box,
 } from "@mui/material"
 import { Edit, Delete } from "@mui/icons-material"
 import { Question } from "../../features/questions/questionsSlice"
+import CustomCard from "../common/CustomCard"
 
 interface QuestionCardProps {
   question: Question
   onEdit: (question: Question) => void
   onDelete: (question: Question) => void
+  index: number
 }
 
 const QuestionCard: React.FC<QuestionCardProps> = ({
   question,
   onEdit,
   onDelete,
+  index,
 }) => {
   return (
-    <Card sx={{ marginBottom: 2 }}>
-      <CardContent>
+    <CustomCard>
+      <Box display={"flex"} alignItems={"center"} textAlign={"center"}>
+        <Chip
+          color="secondary"
+          variant="outlined"
+          label={index}
+          sx={{
+            fontWeight: "bold",
+            marginRight: "8px",
+          }}
+        />
         <Typography
           sx={{
             overflow: "hidden",
@@ -34,8 +49,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
         >
           {question.text}
         </Typography>
-      </CardContent>
-      <CardActions>
+      </Box>
+      <CardActions disableSpacing>
         <IconButton aria-label="Edit" onClick={() => onEdit(question)}>
           <Edit />
         </IconButton>
@@ -43,7 +58,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
           <Delete />
         </IconButton>
       </CardActions>
-    </Card>
+    </CustomCard>
   )
 }
 

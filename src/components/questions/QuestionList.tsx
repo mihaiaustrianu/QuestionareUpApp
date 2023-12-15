@@ -29,7 +29,7 @@ const QuestionList: React.FC = () => {
     (state) => state.question.questions,
   )
 
-  const itemsPerPage = 5
+  const itemsPerPage = 4
   const [currentPage, setCurrentPage] = useState(1)
   const totalPages = Math.ceil(questions.length / itemsPerPage)
 
@@ -91,23 +91,26 @@ const QuestionList: React.FC = () => {
         }}
         title={`Questions in ${questionSetTitle}`}
       ></TopInfo>
-      {paginatedQuestions.map((question) => (
-        <div key={question._id}>
-          <QuestionCard
-            question={question}
-            onDelete={handleRemoveQuestion}
-            onEdit={handleEditQuestion}
-          />
-        </div>
-      ))}
+      <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
+        {paginatedQuestions.map((question, index) => (
+          <Box width={"100%"} key={question._id}>
+            <QuestionCard
+              index={(currentPage - 1) * itemsPerPage + index + 1}
+              question={question}
+              onDelete={handleRemoveQuestion}
+              onEdit={handleEditQuestion}
+            />
+          </Box>
+        ))}
 
-      <Pagination
-        count={totalPages}
-        page={currentPage}
-        onChange={handlePageChange}
-        color="primary"
-        style={{ marginTop: "10px" }}
-      />
+        <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={handlePageChange}
+          color="primary"
+          style={{ marginTop: "10px" }}
+        />
+      </Box>
 
       <ConfirmationModal
         open={isDeleteModalOpen}

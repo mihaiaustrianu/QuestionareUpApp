@@ -10,6 +10,7 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete"
 import { Answer } from "../../features/questions/questionsSlice"
 import theme from "../../utils/muitheme"
+import CustomCard from "../common/CustomCard"
 
 interface AnswerCardProps {
   answer: Answer
@@ -25,15 +26,7 @@ const AnswerCard: React.FC<AnswerCardProps> = ({
   onIsCorrectChange,
 }) => {
   return (
-    <Box
-      sx={{
-        border: "2px solid #ccc",
-        borderRadius: "10px",
-        position: "relative",
-        padding: "20px",
-        marginBottom: "16px",
-      }}
-    >
+    <CustomCard>
       <Tooltip title={"Delete?"} placement="left">
         <IconButton
           color="error"
@@ -61,7 +54,7 @@ const AnswerCard: React.FC<AnswerCardProps> = ({
           />
         </Tooltip>
       </FormGroup>
-    </Box>
+    </CustomCard>
   )
 }
 

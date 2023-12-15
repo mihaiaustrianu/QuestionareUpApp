@@ -10,7 +10,7 @@ import EditQuestionPage from "../features/questions/EditQuestionPage"
 import CreateQuestionPage from "../features/questions/CreateQuestionPage"
 import NewNavbar from "../components/navbar/NewNavabr"
 
-const drawerWidth: number = 240
+const drawerWidth: number = 220
 
 export default function RouteProvider() {
   return (
