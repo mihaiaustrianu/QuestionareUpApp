@@ -2,21 +2,26 @@ import ArrowBack from "@mui/icons-material/ArrowBack"
 import { Grid, IconButton, Tooltip, Typography } from "@mui/material"
 import Timer from "./Timer"
 import AddIcon from "@mui/icons-material/Add"
+import { useNavigate } from "react-router-dom"
 
 interface TopInfoProps {
   title: string
   leftItem: {
     type: "arrowBack" | "none"
-    leftHandler?: () => void
   }
   rightItem: {
-    type: "timer" | "addItem" | "none"
+    type: "timer" | "addItem" | "none" | "score"
     rightHandler?: () => void
     tooltip?: string
   }
 }
 
 export default function TopInfo({ leftItem, title, rightItem }: TopInfoProps) {
+  const navigate = useNavigate()
+
+  const handleNavigateBack = () => {
+    navigate(-1)
+  }
   return (
     <Grid
       container
@@ -27,7 +32,7 @@ export default function TopInfo({ leftItem, title, rightItem }: TopInfoProps) {
       <Grid item xs={1}>
         {leftItem.type === "arrowBack" && (
           <Tooltip title={"Back"}>
-            <IconButton onClick={leftItem.leftHandler} color="secondary">
+            <IconButton onClick={handleNavigateBack} color="secondary">
               <ArrowBack></ArrowBack>
             </IconButton>
           </Tooltip>
@@ -46,6 +51,11 @@ export default function TopInfo({ leftItem, title, rightItem }: TopInfoProps) {
               <AddIcon />
             </IconButton>
           </Tooltip>
+        )}
+        {rightItem.type === "score" && (
+          <Typography variant={"h6"} color={"secondary"}>
+            Score: {rightItem.tooltip}
+          </Typography>
         )}
         {rightItem.type === "none" && <></>}
       </Grid>

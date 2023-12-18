@@ -11,7 +11,6 @@ import {
 import AnswerCard from "./AnswerCard"
 import ConfirmationModal from "../common/ConfirmationModal"
 import TopInfo from "../common/TopInfo"
-import { useNavigate } from "react-router-dom"
 import { Question } from "../../features/questions/questionsSlice"
 
 interface EditQuestionCardProps {
@@ -35,7 +34,6 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
   }, [question])
 
   const [isConfirmationModalOpen, setConfirmationModalOpen] = useState(false)
-  const navigate = useNavigate()
 
   // Alert states
   const [alertMessage, setAlertMessage] = useState("")
@@ -130,14 +128,10 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
     setConfirmationModalOpen(false)
   }
 
-  const handleNavigateBack = () => {
-    navigate(-1)
-  }
-
   return (
     <Box>
       <TopInfo
-        leftItem={{ type: "arrowBack", leftHandler: handleNavigateBack }}
+        leftItem={{ type: "arrowBack" }}
         rightItem={{
           type: "addItem",
           rightHandler: handleAddAnswer,

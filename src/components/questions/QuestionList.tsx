@@ -69,10 +69,6 @@ const QuestionList: React.FC = () => {
     navigate(`/edit-questionSet/${questionSetId}/${question._id}`)
   }
 
-  const handleNavigateBack = () => {
-    navigate(-1)
-  }
-
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
     value: number,
@@ -83,7 +79,7 @@ const QuestionList: React.FC = () => {
   return (
     <Box>
       <TopInfo
-        leftItem={{ type: "arrowBack", leftHandler: handleNavigateBack }}
+        leftItem={{ type: "arrowBack" }}
         rightItem={{
           type: "addItem",
           rightHandler: handleAddQuestion,

@@ -3,12 +3,14 @@ import authReducer from "../features/auth/authSlice"
 import questionSetReducer from "../features/question-set/questionSetSlice"
 import questionReducer from "../features/questions/questionsSlice"
 import quizReducer from "../features/quizes/quizSlice"
+import quizReviewReducer from "../features/quizes/quizReviewSlice"
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     questionSet: questionSetReducer,
     question: questionReducer,
     quiz: quizReducer,
+    reviewedQuiz: quizReviewReducer,
   },
 })
 

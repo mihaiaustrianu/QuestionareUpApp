@@ -16,15 +16,17 @@ import {
   resetQuiz,
 } from "../../features/quizes/quizSlice"
 import StyledCheckbox from "./StyledCheckbox"
+import { fetchQuiz } from "../../features/quizes/quizReviewSlice"
+import { useNavigate } from "react-router-dom"
 
 const Quiz = ({ questions, initialSelectedAnswers }) => {
   const dispatch = useAppDispatch()
   const quizId = useAppSelector((state) => state.quiz.quizId)
+  const navigate = useNavigate()
 
   const [selectedAnswers, setSelectedAnswers] = useState<UserAnswers>(
     initialSelectedAnswers || {},
   )
-  const [isQuizSubmitted, setIsQuizSubmitted] = useState(false)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
 
   const currentQuestion = questions[currentQuestionIndex]
@@ -77,8 +79,13 @@ const Quiz = ({ questions, initialSelectedAnswers }) => {
           userAnswers: selectedAnswers,
         }),
       )
-      dispatch(setUserAnswers(selectedAnswers))
-      setIsQuizSubmitted(true)
+        .then(() => {
+          dispatch(fetchQuiz(quizId))
+        })
+        .finally(() => {
+          dispatch(resetQuiz())
+          navigate(`/review/${quizId}`)
+        })
     } else {
       alert("Please answer all questions before submitting.")
     }
@@ -143,7 +150,7 @@ const Quiz = ({ questions, initialSelectedAnswers }) => {
         <Button
           variant="outlined"
           onClick={handleSubmitQuiz}
-          disabled={isSubmitDisabled || isQuizSubmitted}
+          disabled={isSubmitDisabled}
           style={{ marginLeft: "16px" }}
           color="primary"
         >

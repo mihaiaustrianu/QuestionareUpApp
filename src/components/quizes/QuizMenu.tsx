@@ -111,6 +111,7 @@ const QuizMenu = () => {
             <FormGroup>
               {questionSets.map((item, index) => (
                 <StyledCheckbox
+                  key={index}
                   text={item.title}
                   onChange={() => handleCheckboxChange(item)}
                   index={index}
