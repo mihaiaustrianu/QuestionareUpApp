@@ -18,6 +18,7 @@ import {
 import StyledCheckbox from "./StyledCheckbox"
 import { fetchQuiz } from "../../features/quizes/quizReviewSlice"
 import { useNavigate } from "react-router-dom"
+import TopInfo from "../common/TopInfo"
 
 const Quiz = ({ questions, initialSelectedAnswers }) => {
   const dispatch = useAppDispatch()
@@ -115,11 +116,18 @@ const Quiz = ({ questions, initialSelectedAnswers }) => {
       alignItems="center"
       width={"100%"}
     >
-      <Box sx={{ minWidth: "100%" }}>
+      <TopInfo
+        title={`Question ${currentQuestionIndex + 1}`}
+        leftItem={{ type: "none" }}
+        rightItem={{ type: "timer" }}
+      ></TopInfo>
+      <Box sx={{ width: "80%" }}>
         <CardContent>
-          <Typography variant="h6" gutterBottom textAlign={"center"}>
-            Question {currentQuestionIndex + 1}
-          </Typography>
+          <Typography
+            variant="h6"
+            gutterBottom
+            textAlign={"center"}
+          ></Typography>
           <Typography variant="body1">{currentQuestion?.text}</Typography>
           <FormControl
             component="fieldset"

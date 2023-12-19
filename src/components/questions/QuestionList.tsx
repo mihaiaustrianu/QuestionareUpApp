@@ -89,7 +89,7 @@ const QuestionList: React.FC = () => {
       ></TopInfo>
       <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
         {paginatedQuestions.map((question, index) => (
-          <Box width={"100%"} key={question._id}>
+          <Box width={"80%"} key={question._id}>
             <QuestionCard
               index={(currentPage - 1) * itemsPerPage + index + 1}
               question={question}
