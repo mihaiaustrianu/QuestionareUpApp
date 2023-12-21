@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { client } from "../../api/client"
-import { removeToken, setToken } from "../../utils/HelperFunctions"
+import { removeToken, setToken, getToken } from "../../utils/HelperFunctions"
 
 const serverURL = import.meta.env.VITE_SERVER_URL
 
@@ -14,7 +14,7 @@ const initialState = {
   status: "idle",
 }
 
-export const login = createAsyncThunk("auth/login", async (payload: any) => {
+export const login = createAsyncThunk("auth/login", async (payload) => {
   const response = await client.post(serverURL + "user/login", payload)
   setToken(response.data.token)
   return response.data
@@ -22,6 +22,24 @@ export const login = createAsyncThunk("auth/login", async (payload: any) => {
 
 export const signOut = createAsyncThunk("auth/signOut", async () => {
   removeToken()
+})
+
+export const autoLogin = createAsyncThunk("auth/autoLogin", async () => {
+  const token = getToken()
+  if (token) {
+    const response = await client.post(serverURL + "api/quiz/validateToken", {
+      token,
+    })
+    if (response.data.userId) {
+      const userId = response.data.userId
+      return { token, userId }
+    } else {
+      removeToken()
+      throw new Error("Invalid token")
+    }
+  } else {
+    throw new Error("No token found")
+  }
 })
 
 const authSlice = createSlice({
@@ -48,6 +66,20 @@ const authSlice = createSlice({
         state.userToken = null
         state.status = "idle"
         state.userInfo = { username: "", id: "" }
+      })
+      .addCase(autoLogin.fulfilled, (state, action) => {
+        const { token, userId } = action.payload
+        state.userToken = token
+        state.userInfo.id = userId
+        state.status = "succeeded"
+      })
+      .addCase(autoLogin.pending, (state, action) => {
+        state.status = "loading"
+      })
+      .addCase(autoLogin.rejected, (state, action) => {
+        state.status = "idle"
+        state.userToken = null
+        removeToken()
       })
   },
 })
