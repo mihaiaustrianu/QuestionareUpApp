@@ -1,18 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { client } from "../../api/client"
-import { Question } from "../questions/questionsSlice"
+import { QuizInterface } from "../quizes/quizSlice"
 
 const serverURL = import.meta.env.VITE_SERVER_URL
-
-export interface Quiz {
-  _id: string | null
-  questions: Question[]
-  userAnswers: { [questionId: string]: string[] }
-  submissionDate: Date
-}
-
 interface HistoryState {
-  quizes: Quiz[]
+  quizes: QuizInterface[]
   status: "idle" | "loading" | "succeeded" | "failed"
   error: string | null
 }

@@ -15,7 +15,7 @@ import {
   QuestionSet,
   fetchQuestionSets,
 } from "../../features/question-set/questionSetSlice"
-import { createQuiz, updateTimeToSolve } from "../../features/quizes/quizSlice"
+import { createQuiz } from "../../features/quizes/quizSlice"
 import StyledCheckbox from "./StyledCheckbox"
 import TopInfo from "../common/TopInfo"
 
@@ -51,12 +51,12 @@ const QuizMenu = () => {
 
   const handleStartQuiz = (e) => {
     e.preventDefault()
-    dispatch(updateTimeToSolve(timeToSolve))
     dispatch(
       createQuiz({
         questionSetIds: selectedItems.map((item) => item._id),
         numberOfQuestions: Number(numberOfQuestions),
         userId: userId,
+        timeToSolve: timeToSolve,
       }),
     )
 
@@ -69,11 +69,12 @@ const QuizMenu = () => {
 
   return (
     <Grid
-    container
-    direction="column"
-    justifyContent="center"
-    alignItems="center"
-    width={"100%"}>
+      container
+      direction="column"
+      justifyContent="center"
+      alignItems="center"
+      width={"100%"}
+    >
       <TopInfo
         title="Start a new Quiz"
         leftItem={{ type: "none" }}

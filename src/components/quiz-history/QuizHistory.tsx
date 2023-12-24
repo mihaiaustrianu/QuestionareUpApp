@@ -4,9 +4,10 @@ import TopInfo from "../common/TopInfo"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { Quiz, fetchQuizes } from "../../features/quiz-history/quizHistorySlice"
+import { fetchQuizes } from "../../features/quiz-history/quizHistorySlice"
 import QuizHistoryCard from "./QuizHistoryCard"
 import { fetchQuiz } from "../../features/quizes/quizReviewSlice"
+import { QuizInterface } from "../../features/quizes/quizSlice"
 
 export default function QuizHistory() {
   const dispatch = useAppDispatch()
@@ -19,9 +20,11 @@ export default function QuizHistory() {
     if (quizesStatus === "idle") dispatch(fetchQuizes())
   }, [dispatch, quizesStatus])
 
-  const quizes: Quiz[] = useAppSelector((state) => state.quizHistory.quizes)
+  const quizes: QuizInterface[] = useAppSelector(
+    (state) => state.quizHistory.quizes,
+  )
 
-  const handleQuizClick = (quiz: Quiz) => {
+  const handleQuizClick = (quiz: QuizInterface) => {
     dispatch(fetchQuiz(quiz._id))
     navigate(`/review/${quiz._id}`)
   }

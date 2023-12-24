@@ -4,7 +4,7 @@ import { useAppSelector } from "../../app/hooks"
 
 const Timer = () => {
   const timeToSolve = useAppSelector((state) => state.quiz.timeToSolve)
-  const endTime = useAppSelector((state) => state.quiz.endTime)
+  const endTime = useAppSelector((state) => state.quiz.currentQuiz.endTime)
   const initialSeconds = timeToSolve * 60
   const [seconds, setSeconds] = useState(initialSeconds)
 

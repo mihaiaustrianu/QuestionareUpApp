@@ -22,7 +22,7 @@ import TopInfo from "../common/TopInfo"
 
 const Quiz = ({ questions, initialSelectedAnswers }) => {
   const dispatch = useAppDispatch()
-  const quizId = useAppSelector((state) => state.quiz.quizId)
+  const quizId = useAppSelector((state) => state.quiz.currentQuiz._id)
   const navigate = useNavigate()
 
   const [selectedAnswers, setSelectedAnswers] = useState<UserAnswers>(
