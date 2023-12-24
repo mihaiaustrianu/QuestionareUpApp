@@ -59,7 +59,9 @@ const StyledCheckbox = ({
           border: "1.5px solid #ccc",
         }}
       />
-      <Typography variant="body1">{text}</Typography>
+      <Typography marginTop={"10px"} marginBottom={"10px"} variant="body1">
+        {text}
+      </Typography>
     </Box>
   )
 }

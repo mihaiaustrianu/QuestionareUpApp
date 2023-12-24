@@ -15,6 +15,7 @@ import MenuIcon from "@mui/icons-material/Menu"
 import Toolbar from "@mui/material/Toolbar"
 import LogoutIcon from "@mui/icons-material/Logout"
 import QuizIcon from "@mui/icons-material/Quiz"
+import LocalLibraryIcon from "@mui/icons-material/LocalLibrary"
 import Typography from "@mui/material/Typography"
 import { Link, useLocation } from "react-router-dom"
 import { useAppDispatch } from "../../app/hooks"
@@ -54,6 +55,11 @@ const NewNavbar: React.FC<NewNavbarProps> = ({ drawerWidth }) => {
             link: "/questionnaireUp",
           },
           { text: "Quiz", icon: <QuizIcon />, link: "/quizMenu" },
+          {
+            text: "Quiz History",
+            icon: <LocalLibraryIcon />,
+            link: "/review",
+          },
         ].map((item, index) => (
           <ListItem key={item.text} disablePadding>
             <ListItemButton component={Link} to={item.link}>

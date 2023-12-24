@@ -121,7 +121,7 @@ const Quiz = ({ questions, initialSelectedAnswers }) => {
         leftItem={{ type: "none" }}
         rightItem={{ type: "timer" }}
       ></TopInfo>
-      <Box sx={{ width: "80%" }}>
+      <Box minHeight={"50vh"} width={"100%"}>
         <CardContent>
           <Typography
             variant="h6"

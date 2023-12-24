@@ -8,6 +8,7 @@ import {
   FormGroup,
   Typography,
   Box,
+  Grid,
 } from "@mui/material"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import {
@@ -67,13 +68,18 @@ const QuizMenu = () => {
   }
 
   return (
-    <>
+    <Grid
+    container
+    direction="column"
+    justifyContent="center"
+    alignItems="center"
+    width={"100%"}>
       <TopInfo
         title="Start a new Quiz"
         leftItem={{ type: "none" }}
         rightItem={{ type: "none" }}
       ></TopInfo>
-      <Box>
+      <Box maxWidth={"80%"}>
         <form onSubmit={handleStartQuiz}>
           <Typography variant="h6" color={"primary"} mb={2}>
             How many questions do you want to solve?
@@ -120,7 +126,6 @@ const QuizMenu = () => {
               ))}
             </FormGroup>
           </FormControl>
-
           <Button
             disabled={!isStartButtonEnabled}
             type="submit"
@@ -132,7 +137,7 @@ const QuizMenu = () => {
           </Button>
         </form>
       </Box>
-    </>
+    </Grid>
   )
 }
 

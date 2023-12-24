@@ -10,6 +10,7 @@ import EditQuestionPage from "../features/questions/EditQuestionPage"
 import CreateQuestionPage from "../features/questions/CreateQuestionPage"
 import NewNavbar from "../components/navbar/NewNavabr"
 import QuizReviewPage from "../features/quizes/QuizReviewPage"
+import QuizHistory from "../components/quizes/QuizHistory"
 
 const drawerWidth: number = 220
 
@@ -43,6 +44,14 @@ export default function RouteProvider() {
               element={
                 <PrivateRoute>
                   <QuizMenuPage />
+                </PrivateRoute>
+              }
+            ></Route>
+            <Route
+              path="/review/"
+              element={
+                <PrivateRoute>
+                  <QuizHistory />
                 </PrivateRoute>
               }
             ></Route>

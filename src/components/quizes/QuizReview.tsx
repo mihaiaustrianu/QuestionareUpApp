@@ -3,6 +3,7 @@ import React, { useState } from "react"
 import { Box, List, Typography, Pagination, Chip } from "@mui/material"
 import CustomCard from "../common/CustomCard"
 import TopInfo from "../common/TopInfo"
+import theme from "../../utils/muitheme"
 
 const QuizResults = ({ questions, userAnswers, score }) => {
   const questionsPerPage = 1
@@ -29,7 +30,7 @@ const QuizResults = ({ questions, userAnswers, score }) => {
       <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
         {displayedQuestions.map((question, index) => (
           <Box
-            width={"80%"}
+            width={"90%"}
             key={question._id}
             marginBottom="20px"
             minHeight={"70vh"}
@@ -44,29 +45,45 @@ const QuizResults = ({ questions, userAnswers, score }) => {
                 const isCorrect = answer.isCorrect
 
                 return (
-                  <CustomCard
-                    key={answer._id}
-                    highlightColor={
-                      isSelected ? (isCorrect ? "success" : "error") : ""
-                    }
-                  >
+                  <CustomCard key={answer._id}>
                     <Box
                       display={"flex"}
-                      alignItems={"center"}
                       textAlign={"center"}
+                      justifyContent={"space-between"}
                     >
-                      <Chip
-                        variant="outlined"
-                        label={String.fromCharCode(65 + answerIndex)}
-                        sx={{
-                          marginRight: "10px",
-                          fontWeight: "bold",
-                          border: "2px solid #ccc",
-                          borderColor: isCorrect ? "#008a3a" : "#9a0000",
-                        }}
-                      />
-                      <Typography>{answer.answerText}</Typography>
-                      {isCorrect ? "(Correct)" : ""}
+                      <Box display={"flex"} textAlign={"left"}>
+                        <Chip
+                          variant="outlined"
+                          label={String.fromCharCode(65 + answerIndex)}
+                          sx={{
+                            marginRight: "10px",
+                            fontWeight: "bold",
+                            border: "2px solid #ccc",
+                            borderColor: isCorrect ? "#008a3a" : "#9a0000",
+                          }}
+                        />
+                        <Typography
+                          color={
+                            isCorrect
+                              ? theme.palette.success.main
+                              : theme.palette.error.main
+                          }
+                        >
+                          {answer.answerText}
+                        </Typography>
+                      </Box>
+                      <Box>
+                        {isSelected && (
+                          <Chip
+                            variant="outlined"
+                            label={"Selected answer"}
+                            sx={{
+                              backgroundColor: "orange",
+                              marginLeft: "6px",
+                            }}
+                          ></Chip>
+                        )}
+                      </Box>
                     </Box>
                   </CustomCard>
                 )
