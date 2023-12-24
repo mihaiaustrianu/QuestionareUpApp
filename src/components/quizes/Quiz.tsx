@@ -121,30 +121,24 @@ const Quiz = ({ questions, initialSelectedAnswers }) => {
         leftItem={{ type: "none" }}
         rightItem={{ type: "timer" }}
       ></TopInfo>
-      <Box minHeight={"50vh"} width={"100%"}>
-        <CardContent>
-          <Typography
-            variant="h6"
-            gutterBottom
-            textAlign={"center"}
-          ></Typography>
-          <Typography variant="body1">{currentQuestion?.text}</Typography>
-          <FormControl
-            component="fieldset"
-            style={{ marginTop: "16px", width: "100%" }}
-          >
-            {currentQuestion?.answers.map((answer, answerIndex) => (
-              <StyledCheckbox
-                key={answer._id}
-                id={answer._id}
-                isChecked={isAnswerSelected(currentQuestion._id, answer._id)}
-                onChange={handleAnswerChange}
-                index={answerIndex}
-                text={answer.answerText}
-              />
-            ))}
-          </FormControl>
-        </CardContent>
+      <Box minHeight={"60vh"} width={"100%"}>
+        <Typography variant="h6" gutterBottom textAlign={"center"}></Typography>
+        <Typography variant="body1">{currentQuestion?.text}</Typography>
+        <FormControl
+          component="fieldset"
+          style={{ marginTop: "16px", width: "100%" }}
+        >
+          {currentQuestion?.answers.map((answer, answerIndex) => (
+            <StyledCheckbox
+              key={answer._id}
+              id={answer._id}
+              isChecked={isAnswerSelected(currentQuestion._id, answer._id)}
+              onChange={handleAnswerChange}
+              index={answerIndex}
+              text={answer.answerText}
+            />
+          ))}
+        </FormControl>
       </Box>
       <Pagination
         count={questions.length}

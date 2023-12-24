@@ -28,6 +28,11 @@ const Login = () => {
     dispatch(login(loginDetails)).then(() => navigate("/questionnaireUp"))
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault() // Prevent the default form submission behavior
+    handleLogin()
+  }
+
   let content
 
   if (status === "loading") {
@@ -36,7 +41,7 @@ const Login = () => {
     content = <p>Succesfully logged in</p>
   } else {
     content = (
-      <div>
+      <form onSubmit={handleSubmit}>
         <Typography variant="h4">Login</Typography>
         <TextField
           label="Username"
@@ -66,14 +71,14 @@ const Login = () => {
           label="Remember Me"
         />
         <Button
+          type="submit"
           variant="contained"
-          onClick={handleLogin}
           fullWidth
           endIcon={<LoginIcon />}
         >
           Login
         </Button>
-      </div>
+      </form>
     )
   }
 

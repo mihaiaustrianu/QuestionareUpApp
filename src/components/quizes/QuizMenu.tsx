@@ -62,7 +62,7 @@ const QuizMenu = () => {
 
     // Reset form values after dispatching the action
     setNumberOfQuestions("")
-    setTimeToSolve(0)
+    setTimeToSolve(10)
     setSelectedItems([])
     setStartButtonEnabled(false)
   }
@@ -80,7 +80,7 @@ const QuizMenu = () => {
         leftItem={{ type: "none" }}
         rightItem={{ type: "none" }}
       ></TopInfo>
-      <Box maxWidth={"80%"}>
+      <Box width={"100%"} maxWidth={"80%"}>
         <form onSubmit={handleStartQuiz}>
           <Typography variant="h6" color={"primary"} mb={2}>
             How many questions do you want to solve?

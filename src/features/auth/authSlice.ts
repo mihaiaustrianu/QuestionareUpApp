@@ -4,6 +4,11 @@ import { removeToken, setToken, getToken } from "../../utils/HelperFunctions"
 
 const serverURL = import.meta.env.VITE_SERVER_URL
 
+interface LoginPayload {
+  username: string
+  password: string
+}
+
 const initialState = {
   userInfo: {
     username: "",
@@ -14,11 +19,14 @@ const initialState = {
   status: "idle",
 }
 
-export const login = createAsyncThunk("auth/login", async (payload) => {
-  const response = await client.post(serverURL + "user/login", payload)
-  setToken(response.data.token)
-  return response.data
-})
+export const login = createAsyncThunk(
+  "auth/login",
+  async (payload: LoginPayload) => {
+    const response = await client.post(serverURL + "user/login", payload)
+    setToken(response.data.token)
+    return response.data
+  },
+)
 
 export const signOut = createAsyncThunk("auth/signOut", async () => {
   removeToken()

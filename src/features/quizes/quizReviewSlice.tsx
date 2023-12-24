@@ -41,8 +41,6 @@ const quizReview = createSlice({
         state.error = null
       })
       .addCase(fetchQuiz.fulfilled, (state, action) => {
-        console.log(action.payload)
-
         state.status = "succeeded"
         state.error = null
 

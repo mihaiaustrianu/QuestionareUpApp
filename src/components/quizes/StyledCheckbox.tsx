@@ -32,7 +32,7 @@ const StyledCheckbox = ({
         alignItems: "center",
         borderRadius: "8px",
         border: `1px solid ${
-          isChecked ? theme.palette.primary.secondary : "#ccc"
+          isChecked ? theme.palette.secondary.main : "#ccc"
         }`,
         backgroundColor: isChecked
           ? theme.palette.secondary.main
