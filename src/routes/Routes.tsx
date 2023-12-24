@@ -10,7 +10,7 @@ import EditQuestionPage from "../features/questions/EditQuestionPage"
 import CreateQuestionPage from "../features/questions/CreateQuestionPage"
 import NewNavbar from "../components/navbar/NewNavabr"
 import QuizReviewPage from "../features/quizes/QuizReviewPage"
-import QuizHistory from "../components/quizes/QuizHistory"
+import QuizHistory from "../components/quiz-history/QuizHistory"
 
 const drawerWidth: number = 220
 
