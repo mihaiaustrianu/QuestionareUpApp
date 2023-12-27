@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Box } from "@mui/material"
+import { Box, Grid } from "@mui/material"
 import {
   QuestionSet,
   createQuestionSet,
@@ -85,7 +85,13 @@ const UserQuestionSets = () => {
   }
 
   return (
-    <Box>
+    <Grid
+      container
+      direction="column"
+      justifyContent="center"
+      alignItems="center"
+      width={"100%"}
+    >
       <TopInfo
         title="User Question Sets"
         leftItem={{ type: "none" }}
@@ -95,16 +101,22 @@ const UserQuestionSets = () => {
           tooltip: "question set",
         }}
       ></TopInfo>
-
-      {questionSets.map((questionSet) => (
-        <QuestionSetCard
-          key={questionSet._id}
-          questionSet={questionSet}
-          onEdit={handleEditQuestionSet}
-          onDelete={handleRemoveQuestionSet}
-          onClickSet={() => handleQuestionSetClick(questionSet)} // Add click handler
-        />
-      ))}
+      <Box
+        display={"flex"}
+        flexDirection={"column"}
+        alignItems={"center"}
+        minWidth={"100%"}
+      >
+        {questionSets.map((questionSet) => (
+          <QuestionSetCard
+            key={questionSet._id}
+            questionSet={questionSet}
+            onEdit={handleEditQuestionSet}
+            onDelete={handleRemoveQuestionSet}
+            onClickSet={() => handleQuestionSetClick(questionSet)} // Add click handler
+          />
+        ))}
+      </Box>
 
       <QuestionSetModal
         open={isCreateModalOpen}
@@ -129,7 +141,7 @@ const UserQuestionSets = () => {
         onClose={() => setIsEditModalOpen(false)}
         onSave={handleSaveEditedQuestionSet}
       />
-    </Box>
+    </Grid>
   )
 }
 
