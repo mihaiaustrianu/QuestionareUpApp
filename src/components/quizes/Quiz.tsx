@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react"
 import {
   Box,
   Button,
-  CardContent,
   FormControl,
   Grid,
   Pagination,

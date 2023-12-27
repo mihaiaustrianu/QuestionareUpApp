@@ -18,6 +18,7 @@ import {
 import { createQuiz } from "../../features/quizes/quizSlice"
 import StyledCheckbox from "./StyledCheckbox"
 import TopInfo from "../common/TopInfo"
+import { unwrapResult } from "@reduxjs/toolkit"
 
 const QuizMenu = () => {
   const [numberOfQuestions, setNumberOfQuestions] = useState(5)
@@ -49,22 +50,30 @@ const QuizMenu = () => {
     setStartButtonEnabled(updatedItems.length > 0)
   }
 
-  const handleStartQuiz = (e) => {
+  const handleStartQuiz = async (e) => {
     e.preventDefault()
-    dispatch(
-      createQuiz({
-        questionSetIds: selectedItems.map((item) => item._id),
-        numberOfQuestions: Number(numberOfQuestions),
-        userId: userId,
-        timeToSolve: timeToSolve,
-      }),
-    )
+    try {
+      const resultAction = await dispatch(
+        createQuiz({
+          questionSetIds: selectedItems.map((item) => item._id),
+          numberOfQuestions: Number(numberOfQuestions),
+          userId: userId,
+          timeToSolve: timeToSolve,
+        }),
+      )
+      unwrapResult(resultAction)
 
-    // Reset form values after dispatching the action
-    setNumberOfQuestions(5)
-    setTimeToSolve(10)
-    setSelectedItems([])
-    setStartButtonEnabled(false)
+      // Reset form values after successful dispatch
+      setNumberOfQuestions(5)
+      setTimeToSolve(10)
+      setSelectedItems([])
+      setStartButtonEnabled(false)
+    } catch (error) {
+      if (error === "Bad Request")
+        alert(
+          "Failed to start quiz, not enough questions in the selected quizes",
+        )
+    }
   }
 
   return (
