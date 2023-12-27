@@ -43,12 +43,14 @@ const quizReview = createSlice({
       .addCase(fetchQuiz.fulfilled, (state, action) => {
         state.status = "succeeded"
         state.error = null
+        console.log(action.payload)
 
         state.quizId = action.payload.quizId
         state.questions = action.payload.questions
         state.userAnswers = action.payload.userAnswers
         state.quizScore = action.payload.score
         state.questions = action.payload.questions
+        state.quizScore = action.payload.score
       })
       .addCase(fetchQuiz.rejected, (state, action) => {
         state.status = "failed"

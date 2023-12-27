@@ -20,8 +20,8 @@ import StyledCheckbox from "./StyledCheckbox"
 import TopInfo from "../common/TopInfo"
 
 const QuizMenu = () => {
-  const [numberOfQuestions, setNumberOfQuestions] = useState("")
-  const [timeToSolve, setTimeToSolve] = useState(0)
+  const [numberOfQuestions, setNumberOfQuestions] = useState(5)
+  const [timeToSolve, setTimeToSolve] = useState(10)
   const [selectedItems, setSelectedItems] = useState([])
   const [isStartButtonEnabled, setStartButtonEnabled] = useState(false)
 
@@ -61,7 +61,7 @@ const QuizMenu = () => {
     )
 
     // Reset form values after dispatching the action
-    setNumberOfQuestions("")
+    setNumberOfQuestions(5)
     setTimeToSolve(10)
     setSelectedItems([])
     setStartButtonEnabled(false)
