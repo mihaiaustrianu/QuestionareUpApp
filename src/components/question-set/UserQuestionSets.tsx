@@ -18,6 +18,7 @@ import {
 } from "../../features/questions/questionsSlice"
 import { useNavigate } from "react-router-dom"
 import TopInfo from "../common/TopInfo"
+import Layout from "../common/Layout"
 
 const UserQuestionSets = () => {
   const dispatch = useAppDispatch()
@@ -85,13 +86,7 @@ const UserQuestionSets = () => {
   }
 
   return (
-    <Grid
-      container
-      direction="column"
-      justifyContent="center"
-      alignItems="center"
-      width={"100%"}
-    >
+    <Layout>
       <TopInfo
         title="User Question Sets"
         leftItem={{ type: "none" }}
@@ -141,7 +136,7 @@ const UserQuestionSets = () => {
         onClose={() => setIsEditModalOpen(false)}
         onSave={handleSaveEditedQuestionSet}
       />
-    </Grid>
+    </Layout>
   )
 }
 

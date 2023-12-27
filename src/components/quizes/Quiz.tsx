@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react"
-import {
-  Box,
-  Button,
-  FormControl,
-  Grid,
-  Pagination,
-  Typography,
-} from "@mui/material"
+import { Box, Button, FormControl, Pagination, Typography } from "@mui/material"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import {
   submitUserAnswers,
@@ -20,6 +13,7 @@ import { useNavigate } from "react-router-dom"
 import TopInfo from "../common/TopInfo"
 import ConfirmationModal from "../common/ConfirmationModal"
 import useConfirmationModal from "../../app/useConfirmationModal"
+import Layout from "../common/Layout"
 
 const Quiz = ({ questions, initialSelectedAnswers }) => {
   const dispatch = useAppDispatch()
@@ -123,19 +117,13 @@ const Quiz = ({ questions, initialSelectedAnswers }) => {
   }
 
   return (
-    <Grid
-      container
-      direction="column"
-      justifyContent="center"
-      alignItems="center"
-      width={"100%"}
-    >
+    <Layout>
       <TopInfo
         title={`Question ${currentQuestionIndex + 1}`}
         leftItem={{ type: "none" }}
         rightItem={{ type: "timer" }}
       ></TopInfo>
-      <Box minHeight={"60vh"} width={"100%"}>
+      <Box minHeight={"60vh"} width={"80%"}>
         <Typography variant="h6" gutterBottom textAlign={"center"}></Typography>
         <Typography variant="body1">{currentQuestion?.text}</Typography>
         <FormControl
@@ -193,7 +181,7 @@ const Quiz = ({ questions, initialSelectedAnswers }) => {
         onClose={closeConfirmationModal}
         onConfirm={confirmationModalOptions?.onConfirm || (() => {})}
       />
-    </Grid>
+    </Layout>
   )
 }
 

@@ -10,6 +10,7 @@ import QuestionCard from "./QuestionCard"
 import ConfirmationModal from "../common/ConfirmationModal"
 import { useNavigate } from "react-router-dom"
 import TopInfo from "../common/TopInfo"
+import Layout from "../common/Layout"
 
 const QuestionList: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -77,7 +78,7 @@ const QuestionList: React.FC = () => {
   }
 
   return (
-    <Box>
+    <Layout>
       <TopInfo
         leftItem={{ type: "arrowBack" }}
         rightItem={{
@@ -118,7 +119,7 @@ const QuestionList: React.FC = () => {
         onClose={handleCloseModal}
         onConfirm={handleConfirmDelete}
       />
-    </Box>
+    </Layout>
   )
 }
 

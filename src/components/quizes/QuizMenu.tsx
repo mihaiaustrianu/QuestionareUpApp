@@ -8,7 +8,6 @@ import {
   FormGroup,
   Typography,
   Box,
-  Grid,
 } from "@mui/material"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import {
@@ -19,6 +18,7 @@ import { createQuiz } from "../../features/quizes/quizSlice"
 import StyledCheckbox from "./StyledCheckbox"
 import TopInfo from "../common/TopInfo"
 import { unwrapResult } from "@reduxjs/toolkit"
+import Layout from "../common/Layout"
 
 const QuizMenu = () => {
   const [numberOfQuestions, setNumberOfQuestions] = useState(5)
@@ -77,13 +77,7 @@ const QuizMenu = () => {
   }
 
   return (
-    <Grid
-      container
-      direction="column"
-      justifyContent="center"
-      alignItems="center"
-      width={"100%"}
-    >
+    <Layout>
       <TopInfo
         title="Start a new Quiz"
         leftItem={{ type: "none" }}
@@ -147,7 +141,7 @@ const QuizMenu = () => {
           </Button>
         </form>
       </Box>
-    </Grid>
+    </Layout>
   )
 }
 

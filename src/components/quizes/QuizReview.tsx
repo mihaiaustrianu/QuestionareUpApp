@@ -4,6 +4,7 @@ import { Box, List, Typography, Pagination, Chip } from "@mui/material"
 import CustomCard from "../common/CustomCard"
 import TopInfo from "../common/TopInfo"
 import theme from "../../utils/muitheme"
+import Layout from "../common/Layout"
 
 const QuizResults = ({ questions, userAnswers, score }) => {
   const questionsPerPage = 1
@@ -18,7 +19,7 @@ const QuizResults = ({ questions, userAnswers, score }) => {
   const displayedQuestions = questions.slice(startIndex, endIndex)
 
   return (
-    <Box>
+    <Layout>
       <TopInfo
         title={`Question ${startIndex + 1}`}
         leftItem={{ type: "arrowBack" }}
@@ -97,7 +98,7 @@ const QuizResults = ({ questions, userAnswers, score }) => {
           onChange={handlePageChange}
         />
       </Box>
-    </Box>
+    </Layout>
   )
 }
 
