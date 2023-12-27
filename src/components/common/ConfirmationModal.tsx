@@ -9,25 +9,31 @@ import {
 } from "@mui/material"
 
 interface ConfirmationModalProps {
+  typography: {
+    title: string
+    text: string
+    actionLabel: string
+  }
   open: boolean
   onClose: () => void
   onConfirm: () => void
 }
 
 const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
+  typography,
   open,
   onClose,
   onConfirm,
 }) => {
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Confirm Delete</DialogTitle>
+      <DialogTitle>{typography?.title}</DialogTitle>
       <DialogContent>
-        <Typography>Are you sure you want to delete this item?</Typography>
+        <Typography>{typography?.text}</Typography>
       </DialogContent>
       <DialogActions>
         <Button variant={"contained"} onClick={onConfirm} color="secondary">
-          <Typography variant="button">Delete</Typography>
+          <Typography variant="button">{typography?.actionLabel}</Typography>
         </Button>
         <Button onClick={onClose} color="primary">
           <Typography variant="button">Cancel</Typography>

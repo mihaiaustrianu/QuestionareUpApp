@@ -18,11 +18,20 @@ import StyledCheckbox from "./StyledCheckbox"
 import { fetchQuiz } from "../../features/quizes/quizReviewSlice"
 import { useNavigate } from "react-router-dom"
 import TopInfo from "../common/TopInfo"
+import ConfirmationModal from "../common/ConfirmationModal"
+import useConfirmationModal from "../../app/useConfirmationModal"
 
 const Quiz = ({ questions, initialSelectedAnswers }) => {
   const dispatch = useAppDispatch()
   const quizId = useAppSelector((state) => state.quiz.currentQuiz._id)
   const navigate = useNavigate()
+
+  const {
+    isOpen: isConfirmationModalOpen,
+    openModal: openConfirmationModal,
+    closeModal: closeConfirmationModal,
+    options: confirmationModalOptions,
+  } = useConfirmationModal()
 
   const [selectedAnswers, setSelectedAnswers] = useState<UserAnswers>(
     initialSelectedAnswers || {},
@@ -104,7 +113,13 @@ const Quiz = ({ questions, initialSelectedAnswers }) => {
   )
 
   const handleAbandonQuiz = () => {
-    dispatch(resetQuiz())
+    openConfirmationModal({
+      onConfirm: () => {
+        dispatch(resetQuiz())
+        closeConfirmationModal()
+      },
+      onCancel: closeConfirmationModal,
+    })
   }
 
   return (
@@ -147,7 +162,14 @@ const Quiz = ({ questions, initialSelectedAnswers }) => {
         color="secondary"
         style={{ marginTop: "16px" }}
       />
-      <Box style={{ marginTop: "16px" }}>
+      <Box
+        style={{ marginTop: "16px" }}
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          width: "100%",
+        }}
+      >
         <Button
           variant="outlined"
           onClick={handleSubmitQuiz}
@@ -161,6 +183,16 @@ const Quiz = ({ questions, initialSelectedAnswers }) => {
           Abandon quiz
         </Button>
       </Box>
+      <ConfirmationModal
+        typography={{
+          title: "Abandon the quiz",
+          text: "Are you sure you want to abandon the quiz?",
+          actionLabel: "Abandon",
+        }}
+        open={isConfirmationModalOpen}
+        onClose={closeConfirmationModal}
+        onConfirm={confirmationModalOptions?.onConfirm || (() => {})}
+      />
     </Grid>
   )
 }

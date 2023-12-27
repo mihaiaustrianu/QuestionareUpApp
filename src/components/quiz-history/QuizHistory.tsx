@@ -29,7 +29,7 @@ export default function QuizHistory() {
     navigate(`/review/${quiz._id}`)
   }
 
-  const itemsPerPage = 4
+  const itemsPerPage = 3
   const [currentPage, setCurrentPage] = useState(1)
   const totalPages = Math.ceil(quizes.length / itemsPerPage)
 

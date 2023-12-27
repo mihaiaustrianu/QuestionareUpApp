@@ -109,6 +109,11 @@ const QuestionList: React.FC = () => {
       </Box>
 
       <ConfirmationModal
+        typography={{
+          title: "Delete question?",
+          text: "Are you sure you want to delete this question?",
+          actionLabel: "Delete",
+        }}
         open={isDeleteModalOpen}
         onClose={handleCloseModal}
         onConfirm={handleConfirmDelete}

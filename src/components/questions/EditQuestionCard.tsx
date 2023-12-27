@@ -9,7 +9,6 @@ import {
   AlertTitle,
 } from "@mui/material"
 import AnswerCard from "./AnswerCard"
-import ConfirmationModal from "../common/ConfirmationModal"
 import TopInfo from "../common/TopInfo"
 import { Question } from "../../features/questions/questionsSlice"
 
@@ -32,8 +31,6 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
       setEditedQuestion(question)
     }
   }, [question])
-
-  const [isConfirmationModalOpen, setConfirmationModalOpen] = useState(false)
 
   // Alert states
   const [alertMessage, setAlertMessage] = useState("")
@@ -119,15 +116,6 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
     })
   }
 
-  const handleConfirmDelete = () => {
-    // Implement confirmation delete logic here
-    setConfirmationModalOpen(false)
-  }
-
-  const handleCancelDelete = () => {
-    setConfirmationModalOpen(false)
-  }
-
   return (
     <Box>
       <TopInfo
@@ -161,12 +149,6 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
           onIsCorrectChange={(value) => handleIsCorrectChange(index, value)}
         />
       ))}
-
-      <ConfirmationModal
-        open={isConfirmationModalOpen}
-        onClose={handleCancelDelete}
-        onConfirm={handleConfirmDelete}
-      />
 
       {alertOpen && (
         <Alert severity={alertSeverity} onClose={handleAlertClose}>

@@ -114,6 +114,11 @@ const UserQuestionSets = () => {
       />
 
       <ConfirmationModal
+        typography={{
+          title: "Delete question set?",
+          text: "Are you sure you want to delete this question set?",
+          actionLabel: "Delete",
+        }}
         open={isDeleteModalOpen}
         onClose={handleCloseModal}
         onConfirm={handleConfirmDelete}
