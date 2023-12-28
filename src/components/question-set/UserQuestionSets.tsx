@@ -18,6 +18,7 @@ import {
 } from "../../features/questions/questionsSlice"
 import { useNavigate } from "react-router-dom"
 import TopInfo from "../common/TopInfo"
+import Layout from "../common/Layout"
 
 const UserQuestionSets = () => {
   const dispatch = useAppDispatch()
@@ -85,7 +86,7 @@ const UserQuestionSets = () => {
   }
 
   return (
-    <Box>
+    <Layout>
       <TopInfo
         title="User Question Sets"
         leftItem={{ type: "none" }}
@@ -95,16 +96,22 @@ const UserQuestionSets = () => {
           tooltip: "question set",
         }}
       ></TopInfo>
-
-      {questionSets.map((questionSet) => (
-        <QuestionSetCard
-          key={questionSet._id}
-          questionSet={questionSet}
-          onEdit={handleEditQuestionSet}
-          onDelete={handleRemoveQuestionSet}
-          onClickSet={() => handleQuestionSetClick(questionSet)} // Add click handler
-        />
-      ))}
+      <Box
+        display={"flex"}
+        flexDirection={"column"}
+        alignItems={"center"}
+        width={"80%"}
+      >
+        {questionSets.map((questionSet) => (
+          <QuestionSetCard
+            key={questionSet._id}
+            questionSet={questionSet}
+            onEdit={handleEditQuestionSet}
+            onDelete={handleRemoveQuestionSet}
+            onClickSet={() => handleQuestionSetClick(questionSet)} // Add click handler
+          />
+        ))}
+      </Box>
 
       <QuestionSetModal
         open={isCreateModalOpen}
@@ -114,6 +121,11 @@ const UserQuestionSets = () => {
       />
 
       <ConfirmationModal
+        typography={{
+          title: "Delete question set?",
+          text: "Are you sure you want to delete this question set?",
+          actionLabel: "Delete",
+        }}
         open={isDeleteModalOpen}
         onClose={handleCloseModal}
         onConfirm={handleConfirmDelete}
@@ -124,7 +136,7 @@ const UserQuestionSets = () => {
         onClose={() => setIsEditModalOpen(false)}
         onSave={handleSaveEditedQuestionSet}
       />
-    </Box>
+    </Layout>
   )
 }
 

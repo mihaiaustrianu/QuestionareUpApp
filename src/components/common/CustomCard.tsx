@@ -19,6 +19,7 @@ export default function CustomCard({
         position: "relative",
         padding: "15px",
         marginBottom: "16px",
+        width: "100%",
         backgroundColor:
           (highlightColor && theme.palette[highlightColor]?.main) || "inherit",
       }}

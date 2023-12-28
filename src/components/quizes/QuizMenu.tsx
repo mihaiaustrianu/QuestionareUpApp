@@ -8,7 +8,6 @@ import {
   FormGroup,
   Typography,
   Box,
-  Grid,
 } from "@mui/material"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import {
@@ -18,6 +17,8 @@ import {
 import { createQuiz } from "../../features/quizes/quizSlice"
 import StyledCheckbox from "./StyledCheckbox"
 import TopInfo from "../common/TopInfo"
+import { unwrapResult } from "@reduxjs/toolkit"
+import Layout from "../common/Layout"
 
 const QuizMenu = () => {
   const [numberOfQuestions, setNumberOfQuestions] = useState(5)
@@ -49,32 +50,37 @@ const QuizMenu = () => {
     setStartButtonEnabled(updatedItems.length > 0)
   }
 
-  const handleStartQuiz = (e) => {
-    e.preventDefault()
-    dispatch(
-      createQuiz({
-        questionSetIds: selectedItems.map((item) => item._id),
-        numberOfQuestions: Number(numberOfQuestions),
-        userId: userId,
-        timeToSolve: timeToSolve,
-      }),
-    )
-
-    // Reset form values after dispatching the action
+  const resetQuiz = () => {
+    // Reset form values after successful dispatch
     setNumberOfQuestions(5)
     setTimeToSolve(10)
     setSelectedItems([])
     setStartButtonEnabled(false)
   }
 
+  const handleStartQuiz = async (e) => {
+    e.preventDefault()
+    try {
+      const resultAction = await dispatch(
+        createQuiz({
+          questionSetIds: selectedItems.map((item) => item._id),
+          numberOfQuestions: Number(numberOfQuestions),
+          userId: userId,
+          timeToSolve: timeToSolve,
+        }),
+      )
+      unwrapResult(resultAction)
+      resetQuiz()
+    } catch (error) {
+      if (error === "Bad Request")
+        alert(
+          "Failed to start quiz, not enough questions in the selected quizes",
+        )
+    }
+  }
+
   return (
-    <Grid
-      container
-      direction="column"
-      justifyContent="center"
-      alignItems="center"
-      width={"100%"}
-    >
+    <Layout>
       <TopInfo
         title="Start a new Quiz"
         leftItem={{ type: "none" }}
@@ -138,7 +144,7 @@ const QuizMenu = () => {
           </Button>
         </form>
       </Box>
-    </Grid>
+    </Layout>
   )
 }
 

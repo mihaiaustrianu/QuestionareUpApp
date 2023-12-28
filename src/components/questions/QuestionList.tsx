@@ -10,6 +10,7 @@ import QuestionCard from "./QuestionCard"
 import ConfirmationModal from "../common/ConfirmationModal"
 import { useNavigate } from "react-router-dom"
 import TopInfo from "../common/TopInfo"
+import Layout from "../common/Layout"
 
 const QuestionList: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -77,7 +78,7 @@ const QuestionList: React.FC = () => {
   }
 
   return (
-    <Box>
+    <Layout>
       <TopInfo
         leftItem={{ type: "arrowBack" }}
         rightItem={{
@@ -87,7 +88,12 @@ const QuestionList: React.FC = () => {
         }}
         title={`Questions in ${questionSetTitle}`}
       ></TopInfo>
-      <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
+      <Box
+        display={"flex"}
+        flexDirection={"column"}
+        alignItems={"center"}
+        width={"100%"}
+      >
         {paginatedQuestions.map((question, index) => (
           <Box width={"80%"} key={question._id}>
             <QuestionCard
@@ -109,11 +115,16 @@ const QuestionList: React.FC = () => {
       </Box>
 
       <ConfirmationModal
+        typography={{
+          title: "Delete question?",
+          text: "Are you sure you want to delete this question?",
+          actionLabel: "Delete",
+        }}
         open={isDeleteModalOpen}
         onClose={handleCloseModal}
         onConfirm={handleConfirmDelete}
       />
-    </Box>
+    </Layout>
   )
 }
 

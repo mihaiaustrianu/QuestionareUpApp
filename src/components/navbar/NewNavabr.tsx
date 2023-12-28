@@ -18,9 +18,8 @@ import QuizIcon from "@mui/icons-material/Quiz"
 import LocalLibraryIcon from "@mui/icons-material/LocalLibrary"
 import Typography from "@mui/material/Typography"
 import { Link, useLocation } from "react-router-dom"
-import { useAppDispatch, useAppSelector } from "../../app/hooks"
+import { useAppDispatch } from "../../app/hooks"
 import { signOut } from "../../features/auth/authSlice"
-import ConfirmationModal from "../common/ConfirmationModal"
 
 interface NewNavbarProps {
   drawerWidth: number

@@ -4,6 +4,7 @@ import { Box, List, Typography, Pagination, Chip } from "@mui/material"
 import CustomCard from "../common/CustomCard"
 import TopInfo from "../common/TopInfo"
 import theme from "../../utils/muitheme"
+import Layout from "../common/Layout"
 
 const QuizResults = ({ questions, userAnswers, score }) => {
   const questionsPerPage = 1
@@ -18,7 +19,7 @@ const QuizResults = ({ questions, userAnswers, score }) => {
   const displayedQuestions = questions.slice(startIndex, endIndex)
 
   return (
-    <Box>
+    <Layout>
       <TopInfo
         title={`Question ${startIndex + 1}`}
         leftItem={{ type: "arrowBack" }}
@@ -27,10 +28,15 @@ const QuizResults = ({ questions, userAnswers, score }) => {
           type: "score",
         }}
       ></TopInfo>
-      <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
+      <Box
+        display={"flex"}
+        flexDirection={"column"}
+        alignItems={"center"}
+        width={"100%"}
+      >
         {displayedQuestions.map((question, index) => (
           <Box
-            width={"90%"}
+            width={"80%"}
             key={question._id}
             marginBottom="20px"
             minHeight={"70vh"}
@@ -91,13 +97,13 @@ const QuizResults = ({ questions, userAnswers, score }) => {
             </List>
           </Box>
         ))}
-        <Pagination
-          count={Math.ceil(questions.length / questionsPerPage)}
-          page={currentPage}
-          onChange={handlePageChange}
-        />
       </Box>
-    </Box>
+      <Pagination
+        count={Math.ceil(questions.length / questionsPerPage)}
+        page={currentPage}
+        onChange={handlePageChange}
+      />
+    </Layout>
   )
 }
 

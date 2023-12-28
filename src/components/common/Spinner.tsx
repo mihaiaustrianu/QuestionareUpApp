@@ -1,11 +1,20 @@
 import React from "react"
+import CircularProgress from "@mui/material/CircularProgress"
 
-export const Spinner = ({ text = "", size = "5em" }) => {
-  const header = text ? <h4>{text}</h4> : null
+const Spinner = ({ size = "5em" }) => {
   return (
-    <div className="spinner">
-      {header}
-      <div className="loader" style={{ height: size, width: size }} />
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "80vh", // Make the container take the full height of the viewport
+      }}
+    >
+      <CircularProgress size={size} />
     </div>
   )
 }
+
+export default Spinner

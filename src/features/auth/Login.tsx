@@ -1,7 +1,6 @@
 import React, { useState } from "react"
 import { login } from "./authSlice"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import { Spinner } from "../../components/common/Spinner"
 import { useNavigate } from "react-router-dom"
 import LoginIcon from "@mui/icons-material/Login"
 import {
@@ -11,6 +10,7 @@ import {
   Typography,
 } from "@mui/material"
 import { Button } from "@mui/material"
+import Spinner from "../../components/common/Spinner"
 
 const Login = () => {
   const [username, setUsername] = useState("")
@@ -36,7 +36,7 @@ const Login = () => {
   let content
 
   if (status === "loading") {
-    content = <Spinner text="Loading..." />
+    content = <Spinner />
   } else if (status === "succeeded") {
     content = <p>Succesfully logged in</p>
   } else {

@@ -52,9 +52,13 @@ interface SubmitUserAnswersPayload {
 
 export const createQuiz = createAsyncThunk(
   "activeQuiz/createQuiz",
-  async (payload: CreateQuizPayload) => {
-    const response = await client.post(serverURL + "api/quiz/create", payload)
-    return response.data
+  async (payload: CreateQuizPayload, { rejectWithValue }) => {
+    try {
+      const response = await client.post(serverURL + "api/quiz/create", payload)
+      return response.data
+    } catch (error) {
+      return rejectWithValue(error || "Failed to create quiz.")
+    }
   },
 )
 

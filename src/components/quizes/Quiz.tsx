@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react"
-import {
-  Box,
-  Button,
-  CardContent,
-  FormControl,
-  Grid,
-  Pagination,
-  Typography,
-} from "@mui/material"
+import { Box, Button, FormControl, Pagination, Typography } from "@mui/material"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import {
   submitUserAnswers,
@@ -19,11 +11,22 @@ import StyledCheckbox from "./StyledCheckbox"
 import { fetchQuiz } from "../../features/quizes/quizReviewSlice"
 import { useNavigate } from "react-router-dom"
 import TopInfo from "../common/TopInfo"
+import ConfirmationModal from "../common/ConfirmationModal"
+import useConfirmationModal from "../../app/useConfirmationModal"
+import Layout from "../common/Layout"
+import { fetchQuizHistory } from "../../features/quiz-history/quizHistorySlice"
 
 const Quiz = ({ questions, initialSelectedAnswers }) => {
   const dispatch = useAppDispatch()
   const quizId = useAppSelector((state) => state.quiz.currentQuiz._id)
   const navigate = useNavigate()
+
+  const {
+    isOpen: isConfirmationModalOpen,
+    openModal: openConfirmationModal,
+    closeModal: closeConfirmationModal,
+    options: confirmationModalOptions,
+  } = useConfirmationModal()
 
   const [selectedAnswers, setSelectedAnswers] = useState<UserAnswers>(
     initialSelectedAnswers || {},
@@ -85,6 +88,7 @@ const Quiz = ({ questions, initialSelectedAnswers }) => {
         })
         .finally(() => {
           dispatch(resetQuiz())
+          dispatch(fetchQuizHistory())
           navigate(`/review/${quizId}`)
         })
     } else {
@@ -105,23 +109,23 @@ const Quiz = ({ questions, initialSelectedAnswers }) => {
   )
 
   const handleAbandonQuiz = () => {
-    dispatch(resetQuiz())
+    openConfirmationModal({
+      onConfirm: () => {
+        dispatch(resetQuiz())
+        closeConfirmationModal()
+      },
+      onCancel: closeConfirmationModal,
+    })
   }
 
   return (
-    <Grid
-      container
-      direction="column"
-      justifyContent="center"
-      alignItems="center"
-      width={"100%"}
-    >
+    <Layout>
       <TopInfo
         title={`Question ${currentQuestionIndex + 1}`}
         leftItem={{ type: "none" }}
         rightItem={{ type: "timer" }}
       ></TopInfo>
-      <Box minHeight={"60vh"} width={"100%"}>
+      <Box minHeight={"60vh"} width={"80%"}>
         <Typography variant="h6" gutterBottom textAlign={"center"}></Typography>
         <Typography variant="body1">{currentQuestion?.text}</Typography>
         <FormControl
@@ -148,7 +152,14 @@ const Quiz = ({ questions, initialSelectedAnswers }) => {
         color="secondary"
         style={{ marginTop: "16px" }}
       />
-      <Box style={{ marginTop: "16px" }}>
+      <Box
+        style={{ marginTop: "16px" }}
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          width: "100%",
+        }}
+      >
         <Button
           variant="outlined"
           onClick={handleSubmitQuiz}
@@ -162,7 +173,17 @@ const Quiz = ({ questions, initialSelectedAnswers }) => {
           Abandon quiz
         </Button>
       </Box>
-    </Grid>
+      <ConfirmationModal
+        typography={{
+          title: "Abandon the quiz",
+          text: "Are you sure you want to abandon the quiz?",
+          actionLabel: "Abandon",
+        }}
+        open={isConfirmationModalOpen}
+        onClose={closeConfirmationModal}
+        onConfirm={confirmationModalOptions?.onConfirm || (() => {})}
+      />
+    </Layout>
   )
 }
 
