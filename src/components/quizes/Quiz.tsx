@@ -14,6 +14,7 @@ import TopInfo from "../common/TopInfo"
 import ConfirmationModal from "../common/ConfirmationModal"
 import useConfirmationModal from "../../app/useConfirmationModal"
 import Layout from "../common/Layout"
+import { fetchQuizHistory } from "../../features/quiz-history/quizHistorySlice"
 
 const Quiz = ({ questions, initialSelectedAnswers }) => {
   const dispatch = useAppDispatch()
@@ -87,6 +88,7 @@ const Quiz = ({ questions, initialSelectedAnswers }) => {
         })
         .finally(() => {
           dispatch(resetQuiz())
+          dispatch(fetchQuizHistory())
           navigate(`/review/${quizId}`)
         })
     } else {

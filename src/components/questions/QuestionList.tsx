@@ -88,7 +88,12 @@ const QuestionList: React.FC = () => {
         }}
         title={`Questions in ${questionSetTitle}`}
       ></TopInfo>
-      <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
+      <Box
+        display={"flex"}
+        flexDirection={"column"}
+        alignItems={"center"}
+        width={"100%"}
+      >
         {paginatedQuestions.map((question, index) => (
           <Box width={"80%"} key={question._id}>
             <QuestionCard

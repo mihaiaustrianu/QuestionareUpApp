@@ -15,10 +15,13 @@ const initialState: HistoryState = {
   error: null,
 }
 
-export const fetchQuizes = createAsyncThunk("quizes/fetchQuizes", async () => {
-  const response = await client.get(serverURL + "api/quiz")
-  return response.data
-})
+export const fetchQuizHistory = createAsyncThunk(
+  "quizes/fetchQuizHistory",
+  async () => {
+    const response = await client.get(serverURL + "api/quiz")
+    return response.data
+  },
+)
 
 const quizHistory = createSlice({
   name: "quizHistory",
@@ -26,16 +29,16 @@ const quizHistory = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
-      .addCase(fetchQuizes.pending, (state) => {
+      .addCase(fetchQuizHistory.pending, (state) => {
         state.status = "loading"
         state.error = null
       })
-      .addCase(fetchQuizes.fulfilled, (state, action) => {
+      .addCase(fetchQuizHistory.fulfilled, (state, action) => {
         state.status = "succeeded"
         state.error = null
         state.quizes = action.payload
       })
-      .addCase(fetchQuizes.rejected, (state, action) => {
+      .addCase(fetchQuizHistory.rejected, (state, action) => {
         state.status = "failed"
         state.error = action.error.message || "Failed to fetch user quizes."
       })

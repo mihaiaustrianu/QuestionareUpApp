@@ -17,7 +17,7 @@ export interface Answer {
 
 interface QuestionState {
   questions: Question[]
-  status: string
+  status: "idle" | "loading" | "succeeded" | "failed"
   error: string | null
   questionSetId?: string
   questionSetTitle: string

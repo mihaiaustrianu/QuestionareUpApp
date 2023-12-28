@@ -50,6 +50,14 @@ const QuizMenu = () => {
     setStartButtonEnabled(updatedItems.length > 0)
   }
 
+  const resetQuiz = () => {
+    // Reset form values after successful dispatch
+    setNumberOfQuestions(5)
+    setTimeToSolve(10)
+    setSelectedItems([])
+    setStartButtonEnabled(false)
+  }
+
   const handleStartQuiz = async (e) => {
     e.preventDefault()
     try {
@@ -62,12 +70,7 @@ const QuizMenu = () => {
         }),
       )
       unwrapResult(resultAction)
-
-      // Reset form values after successful dispatch
-      setNumberOfQuestions(5)
-      setTimeToSolve(10)
-      setSelectedItems([])
-      setStartButtonEnabled(false)
+      resetQuiz()
     } catch (error) {
       if (error === "Bad Request")
         alert(

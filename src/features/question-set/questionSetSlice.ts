@@ -11,7 +11,7 @@ export interface QuestionSet {
 
 interface QuestionState {
   questionSets: QuestionSet[]
-  status: string
+  status: "idle" | "loading" | "succeeded" | "failed"
   error: string | null
 }
 
@@ -75,14 +75,14 @@ const questionSetSlice = createSlice({
         }
 
         state.questionSets.push(newQuestionSet)
-        state.status = "succeded"
+        state.status = "succeeded"
       })
       .addCase(fetchQuestionSets.pending, (state) => {
         state.status = "loading"
         state.error = null
       })
       .addCase(fetchQuestionSets.fulfilled, (state, action) => {
-        state.status = "succeded"
+        state.status = "succeeded"
         state.error = null
         state.questionSets = action.payload
       })

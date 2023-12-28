@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Box, Grid } from "@mui/material"
+import { Box } from "@mui/material"
 import {
   QuestionSet,
   createQuestionSet,
@@ -100,7 +100,7 @@ const UserQuestionSets = () => {
         display={"flex"}
         flexDirection={"column"}
         alignItems={"center"}
-        minWidth={"100%"}
+        width={"80%"}
       >
         {questionSets.map((questionSet) => (
           <QuestionSetCard

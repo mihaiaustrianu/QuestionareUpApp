@@ -28,10 +28,15 @@ const QuizResults = ({ questions, userAnswers, score }) => {
           type: "score",
         }}
       ></TopInfo>
-      <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
+      <Box
+        display={"flex"}
+        flexDirection={"column"}
+        alignItems={"center"}
+        width={"100%"}
+      >
         {displayedQuestions.map((question, index) => (
           <Box
-            width={"90%"}
+            width={"80%"}
             key={question._id}
             marginBottom="20px"
             minHeight={"70vh"}
@@ -92,12 +97,12 @@ const QuizResults = ({ questions, userAnswers, score }) => {
             </List>
           </Box>
         ))}
-        <Pagination
-          count={Math.ceil(questions.length / questionsPerPage)}
-          page={currentPage}
-          onChange={handlePageChange}
-        />
       </Box>
+      <Pagination
+        count={Math.ceil(questions.length / questionsPerPage)}
+        page={currentPage}
+        onChange={handlePageChange}
+      />
     </Layout>
   )
 }
