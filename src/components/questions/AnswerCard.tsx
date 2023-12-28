@@ -1,23 +1,22 @@
 import React from "react"
 import {
-  Paper,
   IconButton,
   FormGroup,
-  TextareaAutosize,
-  FormControl,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
+  Checkbox,
+  Box,
+  TextField,
+  Tooltip,
 } from "@mui/material"
 import DeleteIcon from "@mui/icons-material/Delete"
-import { textareaStyles } from "../../styles/textareaStyle"
 import { Answer } from "../../features/questions/questionsSlice"
+import theme from "../../utils/muitheme"
+import CustomCard from "../common/CustomCard"
 
 interface AnswerCardProps {
   answer: Answer
   onDelete: () => void
   onAnswerTextChange: (value: string) => void
-  onIsCorrectChange: (value: string) => void
+  onIsCorrectChange: (value: boolean) => void // Change the type to boolean
 }
 
 const AnswerCard: React.FC<AnswerCardProps> = ({
@@ -27,35 +26,35 @@ const AnswerCard: React.FC<AnswerCardProps> = ({
   onIsCorrectChange,
 }) => {
   return (
-    <Paper elevation={5} sx={{ position: "relative", padding: "20px" }}>
-      <IconButton
-        color="error"
-        onClick={onDelete}
-        style={{ position: "absolute", top: "8px", right: "8px" }}
-      >
-        <DeleteIcon />
-      </IconButton>
+    <CustomCard>
+      <Tooltip title={"Delete?"} placement="left">
+        <IconButton
+          color="error"
+          onClick={onDelete}
+          sx={{ position: "absolute", top: "8px", right: "8px" }}
+        >
+          <DeleteIcon />
+        </IconButton>
+      </Tooltip>
       <FormGroup>
-        <TextareaAutosize
-          style={textareaStyles}
-          minRows={3}
-          maxRows={5}
+        <TextField
+          sx={{ width: "90%" }}
+          multiline
+          maxRows={3}
           placeholder="Enter Answer Text"
           value={answer.answerText}
           onChange={(e) => onAnswerTextChange(e.target.value)}
-        />
-        <FormControl component="fieldset">
-          <RadioGroup
-            row
-            value={answer.isCorrect ? "true" : "false"}
-            onChange={(e) => onIsCorrectChange(e.target.value)}
-          >
-            <FormControlLabel value="true" control={<Radio />} label="True" />
-            <FormControlLabel value="false" control={<Radio />} label="False" />
-          </RadioGroup>
-        </FormControl>
+        ></TextField>
+        <Tooltip title={"Correct ?"} placement="left">
+          <Checkbox
+            color="success"
+            checked={answer.isCorrect}
+            onChange={(e) => onIsCorrectChange(e.target.checked)}
+            sx={{ position: "absolute", bottom: "8px", right: "8px" }}
+          />
+        </Tooltip>
       </FormGroup>
-    </Paper>
+    </CustomCard>
   )
 }
 

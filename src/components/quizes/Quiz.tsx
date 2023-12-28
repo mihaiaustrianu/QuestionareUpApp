@@ -1,48 +1,71 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
+  Box,
   Button,
-  Card,
   CardContent,
-  Checkbox,
   FormControl,
-  FormControlLabel,
+  Grid,
+  Pagination,
   Typography,
 } from "@mui/material"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import { submitUserAnswers } from "../../features/quizes/quizSlice"
+import {
+  submitUserAnswers,
+  setUserAnswers,
+  UserAnswers,
+  resetQuiz,
+} from "../../features/quizes/quizSlice"
+import StyledCheckbox from "./StyledCheckbox"
+import { fetchQuiz } from "../../features/quizes/quizReviewSlice"
+import { useNavigate } from "react-router-dom"
+import TopInfo from "../common/TopInfo"
 
-const Quiz = ({ questions }) => {
+const Quiz = ({ questions, initialSelectedAnswers }) => {
   const dispatch = useAppDispatch()
-  const quizId = useAppSelector((state) => state.quiz.quizId)
+  const quizId = useAppSelector((state) => state.quiz.currentQuiz._id)
+  const navigate = useNavigate()
 
+  const [selectedAnswers, setSelectedAnswers] = useState<UserAnswers>(
+    initialSelectedAnswers || {},
+  )
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-  const [selectedAnswers, setSelectedAnswers] = useState<
-    Record<string, string[]>
-  >({})
-  const [isQuizSubmitted, setIsQuizSubmitted] = useState(false)
 
   const currentQuestion = questions[currentQuestionIndex]
 
+  // useEffect to handle the repopulation of selected answers
+  useEffect(() => {
+    setSelectedAnswers(initialSelectedAnswers || {})
+  }, [initialSelectedAnswers])
+
   const handleAnswerChange = (answerId: string) => {
-    setSelectedAnswers((prevSelectedAnswers) => ({
-      ...prevSelectedAnswers,
-      [currentQuestion._id]: [
-        ...(prevSelectedAnswers[currentQuestion._id] || []),
-        answerId,
-      ],
-    }))
+    setSelectedAnswers((prevSelectedAnswers) => {
+      const currentQuestionId = currentQuestion?._id
+      const selectedAnswersForQuestion =
+        prevSelectedAnswers[currentQuestionId] || []
+
+      if (selectedAnswersForQuestion.includes(answerId)) {
+        const updatedAnswers = selectedAnswersForQuestion.filter(
+          (id) => id !== answerId,
+        )
+        return {
+          ...prevSelectedAnswers,
+          [currentQuestionId]: updatedAnswers,
+        }
+      } else {
+        return {
+          ...prevSelectedAnswers,
+          [currentQuestionId]: [...selectedAnswersForQuestion, answerId],
+        }
+      }
+    })
   }
 
-  const handleNextQuestion = () => {
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1)
-    }
-  }
-
-  const handlePreviousQuestion = () => {
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1)
-    }
+  const handlePaginationChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number,
+  ) => {
+    setCurrentQuestionIndex(value - 1)
+    dispatch(setUserAnswers(selectedAnswers))
   }
 
   const handleSubmitQuiz = () => {
@@ -51,70 +74,95 @@ const Quiz = ({ questions }) => {
     )
 
     if (allQuestionsAnswered) {
-      // Dispatch action to submit user answers
       dispatch(
         submitUserAnswers({
           quizId,
           userAnswers: selectedAnswers,
         }),
       )
-      setIsQuizSubmitted(true)
+        .then(() => {
+          dispatch(fetchQuiz(quizId))
+        })
+        .finally(() => {
+          dispatch(resetQuiz())
+          navigate(`/review/${quizId}`)
+        })
     } else {
       alert("Please answer all questions before submitting.")
     }
   }
 
+  const isAnswerSelected = (questionId: string, answerId: string) => {
+    return (selectedAnswers[questionId] || []).includes(answerId)
+  }
+
+  const isQuestionAnswered = (questionId: string) => {
+    return (selectedAnswers[questionId] || []).length > 0
+  }
+
+  const isSubmitDisabled = !questions.every((question) =>
+    isQuestionAnswered(question._id),
+  )
+
+  const handleAbandonQuiz = () => {
+    dispatch(resetQuiz())
+  }
+
   return (
-    <Card>
-      <CardContent>
-        <Typography variant="h5" gutterBottom>
-          Question {currentQuestionIndex + 1}
-        </Typography>
+    <Grid
+      container
+      direction="column"
+      justifyContent="center"
+      alignItems="center"
+      width={"100%"}
+    >
+      <TopInfo
+        title={`Question ${currentQuestionIndex + 1}`}
+        leftItem={{ type: "none" }}
+        rightItem={{ type: "timer" }}
+      ></TopInfo>
+      <Box minHeight={"60vh"} width={"100%"}>
+        <Typography variant="h6" gutterBottom textAlign={"center"}></Typography>
         <Typography variant="body1">{currentQuestion?.text}</Typography>
-        <FormControl component="fieldset">
-          {currentQuestion?.answers.map((answer) => (
-            <FormControlLabel
+        <FormControl
+          component="fieldset"
+          style={{ marginTop: "16px", width: "100%" }}
+        >
+          {currentQuestion?.answers.map((answer, answerIndex) => (
+            <StyledCheckbox
               key={answer._id}
-              control={
-                <Checkbox
-                  checked={(
-                    selectedAnswers[currentQuestion._id] || []
-                  ).includes(answer._id)}
-                  onChange={() => handleAnswerChange(answer._id)}
-                />
-              }
-              label={answer.answerText}
+              id={answer._id}
+              isChecked={isAnswerSelected(currentQuestion._id, answer._id)}
+              onChange={handleAnswerChange}
+              index={answerIndex}
+              text={answer.answerText}
             />
           ))}
         </FormControl>
-        <div style={{ marginTop: "16px" }}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handlePreviousQuestion}
-            disabled={currentQuestionIndex === 0}
-          >
-            Previous Question
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleNextQuestion}
-            disabled={currentQuestionIndex === questions.length - 1}
-          >
-            Next Question
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSubmitQuiz}
-            disabled={isQuizSubmitted}
-          >
-            Submit Quiz
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+      </Box>
+      <Pagination
+        count={questions.length}
+        page={currentQuestionIndex + 1}
+        onChange={handlePaginationChange}
+        variant="outlined"
+        color="secondary"
+        style={{ marginTop: "16px" }}
+      />
+      <Box style={{ marginTop: "16px" }}>
+        <Button
+          variant="outlined"
+          onClick={handleSubmitQuiz}
+          disabled={isSubmitDisabled}
+          style={{ marginLeft: "16px" }}
+          color="primary"
+        >
+          Submit Quiz
+        </Button>
+        <Button color="error" onClick={handleAbandonQuiz}>
+          Abandon quiz
+        </Button>
+      </Box>
+    </Grid>
   )
 }
 

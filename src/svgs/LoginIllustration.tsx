@@ -6,7 +6,7 @@ export default function LoginIllustration() {
       xmlns="http://www.w3.org/2000/svg"
       data-name="Layer 1"
       width="783.92771"
-      height="868.73369"
+      height="600"
       viewBox="0 0 783.92771 868.73369"
       xmlnsXlink="http://www.w3.org/1999/xlink"
     >

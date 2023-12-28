@@ -1,36 +1,53 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { client } from "../../api/client"
 import { Question } from "../questions/questionsSlice"
 
 const serverURL = import.meta.env.VITE_SERVER_URL
+export interface QuizInterface {
+  _id: string | null
+  questions: Question[]
+  userAnswers: { [questionId: string]: string[] }
+  submissionDate: Date | null
+  quizScore: number | null
+  startTime: number | null
+  endTime: number | null
+}
+export interface UserAnswers {
+  [questionId: string]: string[]
+}
 
 interface QuizState {
-  quizId: string | null
-  questions: Question[]
+  currentQuiz: QuizInterface
+  timeToSolve: number
   status: "idle" | "loading" | "succeeded" | "failed"
   error: string | null
-  quizScore: number | null
-  userAnswers: Record<string, string[]>
 }
 
 const initialState: QuizState = {
-  quizId: null,
-  questions: [],
+  currentQuiz: {
+    _id: null,
+    questions: [],
+    userAnswers: {},
+    submissionDate: null,
+    quizScore: null,
+    startTime: null,
+    endTime: null,
+  },
+  timeToSolve: 0,
   status: "idle",
   error: null,
-  quizScore: null,
-  userAnswers: {},
 }
 
 interface CreateQuizPayload {
   questionSetIds: string[]
   numberOfQuestions: number
   userId: string
+  timeToSolve: number
 }
 
 interface SubmitUserAnswersPayload {
   quizId: string
-  userAnswers: Record<string, string[]>
+  userAnswers: UserAnswers
 }
 
 export const createQuiz = createAsyncThunk(
@@ -55,7 +72,14 @@ export const submitUserAnswers = createAsyncThunk(
 const quizSlice = createSlice({
   name: "activeQuiz",
   initialState,
-  reducers: {},
+  reducers: {
+    setUserAnswers: (state, action: PayloadAction<UserAnswers>) => {
+      state.currentQuiz.userAnswers = action.payload
+    },
+    resetQuiz: (state) => {
+      state.currentQuiz = initialState.currentQuiz
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(createQuiz.pending, (state) => {
@@ -65,8 +89,13 @@ const quizSlice = createSlice({
       .addCase(createQuiz.fulfilled, (state, action) => {
         state.status = "succeeded"
         state.error = null
-        state.quizId = action.payload.quizId
-        state.questions = action.payload.questions
+        console.log(action.payload)
+
+        state.currentQuiz._id = action.payload.quizId
+        state.currentQuiz.questions = action.payload.questions
+        state.currentQuiz.startTime = action.payload.startTime
+        state.currentQuiz.endTime = action.payload.endTime
+        state.currentQuiz.userAnswers = {}
       })
       .addCase(createQuiz.rejected, (state, action) => {
         state.status = "failed"
@@ -78,6 +107,7 @@ const quizSlice = createSlice({
       })
       .addCase(submitUserAnswers.fulfilled, (state) => {
         state.status = "succeeded"
+        state.currentQuiz.endTime = null
         state.error = null
       })
       .addCase(submitUserAnswers.rejected, (state, action) => {
@@ -86,5 +116,7 @@ const quizSlice = createSlice({
       })
   },
 })
+
+export const { setUserAnswers, resetQuiz } = quizSlice.actions
 
 export default quizSlice.reducer

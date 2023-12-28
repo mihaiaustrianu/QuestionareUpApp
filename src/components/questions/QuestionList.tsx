@@ -1,14 +1,5 @@
 import React, { useEffect, useState } from "react"
-import {
-  Box,
-  Typography,
-  Button,
-  Pagination,
-  Grid,
-  IconButton,
-  Tooltip,
-} from "@mui/material"
-import { Add, ArrowBack } from "@mui/icons-material"
+import { Box, Pagination } from "@mui/material"
 import {
   Question,
   deleteQuestion,
@@ -16,9 +7,9 @@ import {
 } from "../../features/questions/questionsSlice"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import QuestionCard from "./QuestionCard"
-import ConfirmationModal from "./ConfirmationModal"
+import ConfirmationModal from "../common/ConfirmationModal"
 import { useNavigate } from "react-router-dom"
-import ArrowBackIcon from "@mui/icons-material/ArrowBack"
+import TopInfo from "../common/TopInfo"
 
 const QuestionList: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -38,7 +29,7 @@ const QuestionList: React.FC = () => {
     (state) => state.question.questions,
   )
 
-  const itemsPerPage = 5
+  const itemsPerPage = 4
   const [currentPage, setCurrentPage] = useState(1)
   const totalPages = Math.ceil(questions.length / itemsPerPage)
 
@@ -75,11 +66,7 @@ const QuestionList: React.FC = () => {
   }
 
   const handleEditQuestion = (question: Question) => {
-    navigate(`/edit-question/${question._id}`)
-  }
-
-  const handleNavigateBack = () => {
-    navigate(-1)
+    navigate(`/edit-questionSet/${questionSetId}/${question._id}`)
   }
 
   const handlePageChange = (
@@ -91,43 +78,35 @@ const QuestionList: React.FC = () => {
 
   return (
     <Box>
-      <Typography marginLeft={"20px"} variant="h4">
-        Questions in {questionSetTitle}
-      </Typography>
-      <Grid container justifyContent={"space-between"}>
-        <Grid item>
-          <Tooltip title="Back">
-            <IconButton color="primary" onClick={handleNavigateBack}>
-              <ArrowBack />
-            </IconButton>
-          </Tooltip>
-        </Grid>
+      <TopInfo
+        leftItem={{ type: "arrowBack" }}
+        rightItem={{
+          type: "addItem",
+          rightHandler: handleAddQuestion,
+          tooltip: "question",
+        }}
+        title={`Questions in ${questionSetTitle}`}
+      ></TopInfo>
+      <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
+        {paginatedQuestions.map((question, index) => (
+          <Box width={"80%"} key={question._id}>
+            <QuestionCard
+              index={(currentPage - 1) * itemsPerPage + index + 1}
+              question={question}
+              onDelete={handleRemoveQuestion}
+              onEdit={handleEditQuestion}
+            />
+          </Box>
+        ))}
 
-        <Grid item>
-          <Tooltip title="Add a new question">
-            <IconButton color="primary" onClick={handleAddQuestion}>
-              <Add />
-            </IconButton>
-          </Tooltip>
-        </Grid>
-      </Grid>
-      {paginatedQuestions.map((question) => (
-        <div key={question._id}>
-          <QuestionCard
-            question={question}
-            onDelete={handleRemoveQuestion}
-            onEdit={handleEditQuestion}
-          />
-        </div>
-      ))}
-
-      <Pagination
-        count={totalPages}
-        page={currentPage}
-        onChange={handlePageChange}
-        color="primary"
-        style={{ marginTop: "10px" }}
-      />
+        <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={handlePageChange}
+          color="primary"
+          style={{ marginTop: "10px" }}
+        />
+      </Box>
 
       <ConfirmationModal
         open={isDeleteModalOpen}

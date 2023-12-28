@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { login } from "./authSlice"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import { Spinner } from "../../components/Spinner"
+import { Spinner } from "../../components/common/Spinner"
 import { useNavigate } from "react-router-dom"
 import LoginIcon from "@mui/icons-material/Login"
 import {
@@ -28,6 +28,11 @@ const Login = () => {
     dispatch(login(loginDetails)).then(() => navigate("/questionnaireUp"))
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault() // Prevent the default form submission behavior
+    handleLogin()
+  }
+
   let content
 
   if (status === "loading") {
@@ -36,7 +41,7 @@ const Login = () => {
     content = <p>Succesfully logged in</p>
   } else {
     content = (
-      <div>
+      <form onSubmit={handleSubmit}>
         <Typography variant="h4">Login</Typography>
         <TextField
           label="Username"
@@ -66,14 +71,14 @@ const Login = () => {
           label="Remember Me"
         />
         <Button
+          type="submit"
           variant="contained"
-          onClick={handleLogin}
           fullWidth
           endIcon={<LoginIcon />}
         >
           Login
         </Button>
-      </div>
+      </form>
     )
   }
 

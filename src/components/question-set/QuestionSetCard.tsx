@@ -1,16 +1,11 @@
 import React from "react"
-import {
-  Card,
-  CardContent,
-  CardActions,
-  Typography,
-  IconButton,
-} from "@mui/material"
+import { CardContent, CardActions, Typography, IconButton } from "@mui/material"
 import { Edit, Delete } from "@mui/icons-material"
+import CustomCard from "../common/CustomCard"
 
 const QuestionSetCard = ({ questionSet, onEdit, onDelete, onClickSet }) => {
   return (
-    <Card sx={{ marginBottom: 2 }}>
+    <CustomCard>
       <CardContent>
         <Typography variant="h5">{questionSet.title}</Typography>
         <Typography>{questionSet.description}</Typography>
@@ -29,7 +24,7 @@ const QuestionSetCard = ({ questionSet, onEdit, onDelete, onClickSet }) => {
           View Questions
         </IconButton>
       </CardActions>
-    </Card>
+    </CustomCard>
   )
 }
 

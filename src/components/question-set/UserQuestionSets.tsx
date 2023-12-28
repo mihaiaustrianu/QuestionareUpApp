@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Box, Typography, Button } from "@mui/material"
-import { Add } from "@mui/icons-material"
+import { Box } from "@mui/material"
 import {
   QuestionSet,
   createQuestionSet,
@@ -10,7 +9,7 @@ import {
 } from "../../features/question-set/questionSetSlice"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import QuestionSetCard from "./QuestionSetCard"
-import ConfirmationModal from "./ConfirmationModal"
+import ConfirmationModal from "../common/ConfirmationModal"
 import QuestionSetModal from "./QuestionSetModal"
 
 import {
@@ -18,6 +17,7 @@ import {
   setQuestionSetTitle,
 } from "../../features/questions/questionsSlice"
 import { useNavigate } from "react-router-dom"
+import TopInfo from "../common/TopInfo"
 
 const UserQuestionSets = () => {
   const dispatch = useAppDispatch()
@@ -86,9 +86,15 @@ const UserQuestionSets = () => {
 
   return (
     <Box>
-      <Typography marginLeft={"20px"} variant="h4">
-        User Question Sets
-      </Typography>
+      <TopInfo
+        title="User Question Sets"
+        leftItem={{ type: "none" }}
+        rightItem={{
+          type: "addItem",
+          rightHandler: handleAddQuestionSet,
+          tooltip: "question set",
+        }}
+      ></TopInfo>
 
       {questionSets.map((questionSet) => (
         <QuestionSetCard
@@ -99,15 +105,6 @@ const UserQuestionSets = () => {
           onClickSet={() => handleQuestionSetClick(questionSet)} // Add click handler
         />
       ))}
-
-      <Button
-        variant="contained"
-        color="primary"
-        startIcon={<Add />}
-        onClick={handleAddQuestionSet}
-      >
-        Add New Question Set
-      </Button>
 
       <QuestionSetModal
         open={isCreateModalOpen}

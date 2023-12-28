@@ -15,10 +15,12 @@ import MenuIcon from "@mui/icons-material/Menu"
 import Toolbar from "@mui/material/Toolbar"
 import LogoutIcon from "@mui/icons-material/Logout"
 import QuizIcon from "@mui/icons-material/Quiz"
+import LocalLibraryIcon from "@mui/icons-material/LocalLibrary"
 import Typography from "@mui/material/Typography"
 import { Link, useLocation } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { signOut } from "../../features/auth/authSlice"
+import ConfirmationModal from "../common/ConfirmationModal"
 
 interface NewNavbarProps {
   drawerWidth: number
@@ -35,8 +37,6 @@ const NewNavbar: React.FC<NewNavbarProps> = ({ drawerWidth }) => {
 
   const noNavbar = ["/", "/login"]
   const showNavbar = !noNavbar.includes(location.pathname)
-
-  const isAuthenticated = useAppSelector((state) => state.auth.userToken)
 
   const dispatch = useAppDispatch()
 
@@ -56,6 +56,11 @@ const NewNavbar: React.FC<NewNavbarProps> = ({ drawerWidth }) => {
             link: "/questionnaireUp",
           },
           { text: "Quiz", icon: <QuizIcon />, link: "/quizMenu" },
+          {
+            text: "Quiz History",
+            icon: <LocalLibraryIcon />,
+            link: "/review",
+          },
         ].map((item, index) => (
           <ListItem key={item.text} disablePadding>
             <ListItemButton component={Link} to={item.link}>
@@ -84,8 +89,8 @@ const NewNavbar: React.FC<NewNavbarProps> = ({ drawerWidth }) => {
         <AppBar
           position="fixed"
           sx={{
-            width: { sm: `calc(100% - ${drawerWidth}px)` },
-            ml: { sm: `${drawerWidth}px` },
+            width: { md: `calc(100% - ${drawerWidth}px)` },
+            ml: { md: `${drawerWidth}px` },
           }}
         >
           <Toolbar>
@@ -94,18 +99,19 @@ const NewNavbar: React.FC<NewNavbarProps> = ({ drawerWidth }) => {
               aria-label="open drawer"
               edge="start"
               onClick={handleDrawerToggle}
-              sx={{ mr: 2, display: { sm: "none" } }}
+              sx={{ mr: 2, display: { md: "none" } }}
             >
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" noWrap component="div">
-              Responsive drawer
+              <QuizIcon></QuizIcon>
+              Qupp
             </Typography>
           </Toolbar>
         </AppBar>
         <Box
           component="nav"
-          sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+          sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
           aria-label="nav folders"
         >
           <Drawer
@@ -116,7 +122,7 @@ const NewNavbar: React.FC<NewNavbarProps> = ({ drawerWidth }) => {
               keepMounted: true, // Better open performance on mobile.
             }}
             sx={{
-              display: { xs: "block", sm: "none" },
+              display: { xs: "block", md: "none" },
               "& .MuiDrawer-paper": {
                 boxSizing: "border-box",
                 width: drawerWidth,
@@ -128,7 +134,7 @@ const NewNavbar: React.FC<NewNavbarProps> = ({ drawerWidth }) => {
           <Drawer
             variant="permanent"
             sx={{
-              display: { xs: "none", sm: "block" },
+              display: { xs: "none", md: "block" },
               "& .MuiDrawer-paper": {
                 boxSizing: "border-box",
                 width: drawerWidth,

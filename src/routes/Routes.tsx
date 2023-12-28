@@ -9,9 +9,10 @@ import QuestionListPage from "../features/questions/QuestionListPage"
 import EditQuestionPage from "../features/questions/EditQuestionPage"
 import CreateQuestionPage from "../features/questions/CreateQuestionPage"
 import NewNavbar from "../components/navbar/NewNavabr"
-import QuizPage from "../features/quizes/QuizPage"
+import QuizReviewPage from "../features/quizes/QuizReviewPage"
+import QuizHistory from "../components/quiz-history/QuizHistory"
 
-const drawerWidth: number = 240
+const drawerWidth: number = 220
 
 export default function RouteProvider() {
   return (
@@ -47,10 +48,18 @@ export default function RouteProvider() {
               }
             ></Route>
             <Route
-              path="/quizPage"
+              path="/review/"
               element={
                 <PrivateRoute>
-                  <QuizPage />
+                  <QuizHistory />
+                </PrivateRoute>
+              }
+            ></Route>
+            <Route
+              path="/review/:quizId"
+              element={
+                <PrivateRoute>
+                  <QuizReviewPage />
                 </PrivateRoute>
               }
             ></Route>
@@ -63,7 +72,7 @@ export default function RouteProvider() {
               }
             />
             <Route
-              path="/edit-question/:questionId"
+              path="/edit-questionSet/:questionSetId/:questionId"
               element={
                 <PrivateRoute>
                   <EditQuestionPage></EditQuestionPage>

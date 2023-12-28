@@ -18,7 +18,6 @@ const CreateQuestionPage: React.FC = () => {
 
   return (
     <div>
-      <h2>Edit Question</h2>
       <EditQuestionCard onSave={handleSave} />
     </div>
   )
