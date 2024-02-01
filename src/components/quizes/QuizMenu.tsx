@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import {
   FormControl,
-  InputLabel,
   MenuItem,
   Select,
   Button,
@@ -72,7 +71,7 @@ const QuizMenu = () => {
       unwrapResult(resultAction)
       resetQuiz()
     } catch (error) {
-      if (error == "Not enough questions across selected question sets")
+      if (error === "Not enough questions across selected question sets")
         alert(
           "Failed to start quiz, not enough questions in the selected quizes",
         )
@@ -95,7 +94,7 @@ const QuizMenu = () => {
             <Select
               required
               value={numberOfQuestions}
-              onChange={(e) => setNumberOfQuestions(e.target.value)}
+              onChange={(e) => setNumberOfQuestions(+e.target.value)}
             >
               <MenuItem value={5}>5</MenuItem>
               <MenuItem value={10}>10</MenuItem>

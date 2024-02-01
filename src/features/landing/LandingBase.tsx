@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { Box, Container, Typography, Button, Grid } from "@mui/material"
 import { styled } from "@mui/system"
 import FeaturesList from "./FeatureList"
