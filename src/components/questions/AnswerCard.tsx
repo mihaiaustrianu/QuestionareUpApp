@@ -3,19 +3,19 @@ import {
   IconButton,
   FormGroup,
   Checkbox,
-  Box,
   TextField,
   Tooltip,
+  Typography,
 } from "@mui/material"
 import DeleteIcon from "@mui/icons-material/Delete"
 import { Answer } from "../../features/questions/questionsSlice"
-import theme from "../../utils/muitheme"
 import CustomCard from "../common/CustomCard"
 
 interface AnswerCardProps {
   answer: Answer
   onDelete: () => void
   onAnswerTextChange: (value: string) => void
+  onAnswerDescriptionChange: (value: string) => void
   onIsCorrectChange: (value: boolean) => void // Change the type to boolean
 }
 
@@ -23,6 +23,7 @@ const AnswerCard: React.FC<AnswerCardProps> = ({
   answer,
   onDelete,
   onAnswerTextChange,
+  onAnswerDescriptionChange,
   onIsCorrectChange,
 }) => {
   return (
@@ -44,6 +45,15 @@ const AnswerCard: React.FC<AnswerCardProps> = ({
           placeholder="Enter Answer Text"
           value={answer.answerText}
           onChange={(e) => onAnswerTextChange(e.target.value)}
+        ></TextField>
+        <Typography mt={2}>Answer Description:</Typography>
+        <TextField
+          sx={{ width: "90%" }}
+          multiline
+          maxRows={3}
+          placeholder="Enter Answer Description"
+          value={answer.answerDescription}
+          onChange={(e) => onAnswerDescriptionChange(e.target.value)}
         ></TextField>
         <Tooltip title={"Correct ?"} placement="left">
           <Checkbox
