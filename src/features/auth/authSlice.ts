@@ -19,6 +19,18 @@ const initialState = {
   status: "idle",
 }
 
+export const register = createAsyncThunk(
+  "auth/register",
+  async (payload: LoginPayload, { rejectWithValue }) => {
+    try {
+      const response = await client.post(serverURL + "user/signup", payload)
+      return response.data
+    } catch (error) {
+      return rejectWithValue(error.data.error)
+    }
+  },
+)
+
 export const login = createAsyncThunk(
   "auth/login",
   async (payload: LoginPayload) => {
@@ -88,6 +100,13 @@ const authSlice = createSlice({
         state.status = "idle"
         state.userToken = null
         removeToken()
+      })
+      .addCase(register.rejected, (state, action) => {
+        state.status = "failed"
+        state.error = action.error
+      })
+      .addCase(register.pending, (state, action) => {
+        state.status = "loading"
       })
   },
 })

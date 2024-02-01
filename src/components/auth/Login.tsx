@@ -1,16 +1,17 @@
 import React, { useState } from "react"
-import { login } from "./authSlice"
+import { login } from "../../features/auth/authSlice"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import LoginIcon from "@mui/icons-material/Login"
 import {
   TextField,
   Checkbox,
   FormControlLabel,
   Typography,
+  Box,
 } from "@mui/material"
 import { Button } from "@mui/material"
-import Spinner from "../../components/common/Spinner"
+import Spinner from "../common/Spinner"
 
 const Login = () => {
   const [username, setUsername] = useState("")
@@ -70,6 +71,17 @@ const Login = () => {
           }
           label="Remember Me"
         />
+        <Box
+          display={"flex"}
+          flexDirection={"row"}
+          justifyContent={"space-between"}
+          mt={2}
+        >
+          <Typography>Don't have an account?</Typography>
+          <Button component={Link} to="/register">
+            Register now
+          </Button>
+        </Box>
         <Button
           type="submit"
           variant="contained"

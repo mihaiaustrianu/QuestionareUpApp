@@ -72,7 +72,7 @@ const QuizMenu = () => {
       unwrapResult(resultAction)
       resetQuiz()
     } catch (error) {
-      if (error === "Bad Request")
+      if (error == "Not enough questions across selected question sets")
         alert(
           "Failed to start quiz, not enough questions in the selected quizes",
         )
