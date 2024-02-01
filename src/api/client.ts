@@ -11,6 +11,11 @@ interface Result {
   url: string
 }
 
+export interface ErrorResponse {
+  status: number
+  data: any
+}
+
 export async function client(
   endpoint: string,
   { body, ...customConfig }: ClientConfig = {},
@@ -49,9 +54,13 @@ export async function client(
         url: response.url,
       }
     }
-    throw new Error(response.statusText)
+    const errorResponse: ErrorResponse = {
+      status: response.status,
+      data,
+    }
+    throw errorResponse
   } catch (err) {
-    return Promise.reject(err.message ? err.message : data)
+    return Promise.reject(err) // Reject with the entire error response
   }
 }
 

@@ -34,7 +34,7 @@ const NewNavbar: React.FC<NewNavbarProps> = ({ drawerWidth }) => {
 
   const location = useLocation()
 
-  const noNavbar = ["/", "/login"]
+  const noNavbar = ["/", "/login", "/register"]
   const showNavbar = !noNavbar.includes(location.pathname)
 
   const dispatch = useAppDispatch()

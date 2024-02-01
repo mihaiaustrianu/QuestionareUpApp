@@ -57,7 +57,7 @@ export const createQuiz = createAsyncThunk(
       const response = await client.post(serverURL + "api/quiz/create", payload)
       return response.data
     } catch (error) {
-      return rejectWithValue(error || "Failed to create quiz.")
+      return rejectWithValue(error.data.error)
     }
   },
 )

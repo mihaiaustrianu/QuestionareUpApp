@@ -84,6 +84,20 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
     })
   }
 
+  const handleAnswerDescriptionChange = (index: number, value: string) => {
+    setEditedQuestion((prevQuestion) => {
+      const updatedAnswers = [...prevQuestion.answers]
+      updatedAnswers[index] = {
+        ...updatedAnswers[index],
+        answerDescription: value,
+      }
+      return {
+        ...prevQuestion,
+        answers: updatedAnswers,
+      }
+    })
+  }
+
   const handleIsCorrectChange = (index: number, value: boolean) => {
     setEditedQuestion((prevQuestion) => {
       const updatedAnswers = [...prevQuestion.answers]
@@ -101,7 +115,10 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
   const handleAddAnswer = () => {
     setEditedQuestion((prevQuestion) => ({
       ...prevQuestion,
-      answers: [...prevQuestion.answers, { answerText: "", isCorrect: false }],
+      answers: [
+        ...prevQuestion.answers,
+        { answerText: "", answerDescription: "", isCorrect: false },
+      ],
     }))
   }
 
@@ -146,6 +163,9 @@ const EditQuestionCard: React.FC<EditQuestionCardProps> = ({
           answer={answer}
           onDelete={() => handleDeleteAnswer(index)}
           onAnswerTextChange={(value) => handleAnswerTextChange(index, value)}
+          onAnswerDescriptionChange={(value) =>
+            handleAnswerDescriptionChange(index, value)
+          }
           onIsCorrectChange={(value) => handleIsCorrectChange(index, value)}
         />
       ))}

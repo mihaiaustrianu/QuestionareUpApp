@@ -160,6 +160,9 @@ const Quiz = ({ questions, initialSelectedAnswers }) => {
           width: "100%",
         }}
       >
+        <Button color="error" onClick={handleAbandonQuiz}>
+          Abandon quiz
+        </Button>
         <Button
           variant="outlined"
           onClick={handleSubmitQuiz}
@@ -168,9 +171,6 @@ const Quiz = ({ questions, initialSelectedAnswers }) => {
           color="primary"
         >
           Submit Quiz
-        </Button>
-        <Button color="error" onClick={handleAbandonQuiz}>
-          Abandon quiz
         </Button>
       </Box>
       <ConfirmationModal

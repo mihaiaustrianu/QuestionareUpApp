@@ -12,6 +12,7 @@ export interface Question {
 
 export interface Answer {
   answerText: string
+  answerDescription: string
   isCorrect: boolean
 }
 

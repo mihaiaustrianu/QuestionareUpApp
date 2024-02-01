@@ -21,7 +21,7 @@ const QuestionSetCard = ({ questionSet, onEdit, onDelete, onClickSet }) => {
           aria-label="View Questions"
           onClick={() => onClickSet(questionSet)}
         >
-          View Questions
+          Questions
         </IconButton>
       </CardActions>
     </CustomCard>

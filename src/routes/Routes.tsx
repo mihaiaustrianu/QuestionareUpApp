@@ -11,6 +11,7 @@ import CreateQuestionPage from "../features/questions/CreateQuestionPage"
 import NewNavbar from "../components/navbar/NewNavabr"
 import QuizReviewPage from "../features/quizes/QuizReviewPage"
 import QuizHistory from "../components/quiz-history/QuizHistory"
+import RegisterPage from "../features/auth/RegisterPage"
 
 const drawerWidth: number = 220
 
@@ -31,6 +32,7 @@ export default function RouteProvider() {
           <Routes>
             <Route path="/" element={<LandingPage />}></Route>
             <Route path="/login" element={<LoginPage />}></Route>
+            <Route path="/register" element={<RegisterPage />}></Route>
             <Route
               path="/questionnaireUp"
               element={

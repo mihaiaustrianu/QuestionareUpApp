@@ -1,14 +1,5 @@
 import React from "react"
-import {
-  Card,
-  CardContent,
-  CardActions,
-  Typography,
-  IconButton,
-  Chip,
-  Grid,
-  Box,
-} from "@mui/material"
+import { CardActions, Typography, IconButton, Chip, Box } from "@mui/material"
 import { Edit, Delete } from "@mui/icons-material"
 import { Question } from "../../features/questions/questionsSlice"
 import CustomCard from "../common/CustomCard"
