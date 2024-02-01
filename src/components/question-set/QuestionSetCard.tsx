@@ -1,4 +1,3 @@
-import React from "react"
 import { CardContent, CardActions, Typography, IconButton } from "@mui/material"
 import { Edit, Delete } from "@mui/icons-material"
 import CustomCard from "../common/CustomCard"

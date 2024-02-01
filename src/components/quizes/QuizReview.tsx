@@ -1,5 +1,5 @@
 // QuizResults.jsx
-import React, { useState } from "react"
+import { useState } from "react"
 import { Box, List, Typography, Pagination, Chip } from "@mui/material"
 import CustomCard from "../common/CustomCard"
 import TopInfo from "../common/TopInfo"
