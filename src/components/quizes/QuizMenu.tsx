@@ -92,7 +92,6 @@ const QuizMenu = () => {
             How many questions do you want to solve?
           </Typography>
           <FormControl fullWidth>
-            <InputLabel>No of questions</InputLabel>
             <Select
               required
               value={numberOfQuestions}
@@ -107,7 +106,6 @@ const QuizMenu = () => {
             In how much time do you want to solve the questions?
           </Typography>
           <FormControl fullWidth style={{ marginTop: 16 }}>
-            <InputLabel>Minutes</InputLabel>
             <Select
               required
               value={timeToSolve}
