@@ -1,44 +1,8 @@
-import { useState } from "react"
+import React, { useState } from "react"
 import { Box, Container, Typography, Button, Grid } from "@mui/material"
-import { styled } from "@mui/system"
 import FeaturesList from "./FeatureList"
 import LandingIllustration from "../../svgs/LandingIllustration"
 import { Link } from "react-router-dom"
-
-const LandingPageContainer = styled(Container)`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-`
-
-const LeftContainer = styled(Box)`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`
-const RightContainer = styled(Box)`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  max-width: 800px;
-`
-
-const Title = styled(Typography)`
-  margin-bottom: 2rem;
-`
-
-const Subtitle = styled(Typography)`
-  margin-bottom: 2rem;
-`
-
-const ButtonContainer = styled(Box)`
-  display: flex;
-  gap: 1rem;
-`
 
 const LandingBase = () => {
   const [showFeatures, setShowFeatures] = useState(false)
@@ -46,16 +10,35 @@ const LandingBase = () => {
   const handleLearnMoreClick = () => {
     setShowFeatures(!showFeatures)
   }
+
   return (
-    <LandingPageContainer>
-      <Grid container spacing={4}>
-        <Grid item xs={12} sm={6}>
-          <LeftContainer>
-            <Title variant="h3">QuestionnaireUp</Title>
-            <Subtitle variant="body1">
+    <Container
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh",
+      }}
+    >
+      <Grid container spacing={4} className="landing-container">
+        <Grid item xs={12} sm={6} className="left-container">
+          <Box
+            sx={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="h3" sx={{ marginBottom: "2rem" }}>
+              QuestionnaireUp
+            </Typography>
+            <Typography variant="body1" sx={{ marginBottom: "2rem" }}>
               Create and answer questionnaires with ease.
-            </Subtitle>
-            <ButtonContainer>
+            </Typography>
+            <Box sx={{ display: "flex", gap: "1rem" }}>
               <Button
                 component={Link}
                 to="/login"
@@ -71,17 +54,24 @@ const LandingBase = () => {
               >
                 Learn More
               </Button>
-            </ButtonContainer>
+            </Box>
             {showFeatures && <FeaturesList showFeatures={showFeatures} />}
-          </LeftContainer>
+          </Box>
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <RightContainer>
+        <Grid item xs={12} sm={6} className="right-container">
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+              alignItems: "center",
+              maxWidth: { xs: 300, md: 800 },
+            }}
+          >
             <LandingIllustration />
-          </RightContainer>
+          </Box>
         </Grid>
       </Grid>
-    </LandingPageContainer>
+    </Container>
   )
 }
 
